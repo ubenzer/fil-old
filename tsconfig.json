@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "experimentalDecorators": true,
+    "module": "commonjs",
+    "declaration": false,
+    "noImplicitAny": false,
+    "removeComments": true,
+    "sourceMap": true,
+    "inlineSourceMap": true,
+    "inlineSources": false,
+    "mapRoot": "..",
+    "outDir": "./.tmp"
+  },
+  "exclude": [
+    "node_modules",
+    ".tmp",
+    "typings/browser.d.ts",
+    "typings/browser"
+  ]
+}
