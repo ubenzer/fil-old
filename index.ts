@@ -36,3 +36,4 @@ let builtTemplate = jade.compileFile(
 fs.writeFileSync(path.join(outDir, "index.html"), builtTemplate);
 
 Assets.processTemplateImages();
+Assets.processStylesheets();
