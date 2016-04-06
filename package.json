@@ -20,7 +20,7 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "front-matter": "^2.0.6",
+    "front-matter": "^2.0.7",
     "fs-extra": "^0.26.7",
     "glob": "^7.0.3",
     "jade": "^1.11.0",
