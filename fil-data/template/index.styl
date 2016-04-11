@@ -1,5 +1,33 @@
-@require "*"
+@require "styles/*";
+
 body
-  color black
-  div
-    color blue
+  background $primary-background
+  font-family "Open Sans"
+  font-size 100%
+  line-height 1.5em
+  display flex
+  flex-flow column
+  align-items center
+  margin 0
+  padding 0
+  -webkit-font-smoothing: antialiased;
+  +lt-sm()
+    font-size: .9em;
+  +gt-lg()
+    font-size: 1.1em;
+
+.main-container
+  width calc(100% - 5em)
+  +lt-sm()
+    width calc(100% - 3em)
+  +gt-lg()
+    width calc(100% - 30em)
+
+.content
+  img
+    width 100%
+
+::selection {
+  background: #0088b2;
+  color: #fff;
+}

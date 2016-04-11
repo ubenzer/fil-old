@@ -1,6 +1,7 @@
 ---
-
+create: 2016-04-11
 ---
+
 # Berlin!
 
 Uzun bir aranın ardından tekrardan merhaba! Ancak bu sefer İzmir'den 

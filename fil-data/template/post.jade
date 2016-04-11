@@ -1,6 +1,8 @@
 extends ./layouts/main.jade
 
 block content
-  h1 Hello
-  img(src="#{global.imgRoot}/fff.png")
-  .content !{post.htmlContent}
+  .main-container
+    h1 Hello
+    .content
+      img(src="#{global.imgRoot}/fff.png")
+    .content !{post.getHtmlContent()}

@@ -26,7 +26,8 @@ export class Template {
     if (Template.templateGlobals !== null) { return Template.templateGlobals; }
 
     Template.templateGlobals = {
-      imgRoot: path.relative(Constants.OUTPUT_DIR, Constants.TEMPLATE_IMAGES_OUT_DIR).replace(path.delimiter, "/")
+      imgRoot: path.relative(Constants.OUTPUT_DIR, Constants.TEMPLATE_IMAGES_OUT_DIR).replace(path.delimiter, "/"),
+      cssFilePath: path.relative(Constants.OUTPUT_DIR, Constants.TEMPLATE_CSS_OUT_FILE).replace(path.delimiter, "/"),
     };
 
     return Template.templateGlobals;
@@ -35,6 +36,7 @@ export class Template {
 
 interface ITemplateGlobals {
   imgRoot: string;
+  cssFilePath: string;
 }
 
 interface IPostTemplateLocalsInterface {

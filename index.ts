@@ -1,30 +1,19 @@
-//import {Config} from "./config";
-
 import {Constants} from "./constants";
 import {Post} from "./models/post";
 import {Assets} from "./lib/assets";
 
-import fs = require("fs");
+import fs = require("fs-extra");
 import path = require("path");
 import jade = require("jade");
 
-
-let postDir = Constants.POSTS_DIR;
 let templateDir = Constants.TEMPLATE_DIR;
 let outDir = Constants.OUTPUT_DIR;
 
 // post array
-let posts = [];
+let posts = Post.fromPostsFolder();
 
-
-fs.readdirSync(postDir).forEach((file) => {
-  // build file
-  let post = Post.fromFile(file);
-  let extension = path.extname(file);
-  let fileNameWithoutExtension = path.basename(file, extension);
-
-  post.renderTo(`${fileNameWithoutExtension}.html`);
-  posts.push(post);
+posts.forEach((post) => {
+  post.renderToFile();
 });
 
 let builtTemplate = jade.compileFile(
@@ -33,7 +22,7 @@ let builtTemplate = jade.compileFile(
 )({
   posts: posts
 });
-fs.writeFileSync(path.join(outDir, "index.html"), builtTemplate);
+fs.outputFileSync(path.join(outDir, "index.html"), builtTemplate);
 
 Assets.processTemplateImages();
 Assets.processStylesheets();

@@ -1,16 +1,20 @@
-// export function test() {
-//
-// }
-//
-// // config file format
-// interface IConfigFile {
+import path = require("path");
+let config = require(path.join(process.cwd(), "config.js"));
+
+export class Config {
+  static getConfig(): IConfigFile {
+    return config;
+  }
+}
+
+interface IConfigFile {
 //   collections: {
 //     config: ICollectionConfigFile,
 //     definition: Array<ICollectionDefinitionFile>
 //   },
 //   template: ITemplateConfig,
-//   post: IPostConfig
-// }
+   post: IPostConfig
+}
 //
 // interface ICollectionConfigFile {
 //   collectionsPermalink: string;
@@ -47,7 +51,7 @@
 // }
 //
 // interface ICollectionConfig {
-//  
+//
 // }
 //
 // interface ITemplateConfig {
@@ -61,8 +65,8 @@
 //   extension: string;
 // }
 //
-// interface IPostConfig {
-//   permalink: string;
-//   templateOptions: Object|((IPost) => Object)
-// }
-//
+interface IPostConfig {
+  permalink: string|IPostPermalinkCalculatorFnIn; // valid: :title :day :month :year
+  templateOptions: Object|((Post) => Object)
+}
+export type IPostPermalinkCalculatorFnIn = (postId: string, postTitle: string, postCreateDate: Date) => string;

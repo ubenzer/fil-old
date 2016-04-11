@@ -1,6 +1,7 @@
 extends ./layouts/main.jade
 
 block content
-  each post, no in posts
-    h1 Post #{no}
-    .content !{post.htmlContent}
+  .main-container
+    each post, no in posts
+      h1 Post #{no}
+      .content !{post.getHtmlContent()}

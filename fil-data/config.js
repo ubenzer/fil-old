@@ -39,7 +39,7 @@ var config = {
     ]
   },
   post: {
-    permalink: "/:post/index.html", // customFn(post) returns string path
+    permalink: "/:year/:month/:title/index.html",
     templateOptions: {
       // template spesific json customFn(post) return object
     }

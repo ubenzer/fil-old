@@ -1,0 +1,40 @@
+$xs = 0
+$sm = 600px
+$md = 1280px
+$lg = 1440px
+$xl = 75em
+
+// Prefer using this if possible
+gt-xs()
+  @media (min-width: $sm)
+    {block}
+
+gt-sm()
+  @media (min-width: $md)
+    {block}
+
+gt-md()
+  @media (min-width: $lg)
+    {block}
+
+gt-lg()
+  @media (min-width: $xl)
+    {block}
+
+// Use this if you have no other choice
+lt-sm()
+  @media (max-width: $sm - 0.1em)
+    {block}
+
+lt-md()
+  @media (max-width: $md - 0.1em)
+    {block}
+
+lt-lg()
+  @media (max-width: $lg - 0.1em)
+    {block}
+lt-xl()
+  @media (max-width: $xl - 0.1em)
+    {block}
+
+

@@ -22,6 +22,6 @@ export class Assets {
       .set("filename", Constants.TEMPLATE_CSS_IN_FILE)
       .render();
 
-    fs.writeFileSync(Constants.TEMPLATE_CSS_OUT_FILE, css);
+    fs.outputFileSync(Constants.TEMPLATE_CSS_OUT_FILE, css);
   }
 }
