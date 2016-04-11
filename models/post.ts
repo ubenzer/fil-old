@@ -15,6 +15,7 @@ let rho = require("rho");
 let frontMatter = require("front-matter");
 
 export class Post {
+  contentRoot: string; // content directory root relative to POSTS_DIR
   title: string; // content title
   content: string; // original content
   templateFile: string; // which jade template to be used, relative to template folder
@@ -24,17 +25,21 @@ export class Post {
   contentId: string; // content's id, using this it can be referenced
   contentOutFile: string; // content's final path, relative to OUTPUT_DIR
 
+  fileAssets: Array<string>; // files attached to this content as array of file name relative to contentRoot
   // belongsTo: WeakMap<Collection, Array<Category>>;
 
   constructor(
+    contentRoot: string,
     title: string,
     content: string,
     templateFile: string = "post.jade",
     createDate: Date,
     editDate: Date,
     contentId: string,
-    contentOutFile: string
+    contentOutFile: string,
+    fileAssets: Array<string>
   ) {
+    this.contentRoot = contentRoot;
     this.title = title;
     this.content = content;
     this.templateFile = templateFile;
@@ -42,6 +47,7 @@ export class Post {
     this.editDate = editDate;
     this.contentId = contentId;
     this.contentOutFile = contentOutFile;
+    this.fileAssets = fileAssets;
   }
 
   /**
@@ -68,6 +74,8 @@ export class Post {
    * @param relativePath path relative to POSTS_DIR
      */
   static fromFile(relativePath: string): Post {
+    let contentDirectory = Post.getContentDirectory(relativePath);
+
     let fullPath = path.join(Constants.POSTS_DIR, relativePath);
     let rawContent = fs.readFileSync(fullPath, "utf8");
 
@@ -89,14 +97,18 @@ export class Post {
     let fileId = Post.getFileId(relativePath);
     let permalink = Post.getPermalink(fileId, title, createDate);
 
+    let fileAssets = Post.getFileAssets(contentDirectory);
+
     return new Post(
+      contentDirectory,
       title,
       markdownContent,
       templateFile,
       createDate,
       editDate,
       fileId,
-      permalink
+      permalink,
+      fileAssets
     );
   }
 
@@ -113,6 +125,16 @@ export class Post {
         posts.push(post);
       });
     return posts;
+  }
+
+  /**
+   * Returns content directory relative to POSTS_DIR
+   * @param relativePath Content index.md file relative to POSTS_DIR
+     */
+  private static getContentDirectory(relativePath: string): string {
+    let paths = relativePath.split(path.sep);
+    paths.pop();
+    return paths.join(path.sep);
   }
 
   /**
@@ -181,6 +203,16 @@ export class Post {
       title: titleLine.substr(2),
       content: lines.join("\n")
     };
+  }
+
+  /**
+   * Retrieves a list of file names related to the content directory
+   * @param contentDirectory
+   * @returns Array<string> File names relative to content directory
+     */
+  private static getFileAssets(contentDirectory): Array<string> {
+    return glob.sync("**/*", {cwd: path.join(Constants.POSTS_DIR, contentDirectory)})
+      .filter(f => f !== "index.md");
   }
 }
 
