@@ -1,0 +1,7 @@
+To watch-reload `fil-data` folder:
+
+`nodemon ../.tmp/index.js --verbose -e js,styl,jade`
+
+To see output:
+
+`http-server -p 3333`
