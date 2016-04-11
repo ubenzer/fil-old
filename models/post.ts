@@ -81,7 +81,7 @@ export class Post {
 
     let editDate = (doc.attributes.edit instanceof Date) ? doc.attributes.edit : new Date(createDate);
 
-    let extractedTitleObject = Post.exractTitleFromMarkdown(doc.body);
+    let extractedTitleObject = Post.extractTitleFromMarkdown(doc.body);
 
     let markdownContent = extractedTitleObject.content;
     let title = (typeof doc.attributes.title === "string") ? doc.attributes.title : extractedTitleObject.title;
@@ -89,7 +89,6 @@ export class Post {
     let fileId = Post.getFileId(relativePath);
     let permalink = Post.getPermalink(fileId, title, createDate);
 
-    //post.writeToFile(`${fileNameWithoutExtension}.html`);
     return new Post(
       title,
       markdownContent,
@@ -126,6 +125,14 @@ export class Post {
     return paths.join("/");
   }
 
+  /**
+   * Calls custom permalink generation function or default permalink function
+   * depending on the configuration that is provided by Config.getConfig
+   * @param id
+   * @param title
+   * @param date
+   * @returns {string} Permalink string with real values
+     */
   private static getPermalink(id: string, title: string, date: Date): string {
     let permalinkConfig: string|IPostPermalinkCalculatorFnIn = Config.getConfig().post.permalink;
     if (permalinkConfig instanceof Function) {
@@ -134,6 +141,13 @@ export class Post {
     return Post.defaultPermalinkFn(<string>permalinkConfig, title, date);
   }
 
+  /**
+   * Default implementation for replacing a permalink string with the real value
+   * @param permalinkTemplateString :title, :day, :month, :year are valid (e.g. :year/index.html)
+   * @param postTitle
+   * @param postCreateDate
+   * @returns {string} Permalink string with real values
+     */
   private static defaultPermalinkFn(permalinkTemplateString: string, postTitle: string, postCreateDate: Date): string {
     let slugTitle: string = slug(postTitle, slug.defaults.modes["rfc3986"]);
     let slugDay: string = padleft(postCreateDate.getDay().toString(), 2, "0");
@@ -147,7 +161,13 @@ export class Post {
       .replace(new RegExp(":year", "g"), slugYear);
   }
 
-  private static exractTitleFromMarkdown(markdown: string): IExtractedTitle {
+  /**
+   * Extracts first h1 heading from markdown and returns
+   * the title and the rest separately.
+   * @param markdown string
+   * @returns {IExtractedTitle} Separated title and content
+     */
+  private static extractTitleFromMarkdown(markdown: string): IExtractedTitle {
     let lines = markdown.split("\n", 10).filter(l => l.trim().length > 0);
     if (lines.length === 0 || lines[0].length < 3 || lines[0].substr(0, 2) != "# ") {
       return {
