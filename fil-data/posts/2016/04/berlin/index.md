@@ -8,13 +8,13 @@ title: Deneme 123
 # Berlin!
 
 Uzun bir aranın ardından tekrardan merhaba! Ancak bu sefer İzmir'den 
-değil, Berlin'den merhaba. 
+değil, _Berlin_'den merhaba. 
 
 Gecen sene sonunda eşim ile birlikte çok ciddi bir degisiklik yapmaya
 karar verdik. Isimizden istifa ettik, yeni isimizi bulduk, tüm eşyalarımızı
 ve daha kredisi bitmemiş arabamızı sattık, Urla'daki güzel kiralık 
 evimizden çıktık. Sadece birkaç valiz ile bir uçağa atladık ve Berlin'e
-vardık.
+vardık. ![alt text](/a/b.jpg){main, sekonder}
 
 Şu an Berlin'de dördüncü ayımız.
 

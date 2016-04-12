@@ -27,6 +27,7 @@
     "pad-left": "^2.0.3",
     "rho": "^0.2.4",
     "slug": "^0.9.1",
+    "string": "^3.3.1",
     "stylus": "^0.54.2"
   },
   "devDependencies": {

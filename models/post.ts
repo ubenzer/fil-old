@@ -11,7 +11,7 @@ import {Constants} from "../constants";
 import {Template} from "../lib/template";
 
 let slug = require("slug");
-let rho = require("rho");
+let rho = require("../lib/rho");
 let frontMatter = require("front-matter");
 
 export class Post {
@@ -66,7 +66,7 @@ export class Post {
    * @returns {string} rendered html content
    */
   getHtmlContent(): string {
-    return rho.toHtml(this.content);
+    return (new rho()).toHtml(this.content);
   }
 
   /**
@@ -190,7 +190,7 @@ export class Post {
    * @returns {IExtractedTitle} Separated title and content
      */
   private static extractTitleFromMarkdown(markdown: string): IExtractedTitle {
-    let lines = markdown.split("\n", 10).filter(l => l.trim().length > 0);
+    let lines = markdown.split("\n").filter(l => l.trim().length > 0);
     if (lines.length === 0 || lines[0].length < 3 || lines[0].substr(0, 2) != "# ") {
       return {
         title: null,
