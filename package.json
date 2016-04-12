@@ -31,6 +31,6 @@
     "stylus": "^0.54.2"
   },
   "devDependencies": {
-    "typescript": "^1.8.9"
+    "typescript": "^1.8.10"
   }
 }
