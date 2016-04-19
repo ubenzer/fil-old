@@ -5,3 +5,6 @@ To watch-reload `fil-data` folder:
 To see output:
 
 `http-server -p 3333`
+
+
+ node --v8-options | grep "in progress"
