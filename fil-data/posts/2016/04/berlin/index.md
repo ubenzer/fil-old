@@ -1,6 +1,6 @@
 ---
 
-create: 2016-04-11
+created: 2016-04-11
 title: Deneme 123
 
 ---
@@ -14,7 +14,7 @@ Gecen sene sonunda eşim ile birlikte çok ciddi bir degisiklik yapmaya
 karar verdik. Isimizden istifa ettik, yeni isimizi bulduk, tüm eşyalarımızı
 ve daha kredisi bitmemiş arabamızı sattık, Urla'daki güzel kiralık 
 evimizden çıktık. Sadece birkaç valiz ile bir uçağa atladık ve Berlin'e
-vardık. ![alt text](/a/b.jpg){main, sekonder}
+vardık. ![alt text](asset1.txt){main, sekonder}
 
 Şu an Berlin'de dördüncü ayımız.
 
