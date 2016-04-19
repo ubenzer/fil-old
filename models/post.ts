@@ -9,9 +9,11 @@ import padleft = require("pad-left");
 import {Config, IPostPermalinkCalculatorFnIn} from "../lib/config";
 import {Constants} from "../constants";
 import {Template} from "../lib/template";
+import {ContentLookup} from "./postsLookup";
+import {Rho} from "../lib/rho";
+import {PostAsset} from "./postAsset";
 
 let slug = require("slug");
-let rho = require("../lib/rho");
 let frontMatter = require("front-matter");
 
 export class Post {
@@ -25,7 +27,9 @@ export class Post {
   contentId: string; // content's id, using this it can be referenced
   contentOutFile: string; // content's final path, relative to OUTPUT_DIR
 
-  fileAssets: Array<string>; // files attached to this content as array of file name relative to contentRoot
+  htmlContent: string = null; // compiled html content, this is null, call calculateHtmlContent() once to fill this.
+
+  fileAssets: Array<PostAsset>; // files attached to this content as array of file name relative to contentRoot
   // belongsTo: WeakMap<Collection, Array<Category>>;
 
   constructor(
@@ -37,7 +41,7 @@ export class Post {
     editDate: Date,
     contentId: string,
     contentOutFile: string,
-    fileAssets: Array<string>
+    fileAssets: Array<PostAsset>
   ) {
     this.contentRoot = contentRoot;
     this.title = title;
@@ -62,11 +66,20 @@ export class Post {
   }
 
   /**
-   * Renders original content as rendered html and returns it
+   * Renders original content as rendered html, sets htmlContent
+   * field of this post object and returns it
+   * @param {ContentLookup} contentLookup object that is going
+   * to be used to resolve references to file assets and other contents.
    * @returns {string} rendered html content
    */
-  getHtmlContent(): string {
-    return (new rho()).toHtml(this.content);
+  calculateHtmlContent(contentLookup: ContentLookup): string {
+    let compiler = new Rho(this, contentLookup);
+    this.htmlContent = compiler.toHtml();
+    return this.htmlContent;
+  }
+
+  getUrl(): string {
+    return "TODO";
   }
 
   /**
@@ -210,9 +223,10 @@ export class Post {
    * @param contentDirectory
    * @returns Array<string> File names relative to content directory
      */
-  private static getFileAssets(contentDirectory): Array<string> {
+  private static getFileAssets(contentDirectory): Array<PostAsset> {
     return glob.sync("**/*", {cwd: path.join(Constants.POSTS_DIR, contentDirectory)})
-      .filter(f => f !== "index.md");
+      .filter(f => f !== "index.md")
+      .map(fileName => new PostAsset(fileName));
   }
 }
 
