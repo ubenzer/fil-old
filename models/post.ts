@@ -203,15 +203,21 @@ export class Post {
    * @returns {IExtractedTitle} Separated title and content
      */
   private static extractTitleFromMarkdown(markdown: string): IExtractedTitle {
-    let lines = markdown.split("\n").filter(l => l.trim().length > 0);
+    let lines = markdown.split("\n");
+
+    // remove empty lines in the beginning
+    while (lines.length > 0 && lines[0].trim().length === 0) {
+      lines.shift();
+    }
+
     if (lines.length === 0 || lines[0].length < 3 || lines[0].substr(0, 2) != "# ") {
       return {
         title: null,
-        content: markdown
+        content: lines.join("\n")
       };
     }
 
-    let titleLine = lines.pop();
+    let titleLine = lines.shift();
     return {
       title: titleLine.substr(2),
       content: lines.join("\n")
