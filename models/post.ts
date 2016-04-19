@@ -95,12 +95,12 @@ export class Post {
     let doc = frontMatter(rawContent);
     let templateFile = (typeof doc.attributes.templateFile === "string") ? doc.attributes.templateFile : undefined;
 
-    let createDate = doc.attributes.create;
+    let createDate = doc.attributes.created;
     if (!(createDate instanceof Date)) {
       throw new Error(`${relativePath} has no create date.`);
     }
 
-    let editDate = (doc.attributes.edit instanceof Date) ? doc.attributes.edit : new Date(createDate);
+    let editDate = (doc.attributes.edited instanceof Date) ? doc.attributes.edited : new Date(createDate);
 
     let extractedTitleObject = Post.extractTitleFromMarkdown(doc.body);
 
