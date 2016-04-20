@@ -1,16 +1,47 @@
 import s = require("string");
-import {ContentLookup} from "../models/postsLookup";
-import {Post} from "../models/post";
+
+import {ContentLookup} from "../models/contentLookup";
+import {Content} from "../models/content";
 
 enum ParserState {CONTENT_ID, ASSET_ID}
 const CLOSE_DELIMITER = "@";
 
+/**
+ * This class wraps original rho project and does the following changes:
+ *
+ * 1. Alter how images and links are compiled. Urls are resolved via a `ContentLookup`
+ *    object. This enables in-project linking.
+ *
+ *    To access a post use:
+ *    @path/to/post/folder
+ *
+ *    To access a post asset use:
+ *    @path/to/post/folder@/asset/address.jpg
+ *
+ *    To access own post's asset use:
+ *    asset/address.jpg
+ *
+ *    To give 3rd party link use;
+ *    //site.com
+ *    https://site.com
+ *    http://site.com
+ *
+ *    If a reference is pointing to non-existing post or post asset compiler will throw an error.
+ *
+ * 2. You can add 'flags' to links and images using the following syntax:
+ *
+ *    ![title](url){flags,separated,by,comma}
+ *    [title](url){flags,separated,by,comma}
+ *
+ *    This flags can be used by template engine to do something magical. (or can be used as classes)
+ *
+ */
 export class Rho {
-  private post: Post;
+  private post: Content;
   private contentLookup: ContentLookup;
   private blockCompiler: any;
 
-  constructor(post: Post, contentLookup: ContentLookup) {
+  constructor(post: Content, contentLookup: ContentLookup) {
     this.post = post;
     this.contentLookup = contentLookup;
 
@@ -24,7 +55,7 @@ export class Rho {
 
   private normalizeUrl(urlWithReference: string): string {
     if (urlWithReference[0] !== "@") {
-      let postContent = this.contentLookup.getPostAssetByPost(this.post, urlWithReference);
+      let postContent = this.contentLookup.getContentAssetByContent(this.post, urlWithReference);
       if (postContent === null) {
         throw new Error(`Cannot resolve content asset in ${urlWithReference}`);
       }
@@ -54,7 +85,7 @@ export class Rho {
       }
     }
 
-    let post = this.contentLookup.getPostById(contentId);
+    let post = this.contentLookup.getContentById(contentId);
     if (post === null) {
       throw new Error(`Cannot resolve content in ${urlWithReference}`);
     }
@@ -63,7 +94,7 @@ export class Rho {
       return post.getUrl();
     }
 
-    let postContent = this.contentLookup.getPostAssetByPost(post, assetId);
+    let postContent = this.contentLookup.getContentAssetByContent(post, assetId);
     if (postContent === null) {
       throw new Error(`Cannot resolve content asset in ${urlWithReference}`);
     }
@@ -149,6 +180,7 @@ export class Rho {
 
       src = rhoClass.resolveUrl(src);
 
+      // TODO we need to move html creation to jade at some point
       this.out.push(`<img src="${src}" alt="${escapedAlt}" title="${escapedAlt}"`);
 
       if (escapedTypesArr.length > 0) {
@@ -167,6 +199,7 @@ export class Rho {
 
       link = rhoClass.resolveUrl(link);
 
+      // TODO we need to move html creation to jade at some point
       this.out.push("<a href=\"" + link + "\">");
       this.out.push(innerLinkHtml);
       this.out.push("</a>");

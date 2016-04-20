@@ -9,8 +9,8 @@
 //
 //   subCategories: Array<ICategory>;
 //
-//   ownPosts: Array<Post>;
-//   posts: Array<Post>;
+//   ownPosts: Array<Content>;
+//   posts: Array<Content>;
 //   belongsToCollection: Collection;
 // }
 // export class Category implements ICategory {

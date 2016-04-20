@@ -1,4 +1,4 @@
-import {Post} from "../models/post";
+import {Content} from "../models/content";
 import {Constants} from "../constants";
 
 import jade = require("jade");
@@ -9,9 +9,9 @@ export class Template {
 
   /**
    * Renders a post into html
-   * @param post Post to be rendered
+   * @param post Content to be rendered
      */
-  static renderPost(post: Post): string {
+  static renderPost(post: Content): string {
     let templateFile = path.join(Constants.TEMPLATE_DIR, post.templateFile);
     let compileFn = jade.compileFile(templateFile, {pretty: true});
 
@@ -41,7 +41,7 @@ interface ITemplateGlobals {
 
 interface IPostTemplateLocalsInterface {
   global: ITemplateGlobals;
-  post: Post;
+  post: Content;
 }
 
 

@@ -16,6 +16,9 @@ export class Assets {
       });
   }
 
+  /**
+   * Compiles stylus files into a single css and writes it to output folder
+   */
   static processStylesheets(): void {
     let styleContent = fs.readFileSync(Constants.TEMPLATE_CSS_IN_FILE, "utf-8");
     let css = stylus(styleContent)

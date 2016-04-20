@@ -9,14 +9,14 @@ import padleft = require("pad-left");
 import {Config, IPostPermalinkCalculatorFnIn} from "../lib/config";
 import {Constants} from "../constants";
 import {Template} from "../lib/template";
-import {ContentLookup} from "./postsLookup";
+import {ContentLookup} from "./contentLookup";
 import {Rho} from "../lib/rho";
-import {PostAsset} from "./postAsset";
+import {ContentAsset} from "./contentAsset";
 
 let slug = require("slug");
 let frontMatter = require("front-matter");
 
-export class Post {
+export class Content {
   contentRoot: string; // content directory root relative to POSTS_DIR
   title: string; // content title
   content: string; // original content
@@ -29,7 +29,7 @@ export class Post {
 
   htmlContent: string = null; // compiled html content, this is null, call calculateHtmlContent() once to fill this.
 
-  fileAssets: Array<PostAsset>; // files attached to this content as array of file name relative to contentRoot
+  fileAssets: Array<ContentAsset>; // files attached to this content as array of file name relative to contentRoot
   // belongsTo: WeakMap<Collection, Array<Category>>;
 
   constructor(
@@ -41,7 +41,7 @@ export class Post {
     editDate: Date,
     contentId: string,
     contentOutFile: string,
-    fileAssets: Array<PostAsset>
+    fileAssets: Array<ContentAsset>
   ) {
     this.contentRoot = contentRoot;
     this.title = title;
@@ -86,8 +86,8 @@ export class Post {
    * Creates a post reading from file
    * @param relativePath path relative to POSTS_DIR
      */
-  static fromFile(relativePath: string): Post {
-    let contentDirectory = Post.getContentDirectory(relativePath);
+  static fromFile(relativePath: string): Content {
+    let contentDirectory = Content.getContentDirectory(relativePath);
 
     let fullPath = path.join(Constants.POSTS_DIR, relativePath);
     let rawContent = fs.readFileSync(fullPath, "utf8");
@@ -102,17 +102,17 @@ export class Post {
 
     let editDate = (doc.attributes.edited instanceof Date) ? doc.attributes.edited : new Date(createDate);
 
-    let extractedTitleObject = Post.extractTitleFromMarkdown(doc.body);
+    let extractedTitleObject = Content.extractTitleFromMarkdown(doc.body);
 
     let markdownContent = extractedTitleObject.content;
     let title = (typeof doc.attributes.title === "string") ? doc.attributes.title : extractedTitleObject.title;
 
-    let fileId = Post.getFileId(relativePath);
-    let permalink = Post.getPermalink(fileId, title, createDate);
+    let fileId = Content.getFileId(relativePath);
+    let permalink = Content.getPermalink(fileId, title, createDate);
 
-    let fileAssets = Post.getFileAssets(contentDirectory);
+    let fileAssets = Content.getFileAssets(contentDirectory);
 
-    return new Post(
+    return new Content(
       contentDirectory,
       title,
       markdownContent,
@@ -128,13 +128,13 @@ export class Post {
   /**
    * Creates post object representation for all
    * posts in POSTS_DIR
-   * @returns {Array<Post>} Array of posts
+   * @returns {Array<Content>} Array of posts
      */
-  static fromPostsFolder(): Array<Post> {
+  static fromPostsFolder(): Array<Content> {
     let posts = [];
     glob.sync("**/index.md", {cwd: Constants.POSTS_DIR})
       .forEach((file) => {
-        let post = Post.fromFile(file);
+        let post = Content.fromFile(file);
         posts.push(post);
       });
     return posts;
@@ -173,7 +173,7 @@ export class Post {
     if (permalinkConfig instanceof Function) {
       return (<IPostPermalinkCalculatorFnIn>permalinkConfig)(id, title, date);
     }
-    return Post.defaultPermalinkFn(<string>permalinkConfig, title, date);
+    return Content.defaultPermalinkFn(<string>permalinkConfig, title, date);
   }
 
   /**
@@ -229,10 +229,10 @@ export class Post {
    * @param contentDirectory
    * @returns Array<string> File names relative to content directory
      */
-  private static getFileAssets(contentDirectory): Array<PostAsset> {
+  private static getFileAssets(contentDirectory): Array<ContentAsset> {
     return glob.sync("**/*", {cwd: path.join(Constants.POSTS_DIR, contentDirectory)})
       .filter(f => f !== "index.md")
-      .map(fileName => new PostAsset(fileName));
+      .map(fileName => new ContentAsset(fileName));
   }
 }
 
