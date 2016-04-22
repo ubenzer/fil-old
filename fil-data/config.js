@@ -39,7 +39,7 @@ var config = {
     ]
   },
   post: {
-    permalink: "/:year/:month/:title/index.html",
+    permalink: "/:year/:month/:title", // permalink for post folder. it'll create index.html
     templateOptions: {
       // template spesific json customFn(post) return object
     }

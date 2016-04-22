@@ -17,40 +17,40 @@ let slug = require("slug");
 let frontMatter = require("front-matter");
 
 export class Content {
-  contentRoot: string; // content directory root relative to POSTS_DIR
+  contentId: string; // content's id, using this it can be referenced
+  inputFolder: string; // content directory root relative to POSTS_DIR
+  outputFolder: string; // content's final path, relative to OUTPUT_DIR
+
   title: string; // content title
   content: string; // original content
   templateFile: string; // which jade template to be used, relative to template folder
   createDate: Date; // content's original creation date
   editDate: Date; // content's last update date
 
-  contentId: string; // content's id, using this it can be referenced
-  contentOutFile: string; // content's final path, relative to OUTPUT_DIR
-
   htmlContent: string = null; // compiled html content, this is null, call calculateHtmlContent() once to fill this.
 
-  fileAssets: Array<ContentAsset>; // files attached to this content as array of file name relative to contentRoot
+  fileAssets: Array<ContentAsset>; // files attached to this content as array of file name relative to inputFolder
   // belongsTo: WeakMap<Collection, Array<Category>>;
 
   constructor(
-    contentRoot: string,
+    contentId: string,
+    inputFolder: string,
+    outputFolder: string,
     title: string,
     content: string,
     templateFile: string = "post.jade",
     createDate: Date,
     editDate: Date,
-    contentId: string,
-    contentOutFile: string,
     fileAssets: Array<ContentAsset>
   ) {
-    this.contentRoot = contentRoot;
+    this.inputFolder = inputFolder;
     this.title = title;
     this.content = content;
     this.templateFile = templateFile;
     this.createDate = createDate;
     this.editDate = editDate;
     this.contentId = contentId;
-    this.contentOutFile = contentOutFile;
+    this.outputFolder = outputFolder;
     this.fileAssets = fileAssets;
   }
 
@@ -58,9 +58,9 @@ export class Content {
    * Renders post and writes to specified file
    * @param targetPath Path relative to output folder
      */
-  renderToFile(targetPath: string = this.contentOutFile): void {
+  renderToFile(targetPath: string = this.outputFolder): void {
     let builtTemplate = Template.renderPost(this);
-    let normalizedPath = path.join(Constants.OUTPUT_DIR, targetPath);
+    let normalizedPath = path.join(Constants.OUTPUT_DIR, targetPath, "index.html");
 
     fs.outputFileSync(normalizedPath, builtTemplate);
   }
@@ -87,7 +87,7 @@ export class Content {
    * @param relativePath path relative to POSTS_DIR
      */
   static fromFile(relativePath: string): Content {
-    let contentDirectory = Content.getContentDirectory(relativePath);
+    let inputFolder = Content.getContentDirectory(relativePath);
 
     let fullPath = path.join(Constants.POSTS_DIR, relativePath);
     let rawContent = fs.readFileSync(fullPath, "utf8");
@@ -108,19 +108,19 @@ export class Content {
     let title = (typeof doc.attributes.title === "string") ? doc.attributes.title : extractedTitleObject.title;
 
     let fileId = Content.getFileId(relativePath);
-    let permalink = Content.getPermalink(fileId, title, createDate);
+    let outputFolder = Content.getTargetDirectory(fileId, title, createDate);
 
-    let fileAssets = Content.getFileAssets(contentDirectory);
+    let fileAssets = Content.getFileAssets(inputFolder);
 
     return new Content(
-      contentDirectory,
+      fileId,
+      inputFolder,
+      outputFolder,
       title,
       markdownContent,
       templateFile,
       createDate,
       editDate,
-      fileId,
-      permalink,
       fileAssets
     );
   }
@@ -163,17 +163,18 @@ export class Content {
   /**
    * Calls custom permalink generation function or default permalink function
    * depending on the configuration that is provided by Config.getConfig
+   * converts permalink to a folder structure
    * @param id
    * @param title
    * @param date
    * @returns {string} Permalink string with real values
      */
-  private static getPermalink(id: string, title: string, date: Date): string {
+  private static getTargetDirectory(id: string, title: string, date: Date): string {
     let permalinkConfig: string|IPostPermalinkCalculatorFnIn = Config.getConfig().post.permalink;
     if (permalinkConfig instanceof Function) {
-      return (<IPostPermalinkCalculatorFnIn>permalinkConfig)(id, title, date);
+      return (<IPostPermalinkCalculatorFnIn>permalinkConfig)(id, title, date).replace(new RegExp("/", "g"), path.sep);
     }
-    return Content.defaultPermalinkFn(<string>permalinkConfig, title, date);
+    return Content.defaultPermalinkFn(<string>permalinkConfig, title, date).replace(new RegExp("/", "g"), path.sep);
   }
 
   /**
