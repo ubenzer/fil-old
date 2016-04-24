@@ -8,15 +8,15 @@ export class Template {
   private static templateGlobals: ITemplateGlobals = null;
 
   /**
-   * Renders a post into html
-   * @param post Content to be rendered
+   * Renders a content into html
+   * @param content Content to be rendered
      */
-  static renderPost(post: Content): string {
-    let templateFile = path.join(Constants.TEMPLATE_DIR, post.templateFile);
+  static renderContent(content: Content): string {
+    let templateFile = path.join(Constants.TEMPLATE_DIR, content.templateFile);
     let compileFn = jade.compileFile(templateFile, {pretty: true});
 
-    let locals: IPostTemplateLocalsInterface = {
-      post: post,
+    let locals: ISingleContentTemplateVariables = {
+      content: content,
       global: Template.getTemplateGlobals()
     };
     return compileFn(locals);
@@ -39,9 +39,9 @@ interface ITemplateGlobals {
   cssFilePath: string;
 }
 
-interface IPostTemplateLocalsInterface {
+interface ISingleContentTemplateVariables {
   global: ITemplateGlobals;
-  post: Content;
+  content: Content;
 }
 
 

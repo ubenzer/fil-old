@@ -5,8 +5,8 @@ import {Content} from "./content";
 let slug = require("slug");
 
 export class ContentAsset {
-  assetId: string; // file path (without leading /) relative to the post it belongs
-  inputFile: string; // file path (without leading /) relative to the post it belongs
+  assetId: string; // file path (without leading /) relative to the content it belongs
+  inputFile: string; // file path (without leading /) relative to the content it belongs
   owner: Content; // owner of this asset
 
   constructor(fileName: string, owner: Content) {

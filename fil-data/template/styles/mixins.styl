@@ -2,7 +2,7 @@ $xs = 0
 $sm = 600px
 $md = 1280px
 $lg = 1440px
-$xl = 75em
+$xl = 1920px
 
 // Prefer using this if possible
 gt-xs()
@@ -23,18 +23,18 @@ gt-lg()
 
 // Use this if you have no other choice
 lt-sm()
-  @media (max-width: $sm - 0.1em)
+  @media (max-width: $sm - 1px)
     {block}
 
 lt-md()
-  @media (max-width: $md - 0.1em)
+  @media (max-width: $md - 1px)
     {block}
 
 lt-lg()
-  @media (max-width: $lg - 0.1em)
+  @media (max-width: $lg - 1px)
     {block}
 lt-xl()
-  @media (max-width: $xl - 0.1em)
+  @media (max-width: $xl - 1px)
     {block}
 
 

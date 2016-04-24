@@ -12,13 +12,13 @@ const CLOSE_DELIMITER = "@";
  * 1. Alter how images and links are compiled. Urls are resolved via a `ContentLookup`
  *    object. This enables in-project linking.
  *
- *    To access a post use:
- *    @path/to/post/folder
+ *    To access a content use:
+ *    @path/to/content/folder
  *
- *    To access a post asset use:
- *    @path/to/post/folder@/asset/address.jpg
+ *    To access a content asset use:
+ *    @path/to/content/folder@/asset/address.jpg
  *
- *    To access own post's asset use:
+ *    To access own content's asset use:
  *    asset/address.jpg
  *
  *    To give 3rd party link use;
@@ -26,7 +26,7 @@ const CLOSE_DELIMITER = "@";
  *    https://site.com
  *    http://site.com
  *
- *    If a reference is pointing to non-existing post or post asset compiler will throw an error.
+ *    If a reference is pointing to non-existing content or content asset compiler will throw an error.
  *
  * 2. You can add 'flags' to links and images using the following syntax:
  *

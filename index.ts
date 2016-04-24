@@ -10,7 +10,7 @@ import {ContentLookup} from "./models/contentLookup";
 let templateDir = Constants.TEMPLATE_DIR;
 let outDir = Constants.OUTPUT_DIR;
 
-// post array
+// content array
 let contents: Array<Content> = Content.fromPostsFolder();
 let contentLookup = new ContentLookup(contents);
 

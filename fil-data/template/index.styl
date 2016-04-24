@@ -1,33 +1,21 @@
-@require "styles/*";
+@require "styles/mixins" // this needs to be first for others to work properly
+@require "styles/*"
 
 body
   background $primary-background
-  font-family "Open Sans"
-  font-size 100%
-  line-height 1.5em
+  color $primary-content
   display flex
   flex-flow column
   align-items center
   margin 0
   padding 0
-  -webkit-font-smoothing: antialiased;
-  +lt-sm()
-    font-size: .9em;
-  +gt-lg()
-    font-size: 1.1em;
+  -webkit-font-smoothing antialiased
 
 .main-container
-  width calc(100% - 5em)
-  +lt-sm()
-    width calc(100% - 3em)
-  +gt-lg()
-    width calc(100% - 30em)
-
-.content
-  img
-    width 100%
+  border 1px solid $primary-border
+  background $secondary-background
 
 ::selection {
-  background: #0088b2;
-  color: #fff;
+  background #0088b2
+  color #fff
 }

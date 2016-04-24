@@ -37,7 +37,7 @@ interface IConfigFile {
 //
 // interface ICollectionDefinitionFile {
 //   id: string;
-//   categoryFn?: (post: IPost) => ICategory;
+//   categoryFn?: (content: IPost) => ICategory;
 // }
 //
 // // config in app representation
@@ -47,7 +47,7 @@ interface IConfigFile {
 //   }
 //   collections: Array<ICollectionConfig>,
 //   template: ITemplateConfig,
-//   post: IPostConfig
+//   content: IPostConfig
 // }
 //
 // interface ICollectionConfig {

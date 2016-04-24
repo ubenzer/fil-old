@@ -1,6 +1,6 @@
 To watch-reload `fil-data` folder:
 
-`nodemon ../.tmp/index.js --verbose -e js,styl,jade`
+`nodemon --harmony --harmony_default_parameters ../.tmp/index.js --verbose -e js,styl,jade`
 
 To see output:
 
@@ -8,3 +8,5 @@ To see output:
 
 
  node --v8-options | grep "in progress"
+
+ --harmony --harmony_default_parameters

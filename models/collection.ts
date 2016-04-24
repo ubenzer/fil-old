@@ -1,12 +1,12 @@
 // import {ICategorySorting} from "../config"
 // import {IPostSorting} from "../config"
-// import {Content} from "./post"
+// import {Content} from "./content"
 // import {Category} from "./category"
 //
 // interface ICollection {
 //   id: string;
 //
-//   categoryFn?: (post: Content) => Category;
+//   categoryFn?: (content: Content) => Category;
 //   collectionPermalink: string;
 //   templateOptions: Object;
 //   subCategorySeparator: string;

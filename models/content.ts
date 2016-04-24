@@ -40,7 +40,7 @@ export class Content {
     outputFolder: string,
     title: string,
     content: string,
-    templateFile: string = "post.jade",
+    templateFile: string = "content.jade",
     createDate: Date,
     editDate: Date
   ) {
@@ -56,11 +56,11 @@ export class Content {
   }
 
   /**
-   * Renders post and writes to specified file
+   * Renders content and writes to specified file
    * @param targetPath Path relative to output folder
      */
   renderToFile(targetPath: string = this.outputFolder): void {
-    let builtTemplate = Template.renderPost(this);
+    let builtTemplate = Template.renderContent(this);
     let normalizedPath = path.join(Constants.OUTPUT_DIR, targetPath, HTML_PAGE_NAME);
 
     fs.outputFileSync(normalizedPath, builtTemplate);
@@ -68,7 +68,7 @@ export class Content {
 
   /**
    * Renders original content as rendered html, sets htmlContent
-   * field of this post object and returns it
+   * field of this content object and returns it
    * @param {ContentLookup} contentLookup object that is going
    * to be used to resolve references to file assets and other contents.
    * @returns {string} rendered html content
@@ -81,7 +81,7 @@ export class Content {
 
   /**
    * Returns permalink URL for this Content. This can be used to reference
-   * this post in compiled output.
+   * this content in compiled output.
    * @returns {string}
      */
   getUrl(): string {
@@ -114,7 +114,7 @@ export class Content {
   }
 
   /**
-   * Creates a post reading from file
+   * Creates a content reading from file
    * @param relativePath path relative to POSTS_DIR
      */
   static fromFile(relativePath: string): Content {
@@ -154,7 +154,7 @@ export class Content {
   }
 
   /**
-   * Creates post object representation for all
+   * Creates content object representation for all
    * posts in POSTS_DIR
    * @returns {Array<Content>} Array of posts
      */
