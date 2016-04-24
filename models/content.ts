@@ -16,6 +16,8 @@ import {ContentAsset} from "./contentAsset";
 let slug = require("slug");
 let frontMatter = require("front-matter");
 
+const HTML_PAGE_NAME = "index.html";
+
 export class Content {
   contentId: string; // content's id, using this it can be referenced
   inputFolder: string; // content directory root relative to POSTS_DIR
@@ -40,8 +42,7 @@ export class Content {
     content: string,
     templateFile: string = "post.jade",
     createDate: Date,
-    editDate: Date,
-    fileAssets: Array<ContentAsset>
+    editDate: Date
   ) {
     this.inputFolder = inputFolder;
     this.title = title;
@@ -51,7 +52,7 @@ export class Content {
     this.editDate = editDate;
     this.contentId = contentId;
     this.outputFolder = outputFolder;
-    this.fileAssets = fileAssets;
+    this.fileAssets = this.initFileAssets();
   }
 
   /**
@@ -60,7 +61,7 @@ export class Content {
      */
   renderToFile(targetPath: string = this.outputFolder): void {
     let builtTemplate = Template.renderPost(this);
-    let normalizedPath = path.join(Constants.OUTPUT_DIR, targetPath, "index.html");
+    let normalizedPath = path.join(Constants.OUTPUT_DIR, targetPath, HTML_PAGE_NAME);
 
     fs.outputFileSync(normalizedPath, builtTemplate);
   }
@@ -78,8 +79,23 @@ export class Content {
     return this.htmlContent;
   }
 
+  /**
+   * Returns permalink URL for this Content. This can be used to reference
+   * this post in compiled output.
+   * @returns {string}
+     */
   getUrl(): string {
-    return "TODO";
+    return `${this.outputFolder.replace(new RegExp(path.sep, "g"), "/")}/${HTML_PAGE_NAME}`;
+  }
+
+  /**
+   * Finds assets associated with this content and initializes them
+   * @returns Array<ContentAsset> ContentAsset objects
+   */
+  private initFileAssets(): Array<ContentAsset> {
+    return glob.sync("**/*", {cwd: path.join(Constants.POSTS_DIR, this.inputFolder)})
+      .filter(f => f !== "index.md")
+      .map(fileName => new ContentAsset(fileName, this));
   }
 
   /**
@@ -110,8 +126,6 @@ export class Content {
     let fileId = Content.getFileId(relativePath);
     let outputFolder = Content.getTargetDirectory(fileId, title, createDate);
 
-    let fileAssets = Content.getFileAssets(inputFolder);
-
     return new Content(
       fileId,
       inputFolder,
@@ -120,8 +134,7 @@ export class Content {
       markdownContent,
       templateFile,
       createDate,
-      editDate,
-      fileAssets
+      editDate
     );
   }
 
@@ -179,7 +192,7 @@ export class Content {
 
   /**
    * Default implementation for replacing a permalink string with the real value
-   * @param permalinkTemplateString :title, :day, :month, :year are valid (e.g. :year/index.html)
+   * @param permalinkTemplateString :title, :day, :month, :year are valid (e.g. :year/:month)
    * @param postTitle
    * @param postCreateDate
    * @returns {string} Permalink string with real values
@@ -223,17 +236,6 @@ export class Content {
       title: titleLine.substr(2),
       content: lines.join("\n")
     };
-  }
-
-  /**
-   * Retrieves a list of file names related to the content directory
-   * @param contentDirectory
-   * @returns Array<string> File names relative to content directory
-     */
-  private static getFileAssets(contentDirectory): Array<ContentAsset> {
-    return glob.sync("**/*", {cwd: path.join(Constants.POSTS_DIR, contentDirectory)})
-      .filter(f => f !== "index.md")
-      .map(fileName => new ContentAsset(fileName));
   }
 }
 
