@@ -89,12 +89,27 @@ export class Content {
   }
 
   /**
+   * Copies ContentAssets related to this content to output folder
+   */
+  processContentAssets(): void {
+    this.fileAssets.forEach(asset => {
+      fs.copySync(
+        path.join(Constants.POSTS_DIR, this.inputFolder, asset.inputFile),
+        path.join(Constants.OUTPUT_DIR, asset.getOutputFile()));
+    });
+  }
+
+  /**
    * Finds assets associated with this content and initializes them
    * @returns Array<ContentAsset> ContentAsset objects
    */
   private initFileAssets(): Array<ContentAsset> {
-    return glob.sync("**/*", {cwd: path.join(Constants.POSTS_DIR, this.inputFolder)})
+    return glob.sync("**/*", {
+      cwd: path.join(Constants.POSTS_DIR, this.inputFolder),
+      mark: true
+    })
       .filter(f => f !== "index.md")
+      .filter(f => !f.endsWith("/")) // get rid of folders as we handle everything in file-basis
       .map(fileName => new ContentAsset(fileName, this));
   }
 

@@ -14,7 +14,11 @@ Gecen sene sonunda eşim ile birlikte çok ciddi bir degisiklik yapmaya
 karar verdik. Isimizden istifa ettik, yeni isimizi bulduk, tüm eşyalarımızı
 ve daha kredisi bitmemiş arabamızı sattık, Urla'daki güzel kiralık 
 evimizden çıktık. Sadece birkaç valiz ile bir uçağa atladık ve Berlin'e
-vardık. ![alt text](asset1.txt){main, sekonder}
+vardık. [alt text](asset1.txt){main, sekonder}
+
+Funky character test [here](fäünky föolder/funky file näme.txt)!
+
+Link to [post with funky id](@2016/04/fänky post name)
 
 Şu an Berlin'de dördüncü ayımız.
 

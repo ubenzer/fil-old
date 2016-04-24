@@ -14,7 +14,7 @@ export class ContentLookup {
     this.contentLookupById = new Map<string, Content>();
 
     contents.forEach(post => {
-      this.contentLookupById.set(post.contentId, post);
+      this.contentLookupById.set(post.contentId.normalize(), post);
     });
   }
 
@@ -24,7 +24,7 @@ export class ContentLookup {
    * @returns {Content} actual content object or null if no content found with that id
      */
   getContentById(contentId: string): Content {
-    let maybeContent = this.contentLookupById.get(contentId);
+    let maybeContent = this.contentLookupById.get(contentId.normalize());
     if (maybeContent === undefined) {
       return null;
     }
@@ -32,7 +32,9 @@ export class ContentLookup {
   }
 
   getContentAssetByContent(content: Content, assetId: string): ContentAsset {
-    let maybeContentAsset = content.fileAssets.find((fa) => { return fa.assetId === assetId});
+    let maybeContentAsset = content.fileAssets.find((fa) => {
+      return fa.assetId.normalize() === assetId.normalize()
+    });
     if (maybeContentAsset === undefined) {
       return null;
     }

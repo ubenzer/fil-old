@@ -11,19 +11,20 @@ let templateDir = Constants.TEMPLATE_DIR;
 let outDir = Constants.OUTPUT_DIR;
 
 // post array
-let posts: Array<Content> = Content.fromPostsFolder();
-let contentLookup = new ContentLookup(posts);
+let contents: Array<Content> = Content.fromPostsFolder();
+let contentLookup = new ContentLookup(contents);
 
-posts.forEach((post) => {
-  post.calculateHtmlContent(contentLookup);
-  post.renderToFile();
+contents.forEach((contents) => {
+  contents.calculateHtmlContent(contentLookup);
+  contents.renderToFile();
+  contents.processContentAssets();
 });
 
 let builtTemplate = jade.compileFile(
   path.join(templateDir, "index.jade"),
   {pretty: true}
 )({
-  posts: posts
+  posts: contents
 });
 fs.outputFileSync(path.join(outDir, "index.html"), builtTemplate);
 
