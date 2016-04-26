@@ -28,7 +28,7 @@
     "rho": "^0.2.4",
     "slug": "^0.9.1",
     "string": "^3.3.1",
-    "stylus": "^0.54.2"
+    "stylus": "^0.54.3"
   },
   "devDependencies": {
     "typescript": "^1.8.10"
