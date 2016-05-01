@@ -1,11 +1,9 @@
-// import {Category} from "./category";
-// import {Collection} from "./collection";
-
 import fs = require("fs-extra");
 import path = require("path");
 import glob = require("glob");
 import padleft = require("pad-left");
 
+import {Collection, IContentBelongsTo} from "./collection";
 import {Config, IPostPermalinkCalculatorFnIn} from "../lib/config";
 import {Constants} from "../constants";
 import {Template} from "../lib/template";
@@ -32,8 +30,9 @@ export class Content {
   htmlContent: string = null; // compiled html content, this is null, call calculateHtmlContent() once to fill this.
 
   fileAssets: Array<ContentAsset>; // files attached to this content as array of file name relative to inputFolder
-  // belongsTo: WeakMap<Collection, Array<Category>>;
+  belongsTo: Map<Collection, Array<IContentBelongsTo>>; // relationship map, which categories this content belongs to
 
+  rawFrontmatter: Object; // this is going to be used to calculate category relationships
   constructor(
     contentId: string,
     inputFolder: string,
@@ -42,7 +41,8 @@ export class Content {
     content: string,
     templateFile: string = "content.jade",
     createDate: Date,
-    editDate: Date
+    editDate: Date,
+    rawFrontmatter: Object
   ) {
     this.inputFolder = inputFolder;
     this.title = title;
@@ -53,6 +53,26 @@ export class Content {
     this.contentId = contentId;
     this.outputFolder = outputFolder;
     this.fileAssets = this.initFileAssets();
+    this.rawFrontmatter = rawFrontmatter;
+    this.belongsTo = new Map();
+  }
+
+  /**
+   * Registers this content into collections provided
+   * in collection list and updates `belongsTo` field.
+   *
+   * It is expected that collection list here also updates
+   * their own index and include this Content object
+   * in their proper Category objects.
+   *
+   * @param collectionList that this Content is going to be registered
+     */
+  registerOnCollections(collectionList: Array<Collection>): void {
+    collectionList.forEach(
+      collection => {
+        this.belongsTo.set(collection, collection.registerContent(this));
+      }
+    );
   }
 
   /**
@@ -149,7 +169,8 @@ export class Content {
       markdownContent,
       templateFile,
       createDate,
-      editDate
+      editDate,
+      doc.attributes
     );
   }
 

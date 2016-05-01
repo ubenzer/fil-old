@@ -1,4 +1,6 @@
 import path = require("path");
+import {Category} from "../models/category";
+import {Content} from "../models/content";
 let config = require(path.join(process.cwd(), "config.js"));
 
 export class Config {
@@ -8,38 +10,46 @@ export class Config {
 }
 
 interface IConfigFile {
-//   collections: {
-//     config: ICollectionConfigFile,
-//     definition: Array<ICollectionDefinitionFile>
-//   },
+   collections: {
+     config: ICollectionConfigFile,
+     definition: Array<ICollectionDefinitionFile>
+   },
 //   template: ITemplateConfig,
    post: IPostConfig
 }
-//
-// interface ICollectionConfigFile {
-//   collectionsPermalink: string;
-//   collectionPermalink: string;
-//   categoryFirstPermalink: string;
-//   categoryPermalink: string;
-//   pagination: number;
-//   categorySorting: ICategorySorting|((category1: ICategory, category2: ICategory) => number)
-//   postSorting: IPostSorting|((post1: IPost, post2: IPost) => number)
-//   subCategorySeparator: string;
-//   templateOptions: Object|((ICategory) => Object)
-// }
-//
-// export interface ICategorySorting extends ISorting {}
-// export interface IPostSorting extends ISorting {}
-// interface ISorting {
-//   sortBy: string;
-//   reverse: boolean;
-// }
-//
-// interface ICollectionDefinitionFile {
-//   id: string;
-//   categoryFn?: (content: IPost) => ICategory;
-// }
-//
+
+export interface ICollectionConfigFile {
+  collectionsPermalink: string;
+  collectionPermalink: string;
+  categoryFirstPermalink: string;
+  categoryPermalink: string;
+  pagination: number;
+  categorySorting: ICategorySorting|((category1: Category, category2: Category) => number)
+  contentSorting: IContentSorting|((content1: Content, content2: Content) => number)
+  subCategorySeparator: string;
+}
+
+export interface ICategorySorting extends ISorting {}
+export interface IContentSorting extends ISorting {}
+interface ISorting {
+  sortBy: string; // should be "id" or "date"
+  reverse: boolean;
+}
+
+export interface ICollectionDefinitionFile {
+  id: string;
+  categoryFn?: (content: Content) => Array<string>; // for a given Content returns array of category id
+  templateOptions?: Object|((Category) => Object)
+
+  collectionPermalink?: string;
+  categoryFirstPermalink?: string;
+  categoryPermalink?: string;
+  pagination?: number;
+  categorySorting?: ICategorySorting|((category1: Category, category2: Category) => number)
+  contentSorting?: IContentSorting|((content1: Content, content2: Content) => number)
+  subCategorySeparator?: string;
+}
+
 // // config in app representation
 // interface IConfig {
 //   collectionConfig: {

@@ -16,14 +16,14 @@ var config = {
       },
       subCategorySeperator: "/",
       templateOptions: {
-        // template spesific json or customFn(content) return object
+        // template specific json or customFn(content) return object
       }
     },
     definition: [
       {
         id: "all",
         categoryFn: function (content) {
-          return "all"; // returns content
+          return ["all"]; // returns category id for given content
         }
       }
     ]
