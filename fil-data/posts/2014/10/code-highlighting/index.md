@@ -1,7 +1,9 @@
 ---
 
 created: 2014-10-22
-
+category:
+  - Programming
+   
 ---
 
 # Hello World From a Test Post!
