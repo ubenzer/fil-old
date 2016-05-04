@@ -1,44 +1,48 @@
-import {ICategorySorting, IContentSorting, ICollectionDefinitionFile, ICollectionConfigFile} from "../lib/config"
+import {IContentSortingObject, IContentSortingFn, ICategorySortingObject, ICategorySortingFn, ICollectionDefinitionFile, ICollectionConfigFile} from "../lib/config"
+import {SortingHelper} from "../lib/sortingHelper";
 import {Content} from "./content"
 import {Category} from "./category"
 
 export class Collection {
   id: string;
   categoryIdGeneratorFunction: (content: Content) => Array<string>;
-  templateOptions: (category: Category) => Object;
+  templateOptionsFn: (category: Category) => Object;
 
   collectionPermalink: string;
   categoryFirstPermalink: string;
   categoryPermalink: string;
   pagination: number;
-  categorySorting: ICategorySorting|((category1: Category, category2: Category) => number);
-  contentSorting: IContentSorting|((post1: Content, post2: Content) => number);
+  categorySortingFn: ICategorySortingFn;
+  contentSortingFn: IContentSortingFn;
   subCategorySeparator: string;
+  categoryIdToNameFn: (string) => string;
 
   categories: Array<Category> = [];
 
   constructor(
     id: string,
     categoryIdGeneratorFunction: (content: Content) => Array<string> = null,
-    templateOptions: (Category) => Object = Collection.defaultTemplateOptionsFn,
+    templateOptionsFn: (Category) => Object = Collection.defaultTemplateOptionsFn,
     collectionPermalink: string,
     categoryFirstPermalink: string,
     categoryPermalink: string,
     pagination: number,
-    categorySorting: ICategorySorting|((category1: Category, category2: Category) => number),
-    contentSorting: IContentSorting|((post1: Content, post2: Content) => number),
-    subCategorySeparator: string
+    categorySorting: ICategorySortingObject|ICategorySortingFn,
+    contentSorting: IContentSortingObject|IContentSortingFn,
+    subCategorySeparator: string,
+    categoryIdToNameFn: (string) => string = Collection.defaultCategoryIdToNameFn
   ) {
     this.id = id;
     this.categoryIdGeneratorFunction = categoryIdGeneratorFunction || this.defaultCategoryIdGeneratorFn;
-    this.templateOptions = templateOptions;
+    this.templateOptionsFn = templateOptionsFn;
     this.collectionPermalink = collectionPermalink;
     this.categoryFirstPermalink = categoryFirstPermalink;
     this.categoryPermalink = categoryPermalink;
     this.pagination = pagination;
-    this.categorySorting = categorySorting;
-    this.contentSorting = contentSorting;
+    this.categorySortingFn = SortingHelper.getNormalizedCategorySortingFn(categorySorting);
+    this.contentSortingFn = SortingHelper.getNormalizedContentSortingFn(contentSorting);
     this.subCategorySeparator = subCategorySeparator;
+    this.categoryIdToNameFn = categoryIdToNameFn;
   }
 
   /**
@@ -63,7 +67,10 @@ export class Collection {
           (currentUnsortedCategory: string, idx: number, array: Array<string>) => {
             let isLast = idx === array.length - 1;
             let currentCategory = this.createGetCategory(parentCategory, currentUnsortedCategory);
-            currentCategory.registerContent(content, isLast);
+            
+            if (isLast) {
+              currentCategory.registerContent(content);
+            }
 
             let contentBelongsToRelationship: IContentBelongsTo =
               createOrUpdateContentBelongsTo(parentContentBelongsToArray, currentCategory);
@@ -73,8 +80,6 @@ export class Collection {
         );
       }
     );
-
-    // TODO update inner index
 
     return contentBelongsTo;
 
@@ -104,13 +109,49 @@ export class Collection {
   /**
    * Returns the category with given id under parentCategory. If
    * category is not existent, it is created.
+   *
+   * This also registers new categories inside of parent category or collection
+   *
    * @param parentCategory Category to search inside. (null means root for this content type)
    * @param categoryId as string
    * @returns Category object that represents categoryId
      */
   private createGetCategory(parentCategory: Category, categoryId: string): Category {
-    // TODO create a category
-    return null;
+    let maybeCategory = null;
+    if (parentCategory === null) {
+      maybeCategory = this.findCategoryById(this.categories, categoryId);
+    } else {
+      maybeCategory = this.findCategoryById(parentCategory.subCategories, categoryId);
+    }
+
+    if (maybeCategory instanceof Category) {
+      return maybeCategory;
+    }
+
+    let category = new Category(
+      categoryId,
+      this.categoryIdToNameFn(categoryId),
+      this.categoryFirstPermalink,
+      this.categoryPermalink,
+      this.pagination,
+      this.categorySortingFn,
+      this.contentSortingFn,
+      this
+    );
+
+    if (parentCategory === null) {
+      // register on Collection
+      SortingHelper.putIntoSortedArray(this.categories, category, this.categorySortingFn);
+    } else {
+      // register on parent category
+      parentCategory.registerSubcategory(category, parentCategory);
+    }
+
+    return category;
+  }
+
+  private findCategoryById(lookupArray: Array<Category>, categoryId: string): Category {
+    return lookupArray.find(c => c.id === categoryId);
   }
 
   private defaultCategoryIdGeneratorFn(content: Content): Array<string> {
@@ -144,12 +185,17 @@ export class Collection {
       definition.pagination || config.pagination,
       definition.categorySorting || config.categorySorting,
       definition.contentSorting || config.contentSorting,
-      definition.subCategorySeparator || config.subCategorySeparator
+      definition.subCategorySeparator || config.subCategorySeparator,
+      definition.categoryIdToNameFn
     );
   }
 
   private static defaultTemplateOptionsFn(): Object {
     return {};
+  }
+
+  private static defaultCategoryIdToNameFn(id: string): string {
+    return id;
   }
 }
 

@@ -24,17 +24,26 @@ export interface ICollectionConfigFile {
   categoryFirstPermalink: string;
   categoryPermalink: string;
   pagination: number;
-  categorySorting: ICategorySorting|((category1: Category, category2: Category) => number)
-  contentSorting: IContentSorting|((content1: Content, content2: Content) => number)
+  categorySorting: ICategorySortingObject|ICategorySortingFn;
+  contentSorting: IContentSortingObject|IContentSortingFn;
   subCategorySeparator: string;
 }
 
-export interface ICategorySorting extends ISorting {}
-export interface IContentSorting extends ISorting {}
-interface ISorting {
-  sortBy: string; // should be "id" or "date"
+export interface ICategorySortingFn {
+  (category1: Category, category2: Category): number;
+}
+export interface ICategorySortingObject {
+  sortBy: string; // should be "id" or "title"
   reverse: boolean;
 }
+export interface IContentSortingObject {
+  sortBy: string; // should be "id" or "title" or "date"
+  reverse: boolean;
+}
+export interface IContentSortingFn {
+  (content1: Content, content2: Content): number;
+}
+
 
 export interface ICollectionDefinitionFile {
   id: string;
@@ -45,9 +54,10 @@ export interface ICollectionDefinitionFile {
   categoryFirstPermalink?: string;
   categoryPermalink?: string;
   pagination?: number;
-  categorySorting?: ICategorySorting|((category1: Category, category2: Category) => number)
-  contentSorting?: IContentSorting|((content1: Content, content2: Content) => number)
+  categorySorting?: ICategorySortingObject|ICategorySortingFn;
+  contentSorting?: IContentSortingObject|IContentSortingFn;
   subCategorySeparator?: string;
+  categoryIdToNameFn?: (string) => string;
 }
 
 // // config in app representation

@@ -7,24 +7,27 @@ var config = {
       categoryPermalink: "/:collection/:category/:page/index.html",
       pagination: 2,
       categorySorting: {
+        // Please note that contents of this categories are not fully
+        // calculated where this is invoked, so you can't use content count
         sortBy: "id", // contentCount customFn(content1, content2) return -1. 0, 1
         reverse: true
       },
-      postSorting: {
-        sortBy: "date", // date, title, customFn(post1, post2) returns -1, 0, 1
+      contentSorting: {
+        sortBy: "date", // id, date, title, customFn(post1, post2) returns -1, 0, 1
         reverse: true
       },
-      subCategorySeperator: "/",
-      templateOptions: {
-        // template specific json or customFn(content) return object
-      }
+      subCategorySeperator: "/"
     },
     definition: [
       {
         id: "all",
         categoryFn: function (content) {
           return ["all"]; // returns category id for given content
+        },
+        templateOptions: {
+          test: 123 // template specific json or customFn(content) return object
         }
+        // categoryIdToNameFn: string => string
       }
     ]
   },
