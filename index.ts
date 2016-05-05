@@ -1,6 +1,5 @@
 import {Collection} from "./models/collection";
 import {Config} from "./lib/config";
-import {Constants} from "./constants";
 import {Content} from "./models/content";
 import {Assets} from "./lib/assets";
 
@@ -26,7 +25,12 @@ contents.forEach(content => {
 });
 
 // prepare collections
-// TODO
+collections.forEach(
+  collection => {
+    collection.sortCategories();
+    collection.calculatePagination();
+  }
+);
 
 // write contents
 let contentLookup = new ContentLookup(contents);

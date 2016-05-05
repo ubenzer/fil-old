@@ -41,6 +41,8 @@ export class SortingHelper {
       normalizedSortingFn = SortingHelper.sortCategoryByIdFunction;
     } else if (sortingObj.sortBy === "title") {
       normalizedSortingFn = SortingHelper.sortCategoryByTitleFunction;
+    } else if (sortingObj.sortBy === "contentCount") {
+      normalizedSortingFn = SortingHelper.sortCategoryByContentCountFunction;
     } else {
       throw new Error(`I don't know how to sort by ${sortingObj.sortBy}!`);
     }
@@ -83,5 +85,8 @@ export class SortingHelper {
   }
   private static sortCategoryByTitleFunction(category1: Category, category2: Category): number {
     return category1.title.localeCompare(category2.title);
+  }
+  private static sortCategoryByContentCountFunction(category1: Category, category2: Category): number {
+    return category1.contents.length - category2.contents.length;
   }
 }

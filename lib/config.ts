@@ -33,7 +33,7 @@ export interface ICategorySortingFn {
   (category1: Category, category2: Category): number;
 }
 export interface ICategorySortingObject {
-  sortBy: string; // should be "id" or "title"
+  sortBy: string; // should be "id" or "title" or "contentCount"
   reverse: boolean;
 }
 export interface IContentSortingObject {

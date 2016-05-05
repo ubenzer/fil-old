@@ -67,7 +67,7 @@ export class Collection {
           (currentUnsortedCategory: string, idx: number, array: Array<string>) => {
             let isLast = idx === array.length - 1;
             let currentCategory = this.createGetCategory(parentCategory, currentUnsortedCategory);
-            
+
             if (isLast) {
               currentCategory.registerContent(content);
             }
@@ -76,6 +76,7 @@ export class Collection {
               createOrUpdateContentBelongsTo(parentContentBelongsToArray, currentCategory);
 
             parentContentBelongsToArray = contentBelongsToRelationship.subCategories;
+            parentCategory = currentCategory;
           }
         );
       }
@@ -104,6 +105,26 @@ export class Collection {
       belongsToArray.push(belongsTo);
       return belongsTo;
     }
+  }
+
+  /**
+   * Sort categories of this Collection by the defined rule.
+   * Reason for need of calling this function separately is that
+   * before completing to register all categories & contents first
+   * may cause wrong sorting for sorting rules that depend on
+   * stats of a certain category. (e.g. sorting category by
+   * content count/subcategory count)
+   *
+   * This method does not return anything, changes order of
+   * category arrays for collection and sub categories.
+   */
+  sortCategories(): void {
+    this.categories.forEach(c => c.sortCategories());
+    this.categories.sort(this.categorySortingFn);
+  }
+
+  calculatePagination(): void {
+    this.categories.forEach(c => c.calculatePagination());
   }
 
   /**
@@ -141,7 +162,7 @@ export class Collection {
 
     if (parentCategory === null) {
       // register on Collection
-      SortingHelper.putIntoSortedArray(this.categories, category, this.categorySortingFn);
+      this.categories.push(category);
     } else {
       // register on parent category
       parentCategory.registerSubcategory(category, parentCategory);

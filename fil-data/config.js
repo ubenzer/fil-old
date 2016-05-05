@@ -8,8 +8,6 @@ var config = {
       categoryPermalink: "/:collection/:category/:page/index.html",
       pagination: 2,
       categorySorting: {
-        // Please note that contents of this categories are not fully
-        // calculated where this is invoked, so you can't use content count
         sortBy: "id", // contentCount customFn(content1, content2) return -1. 0, 1
         reverse: true
       },
