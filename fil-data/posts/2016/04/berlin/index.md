@@ -3,6 +3,8 @@
 created: 2016-04-11
 title: Deneme 123
 
+category: "Deneme"
+
 ---
 
 # Berlin!
