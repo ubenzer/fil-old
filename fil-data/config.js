@@ -1,3 +1,4 @@
+"use strict";
 var config = {
   collections: {
     config: {
@@ -16,18 +17,30 @@ var config = {
         sortBy: "date", // id, date, title, customFn(post1, post2) returns -1, 0, 1
         reverse: true
       },
-      subCategorySeperator: "/"
+      subCategorySeparator: "/"
     },
     definition: [
       {
         id: "all",
-        categoryFn: function (content) {
+        categoryFn: function () {
           return ["all"]; // returns category id for given content
         },
         templateOptions: {
           test: 123 // template specific json or customFn(content) return object
         }
         // categoryIdToNameFn: string => string
+      },
+      {
+        id: "monthly",
+        categoryFn: function (content) {
+          return [content.createDate.getMonth() + "/" + content.createDate.getFullYear()];
+        },
+        categoryIdToNameFn: function (categoryId) {
+          return "___" + categoryId + "___";
+        }
+      },
+      {
+        id: "category"
       }
     ]
   },
