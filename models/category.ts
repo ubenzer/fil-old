@@ -1,7 +1,16 @@
+import fs = require("fs-extra");
+import path = require("path");
+
 import {ICategorySortingFn, IContentSortingFn} from "../lib/config";
 import {SortingHelper} from "../lib/sortingHelper";
 import {Content} from "./content";
 import {Collection} from "./collection";
+import {Constants} from "../constants";
+import {Template} from "../lib/template";
+
+let slug = require("slug");
+
+const HTML_PAGE_NAME = "index.html";
 
 export class Category {
   id: string;
@@ -22,8 +31,7 @@ export class Category {
   ownContents: Array<Content>;
   contents: Array<Content>;
 
-  paginatedOwnContents: Array<Array<Content>>;
-  paginatedContents: Array<Array<Content>>;
+  paginatedContents: Array<IPaginatedCategory>;
 
   constructor(
     id: string,
@@ -49,8 +57,6 @@ export class Category {
 
     this.ownContents = [];
     this.contents = [];
-
-    this.paginatedOwnContents = [];
     this.paginatedContents = [];
   }
   /**
@@ -85,8 +91,65 @@ export class Category {
 
   calculatePagination(): void {
     this.subCategories.forEach(c => c.calculatePagination());
-    this.paginatedOwnContents = Category.chunk(this.ownContents, this.pagination);
-    this.paginatedContents = Category.chunk(this.contents, this.pagination);
+    let paginatedContents = Category.chunk(this.contents, this.pagination);
+
+    this.paginatedContents = paginatedContents.map(
+      (paginatedContents, index, array): IPaginatedCategory => {
+        // previous permalink and first page calculation
+        let prevPagePermalink = null;
+        let isFirstPage = true;
+        if (index > 1) {
+          prevPagePermalink = Category.generatePermalink(this.categoryPermalink, this, index);
+          isFirstPage = false;
+        } else if (index === 1) {
+          prevPagePermalink = Category.generatePermalink(this.categoryFirstPermalink, this, 1);
+          isFirstPage = false;
+        }
+
+        // current permalink calculation
+        let permalink = null;
+        if (index === 0) {
+          permalink = Category.generatePermalink(this.categoryFirstPermalink, this, 1);
+        } else {
+          permalink = Category.generatePermalink(this.categoryPermalink, this, index + 1);
+        }
+
+        let outputFolder = permalink.replace(new RegExp("/", "g"), path.sep);
+
+        // next permalink and last page calculation
+        let nextPagePermalink = null;
+        let isLastPage = true;
+        if (index < array.length - 1) {
+          nextPagePermalink = Category.generatePermalink(this.categoryPermalink, this, index + 2);
+          isLastPage = false;
+        }
+
+        return {
+          outputFolder: outputFolder,
+          url: permalink,
+          nextPageUrl: nextPagePermalink,
+          previousPageUrl: prevPagePermalink,
+          isFirstPage: isFirstPage,
+          isLastPage: isLastPage,
+          pageNumber: index + 1,
+          numberOfPages: paginatedContents.length,
+          contents: paginatedContents
+        }
+      }
+    );
+  }
+
+  renderToFile(): void {
+    this.subCategories.forEach(c => c.renderToFile());
+
+    this.paginatedContents.forEach(
+      paginatedContent => {
+        let builtTemplate = Template.renderCategory(this, paginatedContent);
+        let normalizedPath = path.join(Constants.OUTPUT_DIR, paginatedContent.outputFolder, HTML_PAGE_NAME);
+
+        fs.outputFileSync(normalizedPath, builtTemplate);
+      }
+    );
   }
 
   /**
@@ -112,4 +175,46 @@ export class Category {
     }
     return tbReturned;
   }
+
+  /**
+   * Converts a Category permalink template into actual permalink
+   * @param permalinkTemplateString :collection, :category, :thisCategory, :page are valid
+   * @param category object that is used to create permalink
+   * @param page current page
+   * @returns {string} Permalink string with real values
+   */
+  private static generatePermalink(permalinkTemplateString: string, category: Category, page: number): string {
+    let slugCollection: string = slug(category.belongsToCollection.id, slug.defaults.modes["rfc3986"]);
+    let slugSingleCategory: string = slug(category.id, slug.defaults.modes["rfc3986"]);
+    let slugPage: string = page.toString();
+
+    let categorySlugsArray = [slugSingleCategory];
+    let currentCategory = category.parentCategory;
+    while (currentCategory !== null) {
+      categorySlugsArray.unshift(slug(currentCategory.id, slug.defaults.modes["rfc3986"]));
+      currentCategory = currentCategory.parentCategory;
+    }
+    let slugCategory = categorySlugsArray.join("/");
+
+    return permalinkTemplateString
+      .replace(new RegExp(":category", "g"), slugCategory)
+      .replace(new RegExp(":collection", "g"), slugCollection)
+      .replace(new RegExp(":thisCategory", "g"), slugSingleCategory)
+      .replace(new RegExp(":page", "g"), slugPage);
+  }
+}
+
+export interface IPaginatedCategory {
+  outputFolder: string;
+
+  url: string;
+  nextPageUrl: string;
+  previousPageUrl: string;
+
+  isFirstPage: boolean;
+  isLastPage: boolean;
+  pageNumber: number;
+  numberOfPages: number;
+
+  contents: Array<Content>;
 }

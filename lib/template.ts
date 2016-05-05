@@ -1,4 +1,5 @@
 import {Content} from "../models/content";
+import {Category, IPaginatedCategory} from "../models/category";
 import {Constants} from "../constants";
 
 import jade = require("jade");
@@ -17,6 +18,24 @@ export class Template {
 
     let locals: ISingleContentTemplateVariables = {
       content: content,
+      global: Template.getTemplateGlobals()
+    };
+    return compileFn(locals);
+  }
+
+  /**
+   * Renders a category page into html
+   * @param category to be rendered
+   * @param paginationInfo related to a specific page of that category
+   */
+  static renderCategory(category: Category, paginationInfo: IPaginatedCategory): string {
+    // TODO
+    let templateFile = path.join(Constants.TEMPLATE_DIR, "index.jade");
+    let compileFn = jade.compileFile(templateFile, {pretty: true});
+
+    let locals: ICategoryPageTemplateVariables = {
+      page: paginationInfo,
+      category: category,
       global: Template.getTemplateGlobals()
     };
     return compileFn(locals);
@@ -42,6 +61,12 @@ interface ITemplateGlobals {
 interface ISingleContentTemplateVariables {
   global: ITemplateGlobals;
   content: Content;
+}
+
+interface ICategoryPageTemplateVariables {
+  page: IPaginatedCategory,
+  category: Category,
+  global: ITemplateGlobals
 }
 
 

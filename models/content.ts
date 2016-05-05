@@ -4,7 +4,7 @@ import glob = require("glob");
 import padleft = require("pad-left");
 
 import {Collection, IContentBelongsTo} from "./collection";
-import {Config, IPostPermalinkCalculatorFnIn} from "../lib/config";
+import {Config, IContentPermalinkCalculatorFnIn} from "../lib/config";
 import {Constants} from "../constants";
 import {Template} from "../lib/template";
 import {ContentLookup} from "./contentLookup";
@@ -219,9 +219,9 @@ export class Content {
    * @returns {string} Permalink string with real values
      */
   private static getTargetDirectory(id: string, title: string, date: Date): string {
-    let permalinkConfig: string|IPostPermalinkCalculatorFnIn = Config.getConfig().post.permalink;
+    let permalinkConfig: string|IContentPermalinkCalculatorFnIn = Config.getConfig().content.permalink;
     if (permalinkConfig instanceof Function) {
-      return (<IPostPermalinkCalculatorFnIn>permalinkConfig)(id, title, date).replace(new RegExp("/", "g"), path.sep);
+      return (<IContentPermalinkCalculatorFnIn>permalinkConfig)(id, title, date).replace(new RegExp("/", "g"), path.sep);
     }
     return Content.defaultPermalinkFn(<string>permalinkConfig, title, date).replace(new RegExp("/", "g"), path.sep);
   }

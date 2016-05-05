@@ -127,6 +127,16 @@ export class Collection {
     this.categories.forEach(c => c.calculatePagination());
   }
 
+  renderToFile(): void {
+    this.categories.forEach(c => c.renderToFile());
+
+    // TODO RENDER COLLECTION PAGE
+    // let builtTemplate = Template.renderContent(this);
+    // let normalizedPath = path.join(Constants.OUTPUT_DIR, targetPath, HTML_PAGE_NAME);
+    //
+    // fs.outputFileSync(normalizedPath, builtTemplate);
+  }
+
   /**
    * Returns the category with given id under parentCategory. If
    * category is not existent, it is created.

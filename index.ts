@@ -40,14 +40,12 @@ contents.forEach((content) => {
   content.processContentAssets();
 });
 
-// write collections
-let builtTemplate = jade.compileFile(
-  path.join(Constants.TEMPLATE_DIR, "index.jade"),
-  {pretty: true}
-)({
-  posts: contents
-});
-fs.outputFileSync(path.join(Constants.OUTPUT_DIR, "index.html"), builtTemplate);
+// prepare collections
+collections.forEach(
+  collection => {
+    collection.renderToFile();
+  }
+);
 
 // write other stuff
 Assets.processTemplateImages();

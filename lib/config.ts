@@ -15,7 +15,7 @@ interface IConfigFile {
      definition: Array<ICollectionDefinitionFile>
    },
 //   template: ITemplateConfig,
-   post: IPostConfig
+   content: IContentConfig
 }
 
 export interface ICollectionConfigFile {
@@ -85,8 +85,8 @@ export interface ICollectionDefinitionFile {
 //   extension: string;
 // }
 //
-interface IPostConfig {
-  permalink: string|IPostPermalinkCalculatorFnIn; // valid: :title :day :month :year
-  templateOptions: Object|((Post) => Object)
+interface IContentConfig {
+  permalink: string|IContentPermalinkCalculatorFnIn; // valid: :title :day :month :year
+  templateOptions: Object|((content: Content) => Object)
 }
-export type IPostPermalinkCalculatorFnIn = (postId: string, postTitle: string, postCreateDate: Date) => string;
+export type IContentPermalinkCalculatorFnIn = (contentId: string, contentTitle: string, contentCreateDate: Date) => string;

@@ -2,10 +2,10 @@
 var config = {
   collections: {
     config: {
-      collectionsPermalink: "/collections/index.html",
-      collectionPermalink: "/:collection/index.html",
-      categoryFirstPermalink: "/:collection/:category/index.html",
-      categoryPermalink: "/:collection/:category/:page/index.html",
+      collectionsPermalink: "/collections",
+      collectionPermalink: "/:collection",
+      categoryFirstPermalink: "/:collection/:category",
+      categoryPermalink: "/:collection/:category/:page",
       pagination: 2,
       categorySorting: {
         sortBy: "id", // contentCount customFn(content1, content2) return -1. 0, 1
@@ -25,7 +25,9 @@ var config = {
         },
         templateOptions: {
           test: 123 // template specific json or customFn(content) return object
-        }
+        },
+        categoryFirstPermalink: "/",
+        categoryPermalink: "/:page"
         // categoryIdToNameFn: string => string
       },
       {
@@ -52,7 +54,7 @@ var config = {
       }
     ]
   },
-  post: {
+  content: {
     permalink: "/:year/:month/:title", // permalink for content folder. it'll create index.html
     templateOptions: {
       // template spesific json customFn(content) return object

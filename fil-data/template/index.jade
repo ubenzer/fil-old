@@ -1,7 +1,16 @@
 extends ./layouts/main.jade
 
 block content
+  h3 Current Collection: #{category.belongsToCollection.id}
+  h3 Current Category: #{category.title}
+  h3 Current Page: #{page.pageNumber}
   .main-container
-    each post, no in posts
-      h1 Post #{no}
-      .content !{post.htmlContent}
+    each content, no in page.contents
+      h1 Post #{no} #{content.title}
+      .content !{content.htmlContent}
+
+  .navigation
+    if !page.isFirstPage
+      a(href=page.previousPageUrl) Page #{page.pageNumber - 1}
+    if !page.isLastPage
+      a(href=page.nextPageUrl) Page #{page.pageNumber + 1}
