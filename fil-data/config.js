@@ -6,7 +6,7 @@ var config = {
       collectionPermalink: "/:collection",
       categoryFirstPermalink: "/:collection/:category",
       categoryPermalink: "/:collection/:category/:page",
-      pagination: 2,
+      pagination: 10,
       categorySorting: {
         sortBy: "id", // contentCount customFn(content1, content2) return -1. 0, 1
         reverse: true

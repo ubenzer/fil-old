@@ -1,12 +1,11 @@
 extends ./layouts/main.jade
 
 block content
-  h3 Current Collection: #{category.belongsToCollection.id}
-  h3 Current Category: #{category.title}
-  h3 Current Page: #{page.pageNumber}
+  h3 Collection: #{category.belongsToCollection.id} Category: #{category.title} Page: #{page.pageNumber}
   .main-container
     each content, no in page.contents
-      h1 Post #{no} #{content.title}
+      h1
+        a(href=content.getUrl()) Post #{no} #{content.title}
       .content !{content.htmlContent}
 
   .navigation
