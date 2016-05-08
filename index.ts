@@ -8,6 +8,8 @@ import path = require("path");
 import jade = require("jade");
 import {ContentLookup} from "./models/contentLookup";
 
+let startDate = new Date();
+
 // init config
 let config = Config.getConfig();
 
@@ -50,3 +52,6 @@ collections.forEach(
 // write other stuff
 Assets.processTemplateImages();
 Assets.processStylesheets();
+
+let endDate = new Date();
+console.info(`Execution time: ${(+endDate) - (+startDate)}ms`);
