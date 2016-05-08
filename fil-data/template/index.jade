@@ -3,10 +3,10 @@ extends ./layouts/main.jade
 block content
   h3 Collection: #{category.belongsToCollection.id} Category: #{category.title} Page: #{page.pageNumber}
   .main-container
-    each content, no in page.contents
+    each content in page.contents
       h1
-        a(href=content.getUrl()) Post #{no} #{content.title}
-      .content !{content.htmlContent}
+        a(href=content.getUrl()) #{content.title}
+      .content !{content.htmlExcerpt}
 
   .navigation
     if !page.isFirstPage

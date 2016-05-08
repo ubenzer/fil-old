@@ -2,6 +2,7 @@ import fs = require("fs-extra");
 import path = require("path");
 import glob = require("glob");
 import padleft = require("pad-left");
+import cheerio = require("cheerio");
 
 import {Collection, IContentBelongsTo} from "./collection";
 import {Config, IContentPermalinkCalculatorFnIn} from "../lib/config";
@@ -28,6 +29,7 @@ export class Content {
   editDate: Date; // content's last update date
 
   htmlContent: string = null; // compiled html content, this is null, call calculateHtmlContent() once to fill this.
+  htmlExcerpt: string = null; // compiled excerpt, this is null, call calculateHtmlContent() once to fill this.
 
   fileAssets: Array<ContentAsset>; // files attached to this content as array of file name relative to inputFolder
   belongsTo: Map<Collection, Array<IContentBelongsTo>>; // relationship map, which categories this content belongs to
@@ -96,6 +98,11 @@ export class Content {
   calculateHtmlContent(contentLookup: ContentLookup): string {
     let compiler = new Rho(this, contentLookup);
     this.htmlContent = compiler.toHtml();
+
+    let $ = cheerio.load(this.htmlContent);
+    let firstElement = $("p").first();
+    this.htmlExcerpt =  firstElement.html();
+
     return this.htmlContent;
   }
 
@@ -105,7 +112,7 @@ export class Content {
    * @returns {string}
      */
   getUrl(): string {
-    return `${this.outputFolder.replace(new RegExp(path.sep, "g"), "/")}/${HTML_PAGE_NAME}`;
+    return `${this.outputFolder.replace(new RegExp(path.sep, "g"), "/")}/`;
   }
 
   /**
