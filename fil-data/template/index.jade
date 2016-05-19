@@ -4,9 +4,10 @@ block content
   h3 Collection: #{category.belongsToCollection.id} Category: #{category.title} Page: #{page.pageNumber}
   .main-container
     each content in page.contents
-      h1
-        a(href=content.getUrl()) #{content.title}
-      .content !{content.htmlExcerpt}
+      article
+        h1
+          a(href=content.getUrl()) #{content.title}
+        .content !{content.htmlExcerpt}
 
   .navigation
     if !page.isFirstPage
