@@ -2,7 +2,6 @@ import fs = require("fs-extra");
 import path = require("path");
 import glob = require("glob");
 import padleft = require("pad-left");
-import cheerio = require("cheerio");
 
 import {Collection, IContentBelongsTo} from "./collection";
 import {Config, IContentPermalinkCalculatorFnIn} from "../lib/config";
@@ -93,17 +92,20 @@ export class Content {
    * field of this content object and returns it
    * @param {ContentLookup} contentLookup object that is going
    * to be used to resolve references to file assets and other contents.
-   * @returns {string} rendered html content
    */
-  calculateHtmlContent(contentLookup: ContentLookup): string {
+  calculateHtmlContent(contentLookup: ContentLookup): void {
+    console.log(`Compiling ${this.contentId}...`);
+
     let compiler = new Rho(this, contentLookup);
-    this.htmlContent = compiler.toHtml();
+    this.htmlContent = compiler.toHtml(this.content);
 
-    let $ = cheerio.load(this.htmlContent);
-    let firstElement = $("p").first();
-    this.htmlExcerpt =  firstElement.html();
-
-    return this.htmlContent;
+    // check if we have predetermined excerpt break
+    let separatedContent = this.content.split("---more---");
+    if (separatedContent.length > 1) {
+      this.htmlExcerpt = compiler.toHtml(separatedContent[0]);
+    } else {
+      this.htmlExcerpt = this.htmlContent;
+    }
   }
 
   /**

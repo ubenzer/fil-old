@@ -337,7 +337,7 @@ export class Rho {
     this.blockCompiler = new BlockCompiler();
   }
 
-  toHtml(): string {
-    return this.blockCompiler.toHtml(this.post.content);
+  toHtml(string: string): string {
+    return this.blockCompiler.toHtml(string);
   }
 }

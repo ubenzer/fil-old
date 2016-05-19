@@ -20,18 +20,16 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "cheerio": "^0.20.0",
     "front-matter": "^2.0.7",
     "fs-extra": "^0.30.0",
     "glob": "^7.0.3",
+    "httpreq": "^0.4.22",
     "jade": "^1.11.0",
     "pad-left": "^2.1.0",
     "rho": "^0.2.4",
     "slug": "^0.9.1",
     "string": "^3.3.1",
-    "stylus": "^0.54.5"
-  },
-  "devDependencies": {
+    "stylus": "^0.54.5",
     "typescript": "^1.8.10"
   }
 }
