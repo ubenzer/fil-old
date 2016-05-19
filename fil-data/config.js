@@ -33,7 +33,7 @@ var config = {
       {
         id: "monthly",
         categoryFn: function (content) {
-          return [content.createDate.getMonth() + "/" + content.createDate.getFullYear()];
+          return [content.createDate.getFullYear() + "/" + content.createDate.getMonth()];
         },
         categoryIdToNameFn: function (categoryId) {
           return "___" + categoryId + "___";
