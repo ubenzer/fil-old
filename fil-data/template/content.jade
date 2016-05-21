@@ -4,3 +4,9 @@ block content
   .main-container
     h1 !{content.title}
     .content !{content.htmlContent}
+  div#comments
+
+block scripts
+  script.
+    var id = "#{content.contentId}";
+  script(src="#{global.jsRootPath}/content.js")

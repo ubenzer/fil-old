@@ -8,6 +8,9 @@ export class Constants {
   static TEMPLATE_IMAGES_IN_DIR = path.join(Constants.TEMPLATE_DIR, "images");
   static TEMPLATE_IMAGES_OUT_DIR = path.join(Constants.OUTPUT_DIR, "assets", "images");
 
+  static TEMPLATE_SCRIPTS_IN_DIR = path.join(Constants.TEMPLATE_DIR, "js");
+  static TEMPLATE_SCRIPTS_OUT_DIR = path.join(Constants.OUTPUT_DIR, "assets", "js");
+
   static TEMPLATE_CSS_IN_FILE = path.join(Constants.TEMPLATE_DIR, "index.styl");
   static TEMPLATE_CSS_OUT_FILE = path.join(Constants.OUTPUT_DIR, "assets", "styles.css");
 }

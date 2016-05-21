@@ -14,6 +14,16 @@ export class Assets {
       .forEach((file) => {
         fs.copySync(path.join(Constants.TEMPLATE_IMAGES_IN_DIR, file), path.join(Constants.TEMPLATE_IMAGES_OUT_DIR, file));
       });
+  } 
+  
+  /**
+   * Copies javascript assets to output folder
+   */
+  static processTemplateScripts(): void {
+    glob.sync("**/*", {cwd: Constants.TEMPLATE_SCRIPTS_IN_DIR})
+      .forEach((file) => {
+        fs.copySync(path.join(Constants.TEMPLATE_SCRIPTS_IN_DIR, file), path.join(Constants.TEMPLATE_SCRIPTS_OUT_DIR, file));
+      });
   }
 
   /**

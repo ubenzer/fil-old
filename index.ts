@@ -50,6 +50,7 @@ collections.forEach(
 );
 
 // write other stuff
+Assets.processTemplateScripts();
 Assets.processTemplateImages();
 Assets.processStylesheets();
 

@@ -20,7 +20,6 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "cheerio": "^0.20.0",
     "front-matter": "^2.0.8",
     "fs-extra": "^0.30.0",
     "glob": "^7.0.3",

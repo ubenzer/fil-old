@@ -47,6 +47,7 @@ export class Template {
     Template.templateGlobals = {
       imgRoot: path.relative(Constants.OUTPUT_DIR, Constants.TEMPLATE_IMAGES_OUT_DIR).replace(path.sep, "/"),
       cssFilePath: path.relative(Constants.OUTPUT_DIR, Constants.TEMPLATE_CSS_OUT_FILE).replace(path.sep, "/"),
+      jsRootPath: path.relative(Constants.OUTPUT_DIR, Constants.TEMPLATE_SCRIPTS_OUT_DIR).replace(path.sep, "/")
     };
 
     return Template.templateGlobals;
@@ -56,6 +57,7 @@ export class Template {
 interface ITemplateGlobals {
   imgRoot: string;
   cssFilePath: string;
+  jsRootPath: string;
 }
 
 interface ISingleContentTemplateVariables {
