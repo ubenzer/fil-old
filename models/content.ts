@@ -78,11 +78,11 @@ export class Content {
 
   /**
    * Renders content and writes to specified file
-   * @param targetPath Path relative to output folder
+   * @param collections Whole available collections in the system
      */
-  renderToFile(targetPath: string = this.outputFolder): void {
-    let builtTemplate = Template.renderContent(this);
-    let normalizedPath = path.join(Constants.OUTPUT_DIR, targetPath, HTML_PAGE_NAME);
+  renderToFile(collections: Array<Collection>): void {
+    let builtTemplate = Template.renderContent(this, collections);
+    let normalizedPath = path.join(Constants.OUTPUT_DIR, this.outputFolder, HTML_PAGE_NAME);
 
     fs.outputFileSync(normalizedPath, builtTemplate);
   }

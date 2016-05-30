@@ -4,6 +4,7 @@ import {Constants} from "../constants";
 
 import jade = require("jade");
 import path = require("path");
+import {Collection} from "../models/collection";
 
 export class Template {
   private static templateGlobals: ITemplateGlobals = null;
@@ -11,14 +12,15 @@ export class Template {
   /**
    * Renders a content into html
    * @param content Content to be rendered
+   * @param collections Whole available collections in the system
      */
-  static renderContent(content: Content): string {
+  static renderContent(content: Content, collections: Array<Collection>): string {
     let templateFile = path.join(Constants.TEMPLATE_DIR, content.templateFile);
     let compileFn = jade.compileFile(templateFile, {pretty: true});
 
     let locals: ISingleContentTemplateVariables = {
       content: content,
-      global: Template.getTemplateGlobals()
+      global: Template.getTemplateGlobals(collections)
     };
     return compileFn(locals);
   }
@@ -27,8 +29,9 @@ export class Template {
    * Renders a category page into html
    * @param category to be rendered
    * @param paginationInfo related to a specific page of that category
+   * @param collections Whole available collections in the system
    */
-  static renderCategory(category: Category, paginationInfo: IPaginatedCategory): string {
+  static renderCategory(category: Category, paginationInfo: IPaginatedCategory, collections: Array<Collection>): string {
     // TODO
     let templateFile = path.join(Constants.TEMPLATE_DIR, "index.jade");
     let compileFn = jade.compileFile(templateFile, {pretty: true});
@@ -36,18 +39,19 @@ export class Template {
     let locals: ICategoryPageTemplateVariables = {
       page: paginationInfo,
       category: category,
-      global: Template.getTemplateGlobals()
+      global: Template.getTemplateGlobals(collections)
     };
     return compileFn(locals);
   }
 
-  private static getTemplateGlobals(): ITemplateGlobals {
+  private static getTemplateGlobals(collections: Array<Collection>): ITemplateGlobals {
     if (Template.templateGlobals !== null) { return Template.templateGlobals; }
 
     Template.templateGlobals = {
       imgRoot: path.relative(Constants.OUTPUT_DIR, Constants.TEMPLATE_IMAGES_OUT_DIR).replace(path.sep, "/"),
       cssFilePath: path.relative(Constants.OUTPUT_DIR, Constants.TEMPLATE_CSS_OUT_FILE).replace(path.sep, "/"),
-      jsRootPath: path.relative(Constants.OUTPUT_DIR, Constants.TEMPLATE_SCRIPTS_OUT_DIR).replace(path.sep, "/")
+      jsRootPath: path.relative(Constants.OUTPUT_DIR, Constants.TEMPLATE_SCRIPTS_OUT_DIR).replace(path.sep, "/"),
+      collections: collections
     };
 
     return Template.templateGlobals;
@@ -58,6 +62,7 @@ interface ITemplateGlobals {
   imgRoot: string;
   cssFilePath: string;
   jsRootPath: string;
+  collections: Array<Collection>;
 }
 
 interface ISingleContentTemplateVariables {

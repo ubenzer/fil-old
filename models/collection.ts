@@ -127,8 +127,8 @@ export class Collection {
     this.categories.forEach(c => c.calculatePagination());
   }
 
-  renderToFile(): void {
-    this.categories.forEach(c => c.renderToFile());
+  renderToFile(collections: Array<Collection>): void {
+    this.categories.forEach(c => c.renderToFile(collections));
 
     // TODO RENDER COLLECTION PAGE
     // let builtTemplate = Template.renderContent(this);

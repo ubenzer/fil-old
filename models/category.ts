@@ -139,12 +139,12 @@ export class Category {
     );
   }
 
-  renderToFile(): void {
-    this.subCategories.forEach(c => c.renderToFile());
+  renderToFile(collections: Array<Collection>): void {
+    this.subCategories.forEach(c => c.renderToFile(collections));
 
     this.paginatedContents.forEach(
       paginatedContent => {
-        let builtTemplate = Template.renderCategory(this, paginatedContent);
+        let builtTemplate = Template.renderCategory(this, paginatedContent, collections);
         let normalizedPath = path.join(Constants.OUTPUT_DIR, paginatedContent.outputFolder, HTML_PAGE_NAME);
 
         fs.outputFileSync(normalizedPath, builtTemplate);

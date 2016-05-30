@@ -38,14 +38,14 @@ collections.forEach(
 let contentLookup = new ContentLookup(contents);
 contents.forEach((content) => {
   content.calculateHtmlContent(contentLookup);
-  content.renderToFile();
+  content.renderToFile(collections);
   content.processContentAssets();
 });
 
 // prepare collections
 collections.forEach(
   collection => {
-    collection.renderToFile();
+    collection.renderToFile(collections);
   }
 );
 
