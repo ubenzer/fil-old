@@ -1,18 +1,19 @@
 {
-  "name": "metaltext",
-  "version": "0.0.7",
-  "description": "A static site generator powered by Metalsmith",
+  "name": "fil",
+  "version": "0.0.1",
+  "description": "A static site generator",
   "author": "Umut Benzer <umut@benzer.me>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ubenzer/metaltext.git"
+    "url": "https://github.com/ubenzer/fil.git"
   },
   "bugs": {
-    "url": "https://github.com/ubenzer/metaltext/issues"
+    "url": "https://github.com/ubenzer/fil/issues"
   },
   "keywords": [
     "static-site",
     "jekyll",
+    "hexo",
     "blog",
     "wordpress",
     "collections",
@@ -29,7 +30,13 @@
     "rho": "^0.2.4",
     "slug": "^0.9.1",
     "string": "^3.3.1",
-    "stylus": "^0.54.5",
+    "stylus": "^0.54.5"
+  },
+  "devDependencies": {
     "typescript": "^1.8.10"
+  },
+  "scripts": {
+    "prepublish": "./node_modules/.bin/tsc",
+    "dev:compile": "./node_modules/.bin/tsc"
   }
 }
