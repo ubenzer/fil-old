@@ -97,13 +97,14 @@ export class Content {
     console.log(`Compiling ${this.contentId}...`);
 
     let compiler = new Rho(this, contentLookup);
-    this.htmlContent = compiler.toHtml(this.content);
 
     // check if we have predetermined excerpt break
     let separatedContent = this.content.split("---more---");
     if (separatedContent.length > 1) {
       this.htmlExcerpt = compiler.toHtml(separatedContent[0]);
+      this.htmlContent = compiler.toHtml(separatedContent.join("\n\n"));
     } else {
+      this.htmlContent = compiler.toHtml(this.content);
       this.htmlExcerpt = this.htmlContent;
     }
   }
