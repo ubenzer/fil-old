@@ -6,11 +6,17 @@ html(lang="en")
     meta(name="robots" content="noindex")
     base(href="/")
     title #{global.title}
-    link(href="http://fonts.googleapis.com/css?family=Fira+Sans:300&subset=latin,latin-ext", rel="stylesheet", type="text/css")
-    link(href="http://fonts.googleapis.com/css?family=Alegreya:400,700,400italic&subset=latin,latin-ext", rel="stylesheet", type="text/css")
+    link(href="http://fonts.googleapis.com/icon?family=Material+Icons", rel="stylesheet")
+    link(href="https://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic,700italic&subset=latin,latin-ext", rel="stylesheet", type="text/css")
+    link(href="#{global.imgRoot}/css/materialize.css", rel="stylesheet", type="text/css")
     link(href="#{global.cssFilePath}", rel="stylesheet", type="text/css")
-  body
-    block content
+  body.blue-grey.lighten-5
+    block header
+      include ../partials/header.jade
+    .container
+      block content
 
+    script(src="https://code.jquery.com/jquery-2.1.1.min.js")
+    script(src="#{global.jsRootPath}/materialize.js")
     include ../partials/firebase.jade
     block scripts

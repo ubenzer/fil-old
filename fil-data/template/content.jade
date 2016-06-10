@@ -1,9 +1,12 @@
 extends ./layouts/main.jade
 
 block content
-  .main-container
-    h1 !{content.title}
-    .content !{content.htmlContent}
+  .col.s12
+    .card.post
+      .card-content
+        h1
+          a(href=content.getUrl()) #{content.title}
+        .content !{content.htmlContent}
   div#comments
 
 block scripts

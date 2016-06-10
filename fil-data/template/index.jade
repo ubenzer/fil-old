@@ -1,16 +1,40 @@
 extends ./layouts/main.jade
 
 block content
-  h3 Collection: #{category.belongsToCollection.id} Category: #{category.title} Page: #{page.pageNumber}
-  .main-container
+  //h3 Collection: #{category.belongsToCollection.id} Category: #{category.title} Page: #{page.pageNumber}
+  .row
     each content in page.contents
-      article
-        h1
-          a(href=content.getUrl()) #{content.title}
-        .content !{content.htmlExcerpt}
+      .col.s12
+        .card.post
+          .card-content
+            h1
+              a(href=content.getUrl()) #{content.title}
+            .content !{content.htmlExcerpt}
+          .card-action
+            a(href=content.getUrl()) Devamini Oku
+  .row
+    .col.s12
+      .card.post
+        .card-content
+          ul.pagination
+            if page.isFirstPage
+              li.disabled
+                a(href="#")
+                  i.material-icons chevron_left
+                  span Daha Yeni Yazılar
+            else
+              li.waves-effect
+                a(href=page.previousPageUrl)
+                  i.material-icons chevron_left
+                  span Daha Yeni Yazılar
 
-  .navigation
-    if !page.isFirstPage
-      a(href=page.previousPageUrl) Page #{page.pageNumber - 1}
-    if !page.isLastPage
-      a(href=page.nextPageUrl) Page #{page.pageNumber + 1}
+            if page.isLastPage
+              li.disabled
+                a(href="#")
+                  span Daha Eski Yazılar
+                  i.material-icons chevron_right
+            else
+              li.waves-effect
+                a(href=page.nextPageUrl)
+                  span Daha Eski Yazılar
+                  i.material-icons chevron_right

@@ -184,6 +184,9 @@ export class Rho {
       this.out.push(`<img src="${src}" alt="${escapedAlt}" title="${escapedAlt}"`);
 
       if (escapedTypesArr.length > 0) {
+        if (escapedTypesArr.indexOf("link") > -1) {
+          escapedTypesArr.push("materialboxed");
+        }
         if (escapedTypesArr.indexOf("left") === -1 && escapedTypesArr.indexOf("right") === -1 &&
           escapedTypesArr.indexOf("center") === -1) {
           escapedTypesArr.push("center");

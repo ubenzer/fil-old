@@ -1,24 +1,26 @@
-@require "styles/mixins" // this needs to be first for others to work properly
-@require "styles/*"
+html
+  font-family: "PT Sans", sans-serif
 
-body
-  background $primary-background
-  color $primary-content
-  display flex
-  flex-flow column
-  align-items center
-  margin 0
-  padding 0
-  -webkit-font-smoothing antialiased
+h1, h2, h3
+  font-size 30px
+  margin: 10px 0
 
-.main-container
-  article
-    background: $secondary-background
-    +gt-sm()
-      border 1px solid $primary-border
-      background $secondary-background
+.post.card
+  p
+    margin-bottom: 20px
+  img
+    &.active
+      max-height none
+      max-width none
+      display initial
 
-::selection {
-  background #0088b2
-  color #fff
-}
+    max-height 400px
+    &.center
+      max-width: 100%
+      display: block
+    &.left
+      float: left
+      max-width 30%
+    &.right
+      float: right
+      max-width 30%
