@@ -184,6 +184,10 @@ export class Rho {
       this.out.push(`<img src="${src}" alt="${escapedAlt}" title="${escapedAlt}"`);
 
       if (escapedTypesArr.length > 0) {
+        if (escapedTypesArr.indexOf("left") === -1 && escapedTypesArr.indexOf("right") === -1 &&
+          escapedTypesArr.indexOf("center") === -1) {
+          escapedTypesArr.push("center");
+        }
         this.out.push(` class="${escapedTypesArr.join(" ")}"`);
       }
 
@@ -200,9 +204,7 @@ export class Rho {
       link = rhoClass.resolveUrl(link);
 
       // TODO we need to move html creation to jade at some point
-      this.out.push("<a href=\"" + link + "\">");
-      this.out.push(innerLinkHtml);
-      this.out.push("</a>");
+      this.out.push(`<a href="${link}"${escapedFlagsArr.indexOf("new")>-1?"{ target='_blank'}":""}>${innerLinkHtml}</a>`);
     };
 
     InlineCompiler.prototype.tryHeadlessLink = function(walk) {
