@@ -5,8 +5,8 @@ export class Constants {
   static OUTPUT_DIR = path.join(process.cwd(), "..", "fil-data-out");
   static TEMPLATE_DIR = path.join(process.cwd(), "template");
 
-  static TEMPLATE_IMAGES_IN_DIR = path.join(Constants.TEMPLATE_DIR, "images");
-  static TEMPLATE_IMAGES_OUT_DIR = path.join(Constants.OUTPUT_DIR, "assets", "images");
+  static TEMPLATE_IMAGES_IN_DIR = path.join(Constants.TEMPLATE_DIR, "img");
+  static TEMPLATE_IMAGES_OUT_DIR = path.join(Constants.OUTPUT_DIR, "assets", "img");
 
   static TEMPLATE_SCRIPTS_IN_DIR = path.join(Constants.TEMPLATE_DIR, "js");
   static TEMPLATE_SCRIPTS_OUT_DIR = path.join(Constants.OUTPUT_DIR, "assets", "js");
