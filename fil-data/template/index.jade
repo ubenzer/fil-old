@@ -1,16 +1,7 @@
 extends ./layouts/main.jade
 
 block content
-  h3 Collection: #{category.belongsToCollection.id} Category: #{category.title} Page: #{page.pageNumber}
+  //h3 Collection: #{category.belongsToCollection.id} Category: #{category.title} Page: #{page.pageNumber}
   .main-container
     each content in page.contents
-      article
-        h1
-          a(href=content.getUrl()) #{content.title}
-        .content !{content.htmlExcerpt}
-
-  .navigation
-    if !page.isFirstPage
-      a(href=page.previousPageUrl) Page #{page.pageNumber - 1}
-    if !page.isLastPage
-      a(href=page.nextPageUrl) Page #{page.pageNumber + 1}
+      include ./partials/post-excerpt

@@ -33,7 +33,7 @@ var config = {
       {
         id: "monthly",
         categoryFn: function (content) {
-          return [content.createDate.getFullYear() + "/" + content.createDate.getMonth()];
+          return [content.createDate.year() + "/" + (content.createDate.month()+1)];
         },
         categoryIdToNameFn: function (categoryId) {
           return "___" + categoryId + "___";
@@ -45,6 +45,8 @@ var config = {
     ]
   },
   template: {
+    dateFormat: "LL",
+    locale: "tr",
     siteName: "UBenzer.com"
   },
   content: {

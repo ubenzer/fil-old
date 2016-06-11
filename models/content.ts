@@ -2,6 +2,7 @@ import fs = require("fs-extra");
 import path = require("path");
 import glob = require("glob");
 import padleft = require("pad-left");
+import moment = require("moment");
 
 import {Collection, IContentBelongsTo} from "./collection";
 import {Config, IContentPermalinkCalculatorFnIn} from "../lib/config";
@@ -24,8 +25,8 @@ export class Content {
   title: string; // content title
   content: string; // original content
   templateFile: string; // which jade template to be used, relative to template folder
-  createDate: Date; // content's original creation date
-  editDate: Date; // content's last update date
+  createDate: moment.Moment; // content's original creation date
+  editDate: moment.Moment; // content's last update date
 
   htmlContent: string = null; // compiled html content, this is null, call calculateHtmlContent() once to fill this.
   htmlExcerpt: string = null; // compiled excerpt, this is null, call calculateHtmlContent() once to fill this.
@@ -49,8 +50,8 @@ export class Content {
     this.title = title;
     this.content = content;
     this.templateFile = templateFile;
-    this.createDate = createDate;
-    this.editDate = editDate;
+    this.createDate = moment(createDate);
+    this.editDate = moment(editDate);
     this.contentId = contentId;
     this.outputFolder = outputFolder;
     this.fileAssets = this.initFileAssets();

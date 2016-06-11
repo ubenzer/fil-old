@@ -1,5 +1,5 @@
 doctype html
-html(lang="en")
+html(lang="#{global.template.locale}")
   head
     meta(charset="utf-8")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
@@ -8,8 +8,8 @@ html(lang="en")
     base(href="/")
     block title
       title #{global.template.siteName}
-    link(href="https://fonts.googleapis.com/css?family=Roboto:400,400italic,700,700italic&lang=tr", rel="stylesheet",
-    type="text/css")
+    link(href="https://fonts.googleapis.com/css?family=Roboto:400,400italic,500,500italic,700,700italic&lang=tr",
+    rel="stylesheet", type="text/css")
     link(href="#{global.cssFilePath}", rel="stylesheet", type="text/css")
   body
     block header

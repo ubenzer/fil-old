@@ -3,12 +3,15 @@
 @require "styles/colors"
 
 // regular inclues
-@require "partials/*"
-@require "styles/*"
+@require "partials/**/*"
+@require "styles/**/*"
+
+*
+  box-sizing border-box
 
 body
-  background $primary-background
-  color $primary-content
+  background $background_body
+  color $text_primary
   display flex
   flex-flow column
   align-items stretch
@@ -16,16 +19,6 @@ body
   margin-right 0
   margin-left 0
   padding 0
-  -webkit-font-smoothing antialiased
 
-.main-container
-  article
-    background: $secondary-background
-    +gt-sm()
-      border 1px solid $primary-border
-      background $secondary-background
-
-::selection {
-  background #0088b2
-  color #fff
-}
+::selection
+  accent-block()

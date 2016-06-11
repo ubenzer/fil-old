@@ -2,10 +2,10 @@ import {Config} from "../lib/config";
 import {Content} from "../models/content";
 import {Category, IPaginatedCategory} from "../models/category";
 import {Constants} from "../constants";
+import {Collection} from "../models/collection";
 
 import jade = require("jade");
 import path = require("path");
-import {Collection} from "../models/collection";
 
 export class Template {
   private static templateGlobals: ITemplateGlobals = null;

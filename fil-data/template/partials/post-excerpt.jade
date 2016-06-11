@@ -1,0 +1,5 @@
+article.card
+  .date #{content.createDate.locale(global.template.locale).format(global.template.dateFormat)}
+  h1
+    a(href=content.getUrl()) #{content.title}
+  .content !{content.htmlExcerpt}
