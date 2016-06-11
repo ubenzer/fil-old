@@ -4,12 +4,17 @@ html(lang="en")
     meta(charset="utf-8")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
     meta(name="robots" content="noindex")
+    meta(name="theme-color" content="#3F51B5")
     base(href="/")
-    title #{global.title}
-    link(href="http://fonts.googleapis.com/css?family=Fira+Sans:300&subset=latin,latin-ext", rel="stylesheet", type="text/css")
-    link(href="http://fonts.googleapis.com/css?family=Alegreya:400,700,400italic&subset=latin,latin-ext", rel="stylesheet", type="text/css")
+    block title
+      title #{global.template.siteName}
+    link(href="https://fonts.googleapis.com/css?family=Roboto:400,400italic,700,700italic&lang=tr", rel="stylesheet",
+    type="text/css")
     link(href="#{global.cssFilePath}", rel="stylesheet", type="text/css")
   body
+    block header
+      include ../partials/header.jade
+
     block content
 
     include ../partials/firebase.jade

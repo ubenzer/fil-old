@@ -45,14 +45,7 @@ var config = {
     ]
   },
   template: {
-    img: [
-      {
-        id: "big - webp",
-        height: 400,
-        width: 400,
-        extension: "jpg"
-      }
-    ]
+    siteName: "UBenzer.com"
   },
   content: {
     permalink: "/:year/:month/:title", // permalink for content folder. it'll create index.html

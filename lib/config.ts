@@ -14,7 +14,7 @@ interface IConfigFile {
      config: ICollectionConfigFile,
      definition: Array<ICollectionDefinitionFile>
    },
-//   template: ITemplateConfig,
+   template: any,
    content: IContentConfig
 }
 

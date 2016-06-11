@@ -1,3 +1,4 @@
+import {Config} from "../lib/config";
 import {Content} from "../models/content";
 import {Category, IPaginatedCategory} from "../models/category";
 import {Constants} from "../constants";
@@ -51,7 +52,8 @@ export class Template {
       imgRoot: path.relative(Constants.OUTPUT_DIR, Constants.TEMPLATE_IMAGES_OUT_DIR).replace(path.sep, "/"),
       cssFilePath: path.relative(Constants.OUTPUT_DIR, Constants.TEMPLATE_CSS_OUT_FILE).replace(path.sep, "/"),
       jsRootPath: path.relative(Constants.OUTPUT_DIR, Constants.TEMPLATE_SCRIPTS_OUT_DIR).replace(path.sep, "/"),
-      collections: collections
+      collections: collections,
+      template: Config.getConfig().template
     };
 
     return Template.templateGlobals;
@@ -63,6 +65,7 @@ interface ITemplateGlobals {
   cssFilePath: string;
   jsRootPath: string;
   collections: Array<Collection>;
+  template: any; // Free from config area, corresponds to config/template
 }
 
 interface ISingleContentTemplateVariables {
