@@ -6,5 +6,5 @@ block content
 
 block scripts
   script.
-    var id = "#{content.contentId}";
+    var id = "#{content.contentId.replace(new RegExp("/", "g"), "___")}";
   script(src="#{global.jsRootPath}/content.js")
