@@ -3,7 +3,7 @@
 created: 2014-10-22
 category:
   - Programming
-   
+
 ---
 
 # Hello World From a Test Post!
@@ -11,6 +11,8 @@ category:
 A blog engine should support code highlighting which is rendered on
 server side. We don't have that feature yet. But it should be added
 at some point. So:
+
+---more---
 
 ```javascript
 
@@ -43,4 +45,3 @@ A random image
 ![Random](http://lorempixel.com/400/200/)
 
 The End!
-

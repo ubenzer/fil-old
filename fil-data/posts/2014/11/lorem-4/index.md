@@ -3,11 +3,15 @@
 created: 2014-10-25
 category:
   - Lorem Ipsum
-  
+
 ---
 # Lorem 4
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam lacus dolor, vehicula a sagittis at, cursus eget justo. Duis non mi vel dui viverra dignissim. Aliquam rhoncus blandit urna vel consequat. Nam a bibendum arcu. Suspendisse dolor velit, vulputate non elit vel, auctor vestibulum diam. Etiam egestas lectus eleifend, fringilla nisi vitae, auctor ligula. Etiam ac viverra lacus. Ut pharetra urna leo, in dictum ligula sodales eget. Duis congue est eget consectetur suscipit. Donec vitae erat dui. Aliquam quis nisl viverra, imperdiet leo et, placerat felis. Vivamus ullamcorper mollis nisl. Sed malesuada justo a aliquet condimentum. Nunc id rhoncus ex, in sollicitudin elit.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam lacus dolor, vehicula a sagittis at, cursus eget justo. Duis non mi vel dui viverra dignissim. Aliquam rhoncus blandit urna vel consequat. Nam a bibendum arcu.
+
+---more---
+
+Suspendisse dolor velit, vulputate non elit vel, auctor vestibulum diam. Etiam egestas lectus eleifend, fringilla nisi vitae, auctor ligula. Etiam ac viverra lacus. Ut pharetra urna leo, in dictum ligula sodales eget. Duis congue est eget consectetur suscipit. Donec vitae erat dui. Aliquam quis nisl viverra, imperdiet leo et, placerat felis. Vivamus ullamcorper mollis nisl. Sed malesuada justo a aliquet condimentum. Nunc id rhoncus ex, in sollicitudin elit.
 
 Sed semper a nibh nec faucibus. Integer aliquam tortor ac libero sodales gravida. Morbi malesuada odio sed neque porta, eu auctor tellus tempus. Mauris a tincidunt nisi. Curabitur mattis tellus sit amet purus commodo volutpat. Morbi eget ante ipsum. Etiam ac ipsum pellentesque, commodo nulla et, aliquet neque. Pellentesque tempor ex eu posuere molestie. Nam at dolor enim. Proin nibh arcu, condimentum et massa in, vulputate molestie ligula. Nulla mattis odio eu erat finibus fermentum. Sed in tincidunt neque. Phasellus aliquam nisl nibh, quis volutpat enim ornare sit amet. Duis imperdiet rhoncus lacus.
 

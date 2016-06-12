@@ -3,11 +3,13 @@
 created: 2014-10-15
 category:
   - Lorem Ipsum
-  
+
 ---
 # Lorem 2
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec non lorem neque. Vivamus laoreet ullamcorper dui, non tincidunt dolor aliquam non. Maecenas blandit malesuada metus, sit amet laoreet lectus. In eu tortor in augue porta lacinia a et ex. Quisque interdum mi mauris, ac fermentum magna laoreet at. Duis nec scelerisque erat. Nulla pulvinar justo quis lacus ornare, eget varius est pharetra. Phasellus quis bibendum urna.
+
+---more---
 
 Vivamus viverra rhoncus dui, id eleifend libero tristique ac. Nullam condimentum porttitor eros at congue. Nunc turpis augue, consequat sit amet magna quis, ornare mollis mauris. Duis bibendum elit et arcu ullamcorper pellentesque. Duis eu lobortis lacus, in porta nulla. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec at vehicula nunc. In accumsan diam risus, sit amet lobortis sapien dapibus in. Suspendisse urna tortor, imperdiet eget orci id, convallis auctor ligula. Donec efficitur auctor nulla, eget faucibus nulla. Integer rhoncus semper nibh sed mattis. Nulla pulvinar, enim sit amet sodales dapibus, nulla dui facilisis dolor, eu aliquam nunc purus vitae odio.
 

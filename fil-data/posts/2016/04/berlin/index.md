@@ -12,6 +12,8 @@ category: "Deneme"
 Uzun bir aranın ardından tekrardan merhaba! Ancak bu sefer İzmir'den 
 değil, _Berlin_'den merhaba. 
 
+---more---
+
 Gecen sene sonunda eşim ile birlikte çok ciddi bir degisiklik yapmaya
 karar verdik. Isimizden istifa ettik, yeni isimizi bulduk, tüm eşyalarımızı
 ve daha kredisi bitmemiş arabamızı sattık, Urla'daki güzel kiralık 

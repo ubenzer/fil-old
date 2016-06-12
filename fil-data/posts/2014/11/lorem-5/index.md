@@ -9,6 +9,8 @@ category:
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean rutrum interdum risus. Morbi non commodo elit, vitae pulvinar mi. Donec eget vulputate orci, vel fringilla dolor. Sed urna justo, malesuada non lacus eu, tincidunt sollicitudin est. Cras faucibus odio accumsan turpis ultrices, et molestie turpis aliquet. Nulla sapien sapien, pharetra at nunc quis, luctus mollis diam. Sed sit amet tincidunt arcu, luctus sollicitudin nisi. Ut tristique velit suscipit sem tristique, ac sollicitudin magna consectetur. Phasellus non iaculis enim, a iaculis purus. Sed a orci lacinia, vulputate erat euismod, molestie diam. Quisque vitae pulvinar augue.
 
+---more---
+
 Cras id ex in libero ornare hendrerit ac a lorem. Ut feugiat bibendum nunc, vitae tempus dolor egestas quis. Nunc quis risus vel eros facilisis lobortis. Donec vitae lorem euismod, sollicitudin sapien nec, pharetra ex. Nam venenatis viverra eros et viverra. Integer nec ligula massa. Mauris in sem hendrerit, convallis mi id, sollicitudin ipsum. Quisque luctus quam quis nulla lobortis consequat. In iaculis elit faucibus, vehicula lorem eu, euismod dui. Curabitur congue posuere mauris ac volutpat. Nullam iaculis magna ac purus suscipit, non ornare erat ultrices.
 
 Quisque ornare, ipsum a placerat vestibulum, diam mauris consectetur eros, eget porta lacus nibh porttitor nibh. Aenean a varius erat. Ut vehicula dictum nunc, quis efficitur lorem elementum vitae. Nulla sed ligula nec justo condimentum convallis facilisis finibus mauris. Pellentesque sed nibh ac lorem sollicitudin auctor. Pellentesque ac tristique leo, ut semper mi. Suspendisse non mauris tellus.

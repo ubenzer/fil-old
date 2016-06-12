@@ -3,11 +3,15 @@
 created: 2014-10-20
 category:
   - Lorem Ipsum
-  
+
 ---
 # Lorem 3
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean semper, eros ac tempor venenatis, ante est dictum nulla, sit amet tincidunt tortor eros non lorem. Sed vulputate elementum eros quis rutrum. Suspendisse egestas, sem sed porta aliquet, purus tellus rhoncus justo, ut viverra mauris arcu egestas tortor. Cras ornare metus tortor, sed commodo justo rhoncus sit amet. Aenean semper quam ante, ut semper tortor gravida quis. Integer molestie felis tortor, et venenatis nunc finibus eu. Maecenas tincidunt, sem sed varius volutpat, mauris lacus imperdiet metus, nec pulvinar velit neque nec magna. Donec imperdiet tellus tortor, quis suscipit nunc fringilla non. Aenean eu elit et quam varius vulputate eget viverra massa. Donec ultricies, lorem sed porta rhoncus, nulla mauris tincidunt turpis, eu cursus mauris turpis sed nulla. Mauris interdum dapibus aliquam. Maecenas sit amet odio quis urna congue tincidunt. Quisque at viverra quam, at elementum neque. Quisque blandit dignissim tellus et accumsan. Donec eros nunc, suscipit in sem vitae, sodales vestibulum ligula.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean semper, eros ac tempor venenatis, ante est dictum nulla, sit amet tincidunt tortor eros non lorem. Sed vulputate elementum eros quis rutrum. Suspendisse egestas, sem sed porta aliquet, purus tellus rhoncus justo, ut viverra mauris arcu egestas tortor. Cras ornare metus tortor, sed commodo justo rhoncus sit amet.
+
+---more---
+
+Aenean semper quam ante, ut semper tortor gravida quis. Integer molestie felis tortor, et venenatis nunc finibus eu. Maecenas tincidunt, sem sed varius volutpat, mauris lacus imperdiet metus, nec pulvinar velit neque nec magna. Donec imperdiet tellus tortor, quis suscipit nunc fringilla non. Aenean eu elit et quam varius vulputate eget viverra massa. Donec ultricies, lorem sed porta rhoncus, nulla mauris tincidunt turpis, eu cursus mauris turpis sed nulla. Mauris interdum dapibus aliquam. Maecenas sit amet odio quis urna congue tincidunt. Quisque at viverra quam, at elementum neque. Quisque blandit dignissim tellus et accumsan. Donec eros nunc, suscipit in sem vitae, sodales vestibulum ligula.
 
 Suspendisse consequat nisl posuere dui elementum, at ornare quam facilisis. Donec aliquam massa sed molestie tristique. Donec aliquam euismod nulla, ac auctor nibh vulputate eget. Aenean et est ultricies, tempus justo id, aliquam lorem. Aenean dolor nunc, imperdiet ullamcorper faucibus nec, fringilla vel lacus. Praesent mollis augue mauris, ut consequat mauris bibendum eget. Nunc a mi arcu.
 
