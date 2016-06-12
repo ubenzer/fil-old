@@ -3,23 +3,31 @@ $background_default = #FFFFFF
 $background_primary = #3F51B5
 $background_secondary = #303F9F
 
+$border_default = rgba(0,0,0,.10)
+
 $accent = #FF9800
 
-$text_default = rgba(255,255,255,1)
-$text_primary = rgba(0,0,0,.87)
-$text_secondary = rgba(0,0,0,.54)
+$opacity_primary = .87
+$opacity_secondary = .54
+$opacity_disabled = .38
+
+$text_default_light = rgba(255,255,255,1)
+$text_default_dark = rgba(0,0,0,1)
+$text_primary = rgba(0,0,0,$opacity_primary)
+$text_secondary = rgba(0,0,0,$opacity_secondary)
+$text_disabled = rgba(0,0,0,$opacity_disabled)
 
 // Material
 primary-block()
   background-color $background_primary
-  color $text_default
+  color $text_default_light
 
 secondary-block()
   background-color $background_secondary
-  color $text_default
+  color $text_default_light
 
 accent-block()
   background-color $accent
-  color $text_default
+  color $text_default_light
 
 

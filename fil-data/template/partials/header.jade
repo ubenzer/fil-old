@@ -1,7 +1,10 @@
 header
   app-bar
-    button
-      img(src="#{global.imgRoot}/ic_menu_white_24px.svg")
-    h1.logo UBenzer
-    button
-      img(src="#{global.imgRoot}/ic_more_vert_white_24px.svg")
+    button.flat.icon
+      span
+        img(src="#{global.imgRoot}/ic_menu_white_24px.svg")
+    h1.logo
+      a(href="/") #{global.template.siteName}
+    button.flat.icon
+      span
+        img(src="#{global.imgRoot}/ic_more_vert_white_24px.svg")

@@ -1,0 +1,47 @@
+button, a.button
+  display inline-block
+  height 48px
+  padding 6px 0
+  text-align center
+  border none
+  background transparent
+  text-transform uppercase
+  font-size 14px
+  font-weight 500
+
+  span
+    border-radius 2px
+    display inline-block
+    height: 36px
+    line-height 36px
+    padding 0 16px
+    img
+      vertical-align middle
+  &:disabled, &.disabled
+    cursor not-allowed
+
+  // Visual styles
+  &.primary
+    span
+      primary-block()
+      shadow-1()
+    &:disabled, &.disabled
+      span
+        box-shadow none
+        background-color rgba(0,0,0,.12)
+        color rgba(0,0,0,.26)
+        img.icon
+          opacity .26
+
+  &.flat
+    &:disabled, &.disabled
+      span
+        color $text_disabled
+        img.icon
+          opacity $opacity_disabled
+
+  &.icon
+    span
+      width 36px
+      height 36px
+      padding 0

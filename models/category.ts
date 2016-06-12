@@ -97,12 +97,14 @@ export class Category {
       (paginatedContents, index, array): IPaginatedCategory => {
         // previous permalink and first page calculation
         let prevPagePermalink = null;
+        let firstPagePermalink = Category.generatePermalink(this.categoryFirstPermalink, this, 1);
+
         let isFirstPage = true;
         if (index > 1) {
           prevPagePermalink = Category.generatePermalink(this.categoryPermalink, this, index);
           isFirstPage = false;
         } else if (index === 1) {
-          prevPagePermalink = Category.generatePermalink(this.categoryFirstPermalink, this, 1);
+          prevPagePermalink = firstPagePermalink;
           isFirstPage = false;
         }
 
@@ -118,6 +120,7 @@ export class Category {
 
         // next permalink and last page calculation
         let nextPagePermalink = null;
+        let lastPagePermalink = Category.generatePermalink(this.categoryPermalink, this, array.length);
         let isLastPage = true;
         if (index < array.length - 1) {
           nextPagePermalink = Category.generatePermalink(this.categoryPermalink, this, index + 2);
@@ -127,8 +130,10 @@ export class Category {
         return {
           outputFolder: outputFolder,
           url: permalink,
-          nextPageUrl: nextPagePermalink,
+          firstPageUrl: firstPagePermalink,
           previousPageUrl: prevPagePermalink,
+          nextPageUrl: nextPagePermalink,
+          lastPageUrl: lastPagePermalink,
           isFirstPage: isFirstPage,
           isLastPage: isLastPage,
           pageNumber: index + 1,
@@ -208,8 +213,10 @@ export interface IPaginatedCategory {
   outputFolder: string;
 
   url: string;
-  nextPageUrl: string;
+  firstPageUrl: string;
   previousPageUrl: string;
+  nextPageUrl: string;
+  lastPageUrl: string;
 
   isFirstPage: boolean;
   isLastPage: boolean;

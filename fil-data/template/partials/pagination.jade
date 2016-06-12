@@ -1,0 +1,36 @@
+.pagination
+  if page.isFirstPage
+    button.flat(disabled)
+      span
+        img.icon(src="#{global.imgRoot}/ic_first_page_black_24px.svg")
+
+    button.flat(disabled)
+      span
+        img.icon(src="#{global.imgRoot}/ic_chevron_left_black_24px.svg")
+
+  else
+    a.button.flat(href=page.firstPageUrl)
+      span
+        img.icon(src="#{global.imgRoot}/ic_first_page_black_24px.svg")
+
+    a.button.flat(href=page.previousPageUrl)
+      span
+        img.icon(src="#{global.imgRoot}/ic_chevron_left_black_24px.svg")
+
+  if page.isLastPage
+    button.primary(disabled)
+      span
+        img.icon(src="#{global.imgRoot}/ic_chevron_right_black_24px.svg")
+
+    button.flat(disabled)
+      span
+        img.icon(src="#{global.imgRoot}/ic_last_page_black_24px.svg")
+
+  else
+    a.button.primary(href=page.nextPageUrl)
+      span
+        img.icon(src="#{global.imgRoot}/ic_chevron_right_white_24px.svg")
+
+    a.button.flat(href=page.lastPageUrl)
+      span
+        img.icon(src="#{global.imgRoot}/ic_last_page_black_24px.svg")

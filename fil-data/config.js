@@ -6,7 +6,7 @@ var config = {
       collectionPermalink: "/:collection",
       categoryFirstPermalink: "/:collection/:category",
       categoryPermalink: "/:collection/:category/:page",
-      pagination: 10,
+      pagination: 4,
       categorySorting: {
         sortBy: "id", // contentCount customFn(content1, content2) return -1. 0, 1
         reverse: true
@@ -47,7 +47,8 @@ var config = {
   template: {
     dateFormat: "LL",
     locale: "tr",
-    siteName: "UBenzer.com"
+    siteName: "UBenzer",
+    readContent: "Devamını Oku"
   },
   content: {
     permalink: "/:year/:month/:title", // permalink for content folder. it'll create index.html

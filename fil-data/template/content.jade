@@ -2,9 +2,7 @@ extends ./layouts/main.jade
 
 block content
   .main-container
-    h1 !{content.title}
-    .content !{content.htmlContent}
-  div#comments
+    include ./partials/post
 
 block scripts
   script.
