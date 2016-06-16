@@ -8,14 +8,21 @@ html(lang="#{global.template.locale}")
     base(href="/")
     block title
       title #{global.template.siteName}
-    link(href="https://fonts.googleapis.com/css?family=Roboto:400,400italic,500,500italic,700,700italic&lang=tr",
+    link(href="https://fonts.googleapis.com/css?family=Roboto:300,400,400italic,500,500italic,700,700italic&lang=tr",
     rel="stylesheet", type="text/css")
+    link(href="#{global.jsRootPath}/vendor/sidenav.css", rel="stylesheet", type="text/css")
     link(href="#{global.cssFilePath}", rel="stylesheet", type="text/css")
   body
-    block header
-      include ../partials/header.jade
+    #backdrop
+    block sidenav
+      include ../partials/sidenav.jade
+    #content
+      block header
+        include ../partials/header.jade
 
-    block content
+      block content
 
     include ../partials/firebase.jade
+    script(src="#{global.jsRootPath}/vendor/sidenav.min.js")
+    script(src="#{global.jsRootPath}/global.js")
     block scripts

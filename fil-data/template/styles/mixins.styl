@@ -1,8 +1,6 @@
-$xs = 0
 $sm = 600px
 $md = 1280px
 $lg = 1440px
-$xl = 1920px
 
 // Prefer using this if possible
 gt-xs()
@@ -17,10 +15,6 @@ gt-md()
   @media (min-width: $lg)
     {block}
 
-gt-lg()
-  @media (min-width: $xl)
-    {block}
-
 // Use this if you have no other choice
 lt-sm()
   @media (max-width: $sm - 1px)
@@ -32,9 +26,6 @@ lt-md()
 
 lt-lg()
   @media (max-width: $lg - 1px)
-    {block}
-lt-xl()
-  @media (max-width: $xl - 1px)
     {block}
 
 shadow-1()
@@ -52,3 +43,15 @@ shadow-4()
 shadow-5()
   box-shadow 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22)
 
+// Material
+primary-block()
+  background-color $background_primary
+  color $text_default_light
+
+secondary-block()
+  background-color $background_secondary
+  color $text_default_light
+
+accent-block()
+  background-color $accent
+  color $text_default_light

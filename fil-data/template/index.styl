@@ -10,15 +10,23 @@
   box-sizing border-box
 
 body
+  position relative
   background $background_body
   color $text_primary
-  display flex
-  flex-flow column
-  align-items stretch
   margin-bottom 0
   margin-right 0
   margin-left 0
   padding 0
+
+#content
+  display flex
+  flex-flow column
+  align-items stretch
+
+.main-container
+  +gt-sm()
+    align-self center
+    max-width 1200px
 
 ::selection
   accent-block()
