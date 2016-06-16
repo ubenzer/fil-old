@@ -2,10 +2,6 @@ import {Collection} from "./models/collection";
 import {Config} from "./lib/config";
 import {Content} from "./models/content";
 import {Assets} from "./lib/assets";
-
-import fs = require("fs-extra");
-import path = require("path");
-import jade = require("jade");
 import {ContentLookup} from "./models/contentLookup";
 
 let startDate = new Date();

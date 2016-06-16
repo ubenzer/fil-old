@@ -1,9 +1,9 @@
 import {Constants} from "../constants";
 
-import fs = require("fs-extra");
-import glob = require("glob");
-import path = require("path");
-import stylus = require("stylus");
+import * as fs from "fs-extra";
+import * as glob from "glob";
+import * as path from "path";
+import * as stylus from "stylus";
 
 export class Assets {
   /**

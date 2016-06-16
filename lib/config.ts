@@ -1,4 +1,4 @@
-import path = require("path");
+import * as path from "path";
 import {Category} from "../models/category";
 import {Content} from "../models/content";
 let config = require(path.join(process.cwd(), "config.js"));

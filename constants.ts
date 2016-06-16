@@ -1,4 +1,4 @@
-import path = require("path");
+import * as path from "path";
 
 export class Constants {
   static POSTS_DIR = path.join(process.cwd(), "posts");

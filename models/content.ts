@@ -1,8 +1,7 @@
-import fs = require("fs-extra");
-import path = require("path");
-import glob = require("glob");
-import padleft = require("pad-left");
-import moment = require("moment");
+import * as fs from "fs-extra";
+import * as path from "path";
+import * as glob from "glob";
+import * as moment from "moment";
 
 import {Collection, IContentBelongsTo} from "./collection";
 import {Config, IContentPermalinkCalculatorFnIn} from "../lib/config";
@@ -12,6 +11,7 @@ import {ContentLookup} from "./contentLookup";
 import {Rho} from "../lib/rho";
 import {ContentAsset} from "./contentAsset";
 
+let padleft = require("pad-left");
 let slug = require("slug");
 let frontMatter = require("front-matter");
 

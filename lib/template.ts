@@ -3,9 +3,8 @@ import {Content} from "../models/content";
 import {Category, IPaginatedCategory} from "../models/category";
 import {Constants} from "../constants";
 import {Collection} from "../models/collection";
-
-import jade = require("jade");
-import path = require("path");
+import * as jade from "jade";
+import * as path from "path";
 
 export class Template {
   private static templateGlobals: ITemplateGlobals = null;

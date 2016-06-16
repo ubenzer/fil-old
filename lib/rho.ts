@@ -1,5 +1,4 @@
-import s = require("string");
-
+import * as s from "string";
 import {ContentLookup} from "../models/contentLookup";
 import {Content} from "../models/content";
 
