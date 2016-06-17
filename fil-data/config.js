@@ -1,5 +1,9 @@
 "use strict";
 var config = {
+  build: {
+    sourcePath: ".",
+    buildPath: "../../ubenzer.github.io@master"
+  },
   collections: {
     config: {
       collectionsPermalink: "/collections",

@@ -10,12 +10,16 @@ export class Config {
 }
 
 interface IConfigFile {
-   collections: {
-     config: ICollectionConfigFile,
-     definition: Array<ICollectionDefinitionFile>
-   },
-   template: any,
-   content: IContentConfig
+  build: {
+    sourcePath: string,
+    buildPath: string
+  }
+  collections: {
+    config: ICollectionConfigFile,
+    definition: Array<ICollectionDefinitionFile>
+  },
+  template: any,
+  content: IContentConfig
 }
 
 export interface ICollectionConfigFile {
@@ -43,7 +47,6 @@ export interface IContentSortingObject {
 export interface IContentSortingFn {
   (content1: Content, content2: Content): number;
 }
-
 
 export interface ICollectionDefinitionFile {
   id: string;

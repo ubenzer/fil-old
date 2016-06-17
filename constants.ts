@@ -1,9 +1,12 @@
 import * as path from "path";
+import {Config} from "./lib/config";
+
+let config = Config.getConfig();
 
 export class Constants {
-  static POSTS_DIR = path.join(process.cwd(), "posts");
-  static OUTPUT_DIR = path.join(process.cwd(), "..", "fil-data-out");
-  static TEMPLATE_DIR = path.join(process.cwd(), "template");
+  static POSTS_DIR = path.join(process.cwd(), config.build.sourcePath, "posts");
+  static TEMPLATE_DIR = path.join(process.cwd(), config.build.sourcePath, "template");
+  static OUTPUT_DIR = path.join(process.cwd(), config.build.buildPath);
 
   static TEMPLATE_IMAGES_IN_DIR = path.join(Constants.TEMPLATE_DIR, "img");
   static TEMPLATE_IMAGES_OUT_DIR = path.join(Constants.OUTPUT_DIR, "assets", "img");
