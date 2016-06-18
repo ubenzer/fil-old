@@ -1,9 +1,14 @@
 import * as s from "string";
 import {ContentLookup} from "../models/contentLookup";
 import {Content} from "../models/content";
+import {Config} from "./config";
+import {ImageResizer} from "./imageResizer";
+import * as mime from "mime";
+import * as path from "path";
 
 enum ParserState {CONTENT_ID, ASSET_ID}
 const CLOSE_DELIMITER = "@";
+let config = Config.getConfig();
 
 /**
  * This class wraps original rho project and does the following changes:
@@ -179,18 +184,50 @@ export class Rho {
 
       src = rhoClass.resolveUrl(src);
 
-      // TODO we need to move html creation to jade at some point
-      this.out.push(`<img src="${src}" alt="${escapedAlt}" title="${escapedAlt}"`);
+      if (ImageResizer.IMAGE_EXTENSIONS.indexOf(path.extname(src)) > -1) {
+        this.out.push(`<picture>\n`);
 
-      if (escapedTypesArr.length > 0) {
-        if (escapedTypesArr.indexOf("left") === -1 && escapedTypesArr.indexOf("right") === -1 &&
-          escapedTypesArr.indexOf("center") === -1) {
-          escapedTypesArr.push("center");
+        config.media.imageExtensions.forEach((extension) => {
+          let srcset: Array<string> = [];
+          let mimeType = mime.lookup(extension);
+
+          config.media.imageWidths.forEach((width) => {
+            let srcSetDefinition = `${ImageResizer.getResizedUrl(src, width, extension)} ${width}w`;
+            srcset.push(srcSetDefinition);
+          });
+          this.out.push(`<source type="${mimeType}" srcset="${srcset.join(",")}">\n`);
+        });
+
+        let srcset: Array<string> = [];
+        config.media.imageWidths.forEach((width) => {
+          let srcSetDefinition = `${ImageResizer.getResizedUrl(src, width)} ${width}w`;
+          srcset.push(srcSetDefinition);
+        });
+        this.out.push(`<img src="${src}" srcset="${srcset.join(",")}" alt="${escapedAlt}" title="${escapedAlt}"`);
+
+        if (escapedTypesArr.length > 0) {
+          if (escapedTypesArr.indexOf("left") === -1 && escapedTypesArr.indexOf("right") === -1 &&
+            escapedTypesArr.indexOf("center") === -1) {
+            escapedTypesArr.push("center");
+          }
+          this.out.push(` class="${escapedTypesArr.join(" ")}"`);
         }
-        this.out.push(` class="${escapedTypesArr.join(" ")}"`);
-      }
 
-      this.out.push(`>`);
+        this.out.push(`>\n`);
+        this.out.push(`</picture>\n`);
+      } else {
+        this.out.push(`<img src="${src}" alt="${escapedAlt}" title="${escapedAlt}"`);
+
+        if (escapedTypesArr.length > 0) {
+          if (escapedTypesArr.indexOf("left") === -1 && escapedTypesArr.indexOf("right") === -1 &&
+            escapedTypesArr.indexOf("center") === -1) {
+            escapedTypesArr.push("center");
+          }
+          this.out.push(` class="${escapedTypesArr.join(" ")}"`);
+        }
+
+        this.out.push(`>\n`);
+      }
     };
 
     // ENHANCE A

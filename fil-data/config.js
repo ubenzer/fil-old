@@ -54,6 +54,10 @@ var config = {
     siteName: "UBenzer",
     readContent: "Devamını Oku"
   },
+  media: {
+    imageWidths: [200, 500, 1000, 1500, 2000],
+    imageExtensions: ["webp"]
+  },
   content: {
     permalink: "/:year/:month/:title", // permalink for content folder. it'll create index.html
     templateOptions: {

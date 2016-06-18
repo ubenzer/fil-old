@@ -10,6 +10,7 @@ import {Template} from "../lib/template";
 import {ContentLookup} from "./contentLookup";
 import {Rho} from "../lib/rho";
 import {ContentAsset} from "./contentAsset";
+import {ImageResizer} from "../lib/imageResizer";
 
 let padleft = require("pad-left");
 let slug = require("slug");
@@ -124,9 +125,14 @@ export class Content {
    */
   processContentAssets(): void {
     this.fileAssets.forEach(asset => {
-      fs.copySync(
-        path.join(Constants.POSTS_DIR, this.inputFolder, asset.inputFile),
-        path.join(Constants.OUTPUT_DIR, asset.getOutputFile()));
+      let inputFile = path.join(Constants.POSTS_DIR, this.inputFolder, asset.inputFile);
+      let outputFile = path.join(Constants.OUTPUT_DIR, asset.getOutputFile());
+      fs.copySync(inputFile, outputFile);
+
+      // For images, also create bunch of different sizes for network performance
+      if (asset.isImage) {
+        ImageResizer.resize(inputFile, outputFile);
+      }
     });
   }
 

@@ -18,6 +18,10 @@ interface IConfigFile {
     config: ICollectionConfigFile,
     definition: Array<ICollectionDefinitionFile>
   },
+  media: {
+    imageWidths: Array<number>,
+    imageExtensions: Array<string>
+  },
   template: any,
   content: IContentConfig
 }
@@ -76,18 +80,7 @@ export interface ICollectionDefinitionFile {
 // interface ICollectionConfig {
 //
 // }
-//
-// interface ITemplateConfig {
-//   img: Array<ITemplateImageConfig>
-// }
-//
-// interface ITemplateImageConfig {
-//   id: string;
-//   height: number;
-//   width: number;
-//   extension: string;
-// }
-//
+
 interface IContentConfig {
   permalink: string|IContentPermalinkCalculatorFnIn; // valid: :title :day :month :year
   templateOptions: Object|((content: Content) => Object)
