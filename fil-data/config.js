@@ -52,7 +52,8 @@ var config = {
     dateFormat: "LL",
     locale: "tr",
     siteName: "UBenzer",
-    readContent: "Devamını Oku"
+    readContent: "Devamını Oku",
+    analyticsAccount: "UA-509698-8"
   },
   media: {
     imageWidths: [200, 500, 1000, 1500, 2000],
