@@ -2,7 +2,7 @@
 var config = {
   build: {
     sourcePath: ".",
-    buildPath: "../../ubenzer.github.io@master"
+    buildPath: "../../fd-out"
   },
   collections: {
     config: {
