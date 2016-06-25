@@ -1,5 +1,8 @@
 extends ./layouts/main.jade
 
+block title
+  title #{content.title} | #{global.template.siteName}
+
 block content
   .main-container
     include ./partials/post
