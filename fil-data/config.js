@@ -52,6 +52,8 @@ var config = {
     dateFormat: "LL",
     locale: "tr",
     siteName: "UBenzer",
+    authorName: "Umut Benzer",
+    authorShortBio: "Software Engineer in Berlin",
     readContent: "Devamını Oku",
     analyticsAccount: "UA-509698-8"
   },
