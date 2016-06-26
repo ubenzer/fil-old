@@ -55,7 +55,11 @@ var config = {
     authorName: "Umut Benzer",
     authorShortBio: "Software Engineer in Berlin",
     readContent: "Devamını Oku",
-    analyticsAccount: "UA-509698-8"
+    analyticsAccount: "UA-509698-8",
+    featuredCategories: [  // Categories that will be shown on main navigation (ordered)
+      "category/Programming",
+      "category/Programming/SubCategory"
+    ]
   },
   media: {
     imageWidths: [200, 500, 1000, 1500, 2000],
