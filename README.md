@@ -1,5 +1,7 @@
 # Fil
 
+[![Dependency Status](https://david-dm.org/ubenzer/fil.svg)](https://david-dm.org/ubenzer/fil) [![devDependency Status](https://david-dm.org/ubenzer/fil/dev-status.svg)](https://david-dm.org/ubenzer/fil#info=devDependencies)
+
 Fil is a static content engine that can be used to host no-so-dynamic web sites such as blogs, technical documents, 
 internal company tech wikies and content management systems.
 
