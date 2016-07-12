@@ -20,7 +20,7 @@ const HTML_PAGE_NAME = "index.html";
 
 export class Content {
   contentId: string; // content's id, using this it can be referenced
-  inputFolder: string; // content directory root relative to POSTS_DIR
+  inputFolder: string; // content directory root relative to CONTENTS_DIR
   outputFolder: string; // content's final path, relative to OUTPUT_DIR
 
   title: string; // content title
@@ -125,7 +125,7 @@ export class Content {
    */
   processContentAssets(): void {
     this.fileAssets.forEach(asset => {
-      let inputFile = path.join(Constants.POSTS_DIR, this.inputFolder, asset.inputFile);
+      let inputFile = path.join(Constants.CONTENTS_DIR, this.inputFolder, asset.inputFile);
       let outputFile = path.join(Constants.OUTPUT_DIR, asset.getOutputFile());
       fs.copySync(inputFile, outputFile);
 
@@ -142,7 +142,7 @@ export class Content {
    */
   private initFileAssets(): Array<ContentAsset> {
     return glob.sync("**/*", {
-      cwd: path.join(Constants.POSTS_DIR, this.inputFolder),
+      cwd: path.join(Constants.CONTENTS_DIR, this.inputFolder),
       mark: true
     })
       .filter(f => f !== "index.md")
@@ -152,12 +152,12 @@ export class Content {
 
   /**
    * Creates a content reading from file
-   * @param relativePath path relative to POSTS_DIR
+   * @param relativePath path relative to CONTENTS_DIR
      */
   static fromFile(relativePath: string): Content {
     let inputFolder = Content.getContentDirectory(relativePath);
 
-    let fullPath = path.join(Constants.POSTS_DIR, relativePath);
+    let fullPath = path.join(Constants.CONTENTS_DIR, relativePath);
     let rawContent = fs.readFileSync(fullPath, "utf8");
 
     let doc = frontMatter(rawContent);
@@ -193,12 +193,12 @@ export class Content {
 
   /**
    * Creates content object representation for all
-   * posts in POSTS_DIR
+   * posts in CONTENTS_DIR
    * @returns {Array<Content>} Array of posts
      */
   static fromPostsFolder(): Array<Content> {
     let posts = [];
-    glob.sync("**/index.md", {cwd: Constants.POSTS_DIR})
+    glob.sync("**/index.md", {cwd: Constants.CONTENTS_DIR})
       .forEach((file) => {
         let post = Content.fromFile(file);
         posts.push(post);
@@ -207,8 +207,8 @@ export class Content {
   }
 
   /**
-   * Returns content directory relative to POSTS_DIR
-   * @param relativePath Content index.md file relative to POSTS_DIR
+   * Returns content directory relative to CONTENTS_DIR
+   * @param relativePath Content index.md file relative to CONTENTS_DIR
      */
   private static getContentDirectory(relativePath: string): string {
     let paths = relativePath.split(path.sep);
@@ -217,7 +217,7 @@ export class Content {
   }
 
   /**
-   * Creates a content id based on content file path relative to POSTS_DIR
+   * Creates a content id based on content file path relative to CONTENTS_DIR
    * @param relativePath
      */
   private static getFileId(relativePath: string): string {

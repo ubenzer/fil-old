@@ -1,8 +1,8 @@
 import {Collection} from "./models/collection";
 import {Config} from "./lib/config";
 import {Content} from "./models/content";
-import {Assets} from "./lib/assets";
 import {ContentLookup} from "./models/contentLookup";
+import * as ChildProcess from "child_process";
 
 let startDate = new Date();
 
@@ -45,10 +45,10 @@ collections.forEach(
   }
 );
 
-// write other stuff
-Assets.processTemplateScripts();
-Assets.processTemplateImages();
-Assets.processStylesheets();
+// call frontend script
+console.log("Running frontend build script defined in config.");
+let out = ChildProcess.execSync(config.build.siteBuildScript);
+console.log(out.toString());
 
 let endDate = new Date();
 console.info(`Execution time: ${(+endDate) - (+startDate)}ms`);
