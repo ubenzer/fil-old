@@ -9,7 +9,7 @@ internal company tech wikies and content management systems.
 1. Super fast!
 2. Supports multiple content hierarchies via configuration files.
 3. Uses Jade as template engine.
-4. Uses Stylus as style sheet engine.
+4. You can hook your own asset build system for icons, images, javascripts files etc.
 
 ## How to use
 No official way to use it for now. You can compile and run it against a content with your own effort.
@@ -19,10 +19,6 @@ To watch-reload `fil-data` folder:
 `nodemon --harmony --harmony_default_parameters ../.tmp/index.js --verbose -e js,styl,jade`
 
 `nodemon --harmony --harmony_default_parameters ../../fil/.tmp/index.js --verbose -e js,styl,jade`
-
-To see output:
-
-`http-server -p 3333`
 
 ## Contributing
 No defined way of contributing yet. Just go wild. %-)
