@@ -44,6 +44,16 @@ export class Template {
     return compileFn(locals);
   }
 
+  static renderTag(tagName: string, tagData: string): string {
+    let templateFile = path.join(Constants.TEMPLATE_DIR, "tags", `${tagName}.jade`);
+    let compileFn = jade.compileFile(templateFile, {pretty: true});
+
+    let locals: ITagTemplateVariables = {
+      data: tagData
+    };
+    return compileFn(locals);
+  }
+
   private static getTemplateGlobals(collections: Array<Collection>): ITemplateGlobals {
     if (Template.templateGlobals !== null) { return Template.templateGlobals; }
 
@@ -56,6 +66,9 @@ export class Template {
   }
 }
 
+interface ITagTemplateVariables {
+  data: string;
+}
 interface ITemplateGlobals {
   collections: Array<Collection>;
   template: any; // Free from config area, corresponds to config/template

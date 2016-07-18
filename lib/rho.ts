@@ -5,6 +5,7 @@ import {Config} from "./config";
 import {ImageResizer} from "./imageResizer";
 import * as mime from "mime";
 import * as path from "path";
+import {Template} from "./template";
 
 enum ParserState {CONTENT_ID, ASSET_ID}
 const CLOSE_DELIMITER = "@";
@@ -120,6 +121,32 @@ export class Rho {
     let BlockCompiler = function():void { rho.BlockCompiler.call(this); };
     rho.BlockCompiler.prototype.InlineCompiler = InlineCompiler;
     BlockCompiler.prototype = rho.BlockCompiler.prototype;
+
+    InlineCompiler.prototype.tryRenderShortcodes = function(walk) {
+      // #[sth data]
+      let self = this;
+      if (!walk.at("#[")) { return; }
+      walk.skip(2);
+
+      let end = walk.indexOf("]");
+      if (end === null) {
+        this.out.push("#[");
+        return true;
+      }
+
+      let tagContent = walk.yieldUntil(end).trim();
+      walk.skip();
+
+      let tagPieces = tagContent.split(" ");
+      let tagName = tagPieces[0];
+      let tagData = null;
+      if (tagPieces.length > 1) {
+        tagData = tagPieces[1];
+      }
+
+      let renderedTag = Template.renderTag(tagName, tagData);
+      self.out.push(`${renderedTag}\n`);
+    };
 
     // ENHANCE IMAGE
     InlineCompiler.prototype.tryImg = function(walk) {
@@ -366,8 +393,8 @@ export class Rho {
     let inlineEmitNormalOriginal = InlineCompiler.prototype.emitNormal;
 
     InlineCompiler.prototype.emitNormal = function(walk) {
+      if (this.tryRenderShortcodes(walk)) { return; }
       if (this.emitText(walk)) { return; }
-      // if (this.tryInputText(walk)) return;
       let inlineEmitNormalOriginalBound = inlineEmitNormalOriginal.bind(this);
       inlineEmitNormalOriginalBound(walk);
     };
