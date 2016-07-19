@@ -21,6 +21,7 @@ interface IConfigFile {
     definition: Array<ICollectionDefinitionFile>
   },
   media: {
+    defaultWidth: number,
     imageWidths: Array<number>,
     imageExtensions: Array<string>
   },

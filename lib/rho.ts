@@ -230,7 +230,7 @@ export class Rho {
           let srcSetDefinition = `${ImageResizer.getResizedUrl(src, width)} ${width}w`;
           srcset.push(srcSetDefinition);
         });
-        this.out.push(`<img src="${src}" srcset="${srcset.join(",")}" alt="${escapedAlt}" title="${escapedAlt}"`);
+        this.out.push(`<img src="${ImageResizer.getResizedUrl(src, config.media.defaultWidth)}" srcset="${srcset.join(",")}" alt="${escapedAlt}" title="${escapedAlt}"`);
 
         if (escapedTypesArr.length > 0) {
           if (escapedTypesArr.indexOf("left") === -1 && escapedTypesArr.indexOf("right") === -1 &&
