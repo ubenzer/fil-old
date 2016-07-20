@@ -3,6 +3,7 @@ import {Config} from "./lib/config";
 import {Content} from "./models/content";
 import {ContentLookup} from "./models/contentLookup";
 import * as ChildProcess from "child_process";
+import {Sitemap} from "./lib/sitemap";
 
 let startDate = new Date();
 
@@ -44,6 +45,9 @@ collections.forEach(
     collection.renderToFile(collections);
   }
 );
+
+// generate sitemap
+Sitemap.generateSitemap(contents);
 
 // call frontend script
 console.log("Running frontend build script defined in config.");

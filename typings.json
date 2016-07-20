@@ -5,7 +5,7 @@
   },
   "devDependencies": {},
   "globalDependencies": {
-    "fs-extra": "registry:dt/fs-extra#0.0.0+20160319124112",
+    "fs-extra": "registry:dt/fs-extra#0.0.0+20160517121359",
     "glob": "registry:dt/glob#5.0.10+20160317120654",
     "jade": "registry:dt/jade#0.0.0+20160316155526",
     "minimatch": "registry:dt/minimatch#2.0.8+20160317120654",

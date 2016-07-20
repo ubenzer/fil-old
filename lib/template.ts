@@ -1,4 +1,4 @@
-import {Config} from "../lib/config";
+import {Config, IGeneralConfig} from "../lib/config";
 import {Content} from "../models/content";
 import {Category, IPaginatedCategory} from "../models/category";
 import {Constants} from "../constants";
@@ -58,6 +58,7 @@ export class Template {
     if (Template.templateGlobals !== null) { return Template.templateGlobals; }
 
     Template.templateGlobals = {
+      general: Config.getConfig().general,
       collections: collections,
       template: Config.getConfig().template
     };
@@ -70,6 +71,7 @@ interface ITagTemplateVariables {
   data: string;
 }
 interface ITemplateGlobals {
+  general: IGeneralConfig;
   collections: Array<Collection>;
   template: any; // Free from config area, corresponds to config/template
 }

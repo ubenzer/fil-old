@@ -16,6 +16,7 @@ interface IConfigFile {
     buildPath: string,
     siteBuildScript: string,
   }
+  general: IGeneralConfig
   collections: {
     config: ICollectionConfigFile,
     definition: Array<ICollectionDefinitionFile>
@@ -29,6 +30,9 @@ interface IConfigFile {
   content: IContentConfig
 }
 
+export interface IGeneralConfig {
+  baseUrl: string
+}
 export interface ICollectionConfigFile {
   collectionsPermalink: string;
   collectionPermalink: string;
