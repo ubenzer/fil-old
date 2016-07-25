@@ -4,6 +4,7 @@ import {Content} from "./models/content";
 import {ContentLookup} from "./models/contentLookup";
 import * as ChildProcess from "child_process";
 import {Sitemap} from "./lib/sitemap";
+import {Page} from "./lib/page";
 
 let startDate = new Date();
 
@@ -45,6 +46,8 @@ collections.forEach(
     collection.renderToFile(collections);
   }
 );
+
+Page.renderPages(collections);
 
 // generate sitemap
 Sitemap.generateSitemap(contents);

@@ -54,6 +54,15 @@ export class Template {
     return compileFn(locals);
   }
 
+  static renderPage(filePath: string, collections: Array<Collection>) {
+    let compileFn = jade.compileFile(filePath, {pretty: true});
+
+    let locals: IPageTemplateVariables = {
+      global: Template.getTemplateGlobals(collections)
+    };
+    return compileFn(locals);
+  }
+
   private static getTemplateGlobals(collections: Array<Collection>): ITemplateGlobals {
     if (Template.templateGlobals !== null) { return Template.templateGlobals; }
 
@@ -87,4 +96,6 @@ interface ICategoryPageTemplateVariables {
   global: ITemplateGlobals
 }
 
-
+interface IPageTemplateVariables {
+  global: ITemplateGlobals
+}
