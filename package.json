@@ -1,6 +1,6 @@
 {
   "name": "fil",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "A static site generator",
   "author": "Umut Benzer <umut@benzer.me>",
   "repository": {
@@ -45,5 +45,8 @@
     "prepublish": "npm run dev:compile && npm run dev:typings",
     "dev:compile": "./node_modules/.bin/shx rm -rf build && ./node_modules/.bin/tsc",
     "dev:typings": "./node_modules/.bin/shx rm -rf typings && ./node_modules/.bin/typings install"
+  },
+  "engines": {
+    "node": ">=6.3.1"
   }
 }

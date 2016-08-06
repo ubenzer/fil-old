@@ -103,14 +103,7 @@ To install type definitions you can run `npm run dev:typings`.
 If you want to compile a project using `fil`'s master version, you can call fil like this:
 ```sh
 # In the working directory of the website project
-node --harmony --harmony_default_parameters ../PATH/TO/FIL/.tmp/index.js
-```
- 
-## Caution
-This project uses experimental Node.js stuff. To list experimental Node.js features run:
-
-```sh
-node --v8-options | grep "in progress"
+node /PATH/TO/FIL/build/app/index.js
 ```
 
 ## Alternatives
