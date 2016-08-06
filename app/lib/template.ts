@@ -1,4 +1,4 @@
-import {Config, IGeneralConfig} from "../lib/config";
+import {Config, IGeneralConfig} from "./config";
 import {Content} from "../models/content";
 import {Category, IPaginatedCategory} from "../models/category";
 import {Constants} from "../constants";

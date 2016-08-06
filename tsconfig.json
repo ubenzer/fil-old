@@ -8,7 +8,8 @@
     "removeComments": true,
     "inlineSourceMap": true,
     "inlineSources": false,
-    "outDir": "./build"
+    "outDir": "./build",
+    "rootDir": "."
   },
   "exclude": [
     "node_modules",

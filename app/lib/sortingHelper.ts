@@ -1,4 +1,4 @@
-import {IContentSortingObject, IContentSortingFn, ICategorySortingObject, ICategorySortingFn} from "../lib/config";
+import {IContentSortingObject, IContentSortingFn, ICategorySortingObject, ICategorySortingFn} from "./config";
 import {Content} from "../models/content";
 import {Category} from "../models/category";
 

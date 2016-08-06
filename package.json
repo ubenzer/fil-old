@@ -1,6 +1,6 @@
 {
   "name": "fil",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "description": "A static site generator",
   "author": "Umut Benzer <umut@benzer.me>",
   "repository": {
@@ -19,6 +19,7 @@
     "collections",
     "taxonomy"
   ],
+  "bin": "build/app/index.js",
   "license": "MIT",
   "preferGlobal": true,
   "dependencies": {

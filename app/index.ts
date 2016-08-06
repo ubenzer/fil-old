@@ -1,3 +1,4 @@
+#!/usr/bin/env node --harmony --harmony_default_parameters
 import {Collection} from "./models/collection";
 import {Config} from "./lib/config";
 import {Content} from "./models/content";
