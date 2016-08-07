@@ -77,6 +77,16 @@ The structure of the project is not enforced anyway. The described structure is 
 approach. Only real requirement for the compiler is that, the project needs to provide a config file.
 Rest is up to the project.
 
+## ROADMAP
+The following features are planned.
+1. "Content snippet"s that are not a part of taxonomy which can be included as a part of static pages.
+2. Better handling of async tasks.
+3. Better caching.
+4. Ability to run compiler partially. (e.g. only build pages but not categories etc.)
+5. Hook mechanism similar to frontend build system hook for publishing.
+6. Better console output.
+7. Tests and code coverage.
+
 ## Contributing
 No defined way of contributing yet. Just go wild. %-) If you are planning to add a new feature, open a PR and let's
 discuss it first.
