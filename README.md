@@ -103,7 +103,7 @@ To install type definitions you can run `npm run dev:typings`.
 If you want to compile a project using `fil`'s master version, you can call fil like this:
 ```sh
 # In the working directory of the website project
-node /PATH/TO/FIL/build/app/index.js
+node /PATH/TO/FIL/build/app/cli.js
 ```
 
 ## Alternatives

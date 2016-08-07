@@ -1,7 +1,7 @@
 import * as path from "path";
 import {Category} from "../models/category";
 import {Content} from "../models/content";
-let config = require(path.join(process.cwd(), process.env.CONFIG || "config.js"));
+let config = require(path.join(process.cwd(), process.env.CONFIG || "filconfig.js"));
 
 export class Config {
   static getConfig(): IConfigFile {
