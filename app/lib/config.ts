@@ -1,15 +1,31 @@
 import * as path from "path";
 import {Category} from "../models/category";
 import {Content} from "../models/content";
-let config = require(path.join(process.cwd(), process.env.CONFIG || "filconfig.js"));
+import {provide, TYPES} from "../inversify.config";
 
-export class Config {
-  static getConfig(): IConfigFile {
-    return config;
+@provide(TYPES.Config)
+export class Config implements IConfig {
+  private configCache: IConfigFile = null;
+
+  constructor() {
+    this.configCache = <IConfigFile>require(path.join(process.cwd(), process.env.CONFIG || "filconfig.js"));
+    this.CONTENTS_DIR = path.join(process.cwd(), this.getConfig().build.contentPath);
+    this.TEMPLATE_DIR = path.join(process.cwd(), this.getConfig().build.skeletonPath, "template");
+    this.PAGES_DIR = path.join(process.cwd(), this.getConfig().build.skeletonPath, "pages");
+    this.OUTPUT_DIR = path.join(process.cwd(), this.getConfig().build.buildPath);
   }
+
+  getConfig(): IConfigFile {
+    return this.configCache;
+  }
+
+  CONTENTS_DIR: string = null;
+  TEMPLATE_DIR: string = null;
+  PAGES_DIR: string = null;
+  OUTPUT_DIR: string = null;
 }
 
-interface IConfigFile {
+export interface IConfigFile {
   build: {
     contentPath: string,
     skeletonPath: string,
@@ -62,7 +78,6 @@ export interface IContentSortingFn {
 export interface ICollectionDefinitionFile {
   id: string;
   categoryFn?: (content: Content) => Array<string>; // for a given Content returns array of category id
-  templateOptions?: Object|((Category) => Object)
 
   collectionPermalink?: string;
   categoryFirstPermalink?: string;
@@ -93,3 +108,5 @@ interface IContentConfig {
   templateOptions: Object|((content: Content) => Object)
 }
 export type IContentPermalinkCalculatorFnIn = (contentId: string, contentTitle: string, contentCreateDate: Date) => string;
+
+export interface IConfig {}

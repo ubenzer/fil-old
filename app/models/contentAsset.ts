@@ -1,10 +1,15 @@
 import * as path from "path";
 import {Content} from "./content";
 import {ImageResizer} from "../lib/imageResizer";
+import {lazyInject, provideConstructor, TYPES} from "../inversify.config";
 
 let slug = require("slug");
 
+@provideConstructor(TYPES.ContentAssetConstructor)
 export class ContentAsset {
+  @lazyInject(TYPES.ImageResizer)
+  private ImageResizer: ImageResizer;
+
   assetId: string; // file path (without leading /) relative to the content it belongs
   inputFile: string; // file path (without leading /) relative to the content it belongs
   owner: Content; // owner of this asset
@@ -17,7 +22,7 @@ export class ContentAsset {
 
     let extension = path.extname(fileName).toLowerCase();
 
-    if (ImageResizer.IMAGE_EXTENSIONS.indexOf(extension) > -1) {
+    if (this.ImageResizer.IMAGE_EXTENSIONS.indexOf(extension) > -1) {
       this.isImage = true;
     }
   }

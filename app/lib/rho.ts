@@ -1,15 +1,16 @@
+import * as mime from "mime";
+import * as path from "path";
 import * as s from "string";
 import {ContentLookup} from "../models/contentLookup";
 import {Content} from "../models/content";
 import {Config} from "./config";
 import {ImageResizer} from "./imageResizer";
-import * as mime from "mime";
-import * as path from "path";
 import {Template} from "./template";
+
+import {lazyInject, provideConstructor, TYPES} from "../inversify.config";
 
 enum ParserState {CONTENT_ID, ASSET_ID}
 const CLOSE_DELIMITER = "@";
-let config = Config.getConfig();
 
 /**
  * This class wraps original rho project and does the following changes:
@@ -41,7 +42,17 @@ let config = Config.getConfig();
  *    This flags can be used by template engine to do something magical. (or can be used as classes)
  *
  */
+@provideConstructor(TYPES.RhoConstructor)
 export class Rho {
+  @lazyInject(TYPES.Config)
+  private Config: Config;
+
+  @lazyInject(TYPES.ImageResizer)
+  private ImageResizer: ImageResizer;
+
+  @lazyInject(TYPES.Template)
+  private Template: Template;
+
   private post: Content;
   private contentLookup: ContentLookup;
   private blockCompiler: any;
@@ -144,7 +155,7 @@ export class Rho {
         tagData = tagPieces[1];
       }
 
-      let renderedTag = Template.renderTag(tagName, tagData);
+      let renderedTag = rhoClass.Template.renderTag(tagName, tagData);
       self.out.push(`${renderedTag}\n`);
     };
 
@@ -211,26 +222,26 @@ export class Rho {
 
       src = rhoClass.resolveUrl(src);
 
-      if (ImageResizer.IMAGE_EXTENSIONS.indexOf(path.extname(src)) > -1) {
+      if (rhoClass.ImageResizer.IMAGE_EXTENSIONS.indexOf(path.extname(src)) > -1) {
         this.out.push(`<picture>\n`);
 
-        config.media.imageExtensions.forEach((extension) => {
+        rhoClass.Config.getConfig().media.imageExtensions.forEach((extension) => {
           let srcset: Array<string> = [];
           let mimeType = mime.lookup(extension);
 
-          config.media.imageWidths.forEach((width) => {
-            let srcSetDefinition = `${ImageResizer.getResizedUrl(src, width, extension)} ${width}w`;
+          rhoClass.Config.getConfig().media.imageWidths.forEach((width) => {
+            let srcSetDefinition = `${rhoClass.ImageResizer.getResizedUrl(src, width, extension)} ${width}w`;
             srcset.push(srcSetDefinition);
           });
           this.out.push(`<source type="${mimeType}" srcset="${srcset.join(",")}">\n`);
         });
 
         let srcset: Array<string> = [];
-        config.media.imageWidths.forEach((width) => {
-          let srcSetDefinition = `${ImageResizer.getResizedUrl(src, width)} ${width}w`;
+        rhoClass.Config.getConfig().media.imageWidths.forEach((width) => {
+          let srcSetDefinition = `${rhoClass.ImageResizer.getResizedUrl(src, width)} ${width}w`;
           srcset.push(srcSetDefinition);
         });
-        this.out.push(`<img src="${ImageResizer.getResizedUrl(src, config.media.defaultWidth)}" srcset="${srcset.join(",")}" alt="${escapedAlt}" title="${escapedAlt}"`);
+        this.out.push(`<img src="${rhoClass.ImageResizer.getResizedUrl(src, rhoClass.Config.getConfig().media.defaultWidth)}" srcset="${srcset.join(",")}" alt="${escapedAlt}" title="${escapedAlt}"`);
 
         if (escapedTypesArr.length > 0) {
           if (escapedTypesArr.indexOf("left") === -1 && escapedTypesArr.indexOf("right") === -1 &&

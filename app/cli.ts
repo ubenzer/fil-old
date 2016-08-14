@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import * as chalk from "chalk";
 import * as semver from "semver";
+import {kernel, TYPES} from "./inversify.config";
 
 let Liftoff = require("liftoff");
 let tildify = require("tildify");
@@ -9,6 +10,20 @@ let cli = new Liftoff({
   name: "fil",
   configName: "filconfig"
 });
+
+var normalizedPath = require("path").join(__dirname, "lib");
+
+require("fs").readdirSync(normalizedPath).forEach(function(file) {
+  require("./lib/" + file);
+});
+
+var normalizedPath = require("path").join(__dirname, "models");
+require("fs").readdirSync(normalizedPath).forEach(function(file) {
+  require("./models/" + file);
+});
+
+require("./index");
+require("./inversify.config");
 
 // Exit with 0 or 1
 let failed = false;
@@ -49,11 +64,12 @@ function run(env: IEnv) {
     );
   }
 
-  let fil = require("./index");
+  let fil: any = kernel.get(TYPES.Fil);
   if (env.modulePath) {
-    fil = require(env.modulePath);
+    let filModule = require(env.modulePath);
+    fil = new filModule.Fil();
   }
-  (new fil.Fil).generate();
+  fil.generate();
 }
 
 interface IEnv {

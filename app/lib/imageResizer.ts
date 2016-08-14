@@ -1,22 +1,31 @@
-import {Config} from "./config";
 import * as path from "path";
-import * as fs from "fs";
-
+import {inject} from "inversify";
+import {provide, TYPES} from "../inversify.config";
+import {Config, IConfigFile} from "./config";
 let sharp = require("sharp");
-let config = Config.getConfig();
+let fs = require("fs");
 
+@provide(TYPES.ImageResizer)
 export class ImageResizer {
-  static IMAGE_EXTENSIONS = [".jpg", ".png"];
-  static resize(srcFile: string, outFile: string): void {
+  private config: IConfigFile;
+
+  constructor(
+    @inject(TYPES.Config) Config: Config
+  ) {
+    this.config = Config.getConfig();
+  }
+
+  IMAGE_EXTENSIONS = [".jpg", ".png"];
+  resize(srcFile: string, outFile: string): void {
     // TODO return promise and give necessary love to async at some point
-    config.media.imageWidths.forEach((width) => {
-      config.media.imageExtensions.forEach((ext) => {
-        ImageResizer._resize(srcFile, outFile, width, ext);
+    this.config.media.imageWidths.forEach((width) => {
+      this.config.media.imageExtensions.forEach((ext) => {
+        this._resize(srcFile, outFile, width, ext);
       });
-      ImageResizer._resize(srcFile, outFile, width); // keep original format
+      this._resize(srcFile, outFile, width); // keep original format
     });
   }
-  private static _resize(srcFile: string, outFile: string, width: number, ext?: string) {
+  private _resize(srcFile: string, outFile: string, width: number, ext?: string) {
     let fileExtension = path.extname(outFile);
     let fileName = path.basename(outFile, fileExtension);
     let outFileName = `${fileName}-${width}${ext ? '.' + ext : fileExtension}`;
@@ -41,7 +50,7 @@ export class ImageResizer {
 
   }
 
-  static getResizedUrl(rawUrl: string, width: number, ext?: string): string {
+  getResizedUrl(rawUrl: string, width: number, ext?: string): string {
     let fileExtension = path.extname(rawUrl);
     let fileName = path.basename(rawUrl, fileExtension);
     let outFileName = `${fileName}-${width}${ext ? '.' + ext : fileExtension}`;

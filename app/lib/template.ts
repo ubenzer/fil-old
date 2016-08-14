@@ -1,26 +1,36 @@
-import {Config, IGeneralConfig} from "./config";
+import {Config, IGeneralConfig, IConfigFile} from "./config";
 import {Content} from "../models/content";
 import {Category, IPaginatedCategory} from "../models/category";
-import {Constants} from "../constants";
 import {Collection} from "../models/collection";
 import * as jade from "jade";
 import * as path from "path";
+import {provide, TYPES} from "../inversify.config";
+import {inject} from "inversify";
 
+@provide(TYPES.Template)
 export class Template {
-  private static templateGlobals: ITemplateGlobals = null;
+  private config: IConfigFile;
+
+  constructor(
+    @inject(TYPES.Config) private Config: Config
+  ) {
+    this.config = Config.getConfig();
+  }
+
+  private templateGlobals: ITemplateGlobals = null;
 
   /**
    * Renders a content into html
    * @param content Content to be rendered
    * @param collections Whole available collections in the system
      */
-  static renderContent(content: Content, collections: Array<Collection>): string {
-    let templateFile = path.join(Constants.TEMPLATE_DIR, content.templateFile);
+  renderContent(content: Content, collections: Array<Collection>): string {
+    let templateFile = path.join(this.Config.TEMPLATE_DIR, content.templateFile);
     let compileFn = jade.compileFile(templateFile, {pretty: true});
 
     let locals: ISingleContentTemplateVariables = {
       content: content,
-      global: Template.getTemplateGlobals(collections)
+      global: this.getTemplateGlobals(collections)
     };
     return compileFn(locals);
   }
@@ -31,21 +41,21 @@ export class Template {
    * @param paginationInfo related to a specific page of that category
    * @param collections Whole available collections in the system
    */
-  static renderCategory(category: Category, paginationInfo: IPaginatedCategory, collections: Array<Collection>): string {
+  renderCategory(category: Category, paginationInfo: IPaginatedCategory, collections: Array<Collection>): string {
     // TODO
-    let templateFile = path.join(Constants.TEMPLATE_DIR, "index.jade");
+    let templateFile = path.join(this.Config.TEMPLATE_DIR, "index.jade");
     let compileFn = jade.compileFile(templateFile, {pretty: true});
 
     let locals: ICategoryPageTemplateVariables = {
       page: paginationInfo,
       category: category,
-      global: Template.getTemplateGlobals(collections)
+      global: this.getTemplateGlobals(collections)
     };
     return compileFn(locals);
   }
 
-  static renderTag(tagName: string, tagData: string): string {
-    let templateFile = path.join(Constants.TEMPLATE_DIR, "tags", `${tagName}.jade`);
+  renderTag(tagName: string, tagData: string): string {
+    let templateFile = path.join(this.Config.TEMPLATE_DIR, "tags", `${tagName}.jade`);
     let compileFn = jade.compileFile(templateFile, {pretty: true});
 
     let locals: ITagTemplateVariables = {
@@ -54,25 +64,25 @@ export class Template {
     return compileFn(locals);
   }
 
-  static renderPage(filePath: string, collections: Array<Collection>) {
+  renderPage(filePath: string, collections: Array<Collection>) {
     let compileFn = jade.compileFile(filePath, {pretty: true});
 
     let locals: IPageTemplateVariables = {
-      global: Template.getTemplateGlobals(collections)
+      global: this.getTemplateGlobals(collections)
     };
     return compileFn(locals);
   }
 
-  private static getTemplateGlobals(collections: Array<Collection>): ITemplateGlobals {
-    if (Template.templateGlobals !== null) { return Template.templateGlobals; }
+  private getTemplateGlobals(collections: Array<Collection>): ITemplateGlobals {
+    if (this.templateGlobals !== null) { return this.templateGlobals; }
 
-    Template.templateGlobals = {
-      general: Config.getConfig().general,
+    this.templateGlobals = {
+      general: this.Config.getConfig().general,
       collections: collections,
-      template: Config.getConfig().template
+      template: this.Config.getConfig().template
     };
 
-    return Template.templateGlobals;
+    return this.templateGlobals;
   }
 }
 

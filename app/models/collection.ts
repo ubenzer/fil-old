@@ -1,28 +1,38 @@
-import {IContentSortingObject, IContentSortingFn, ICategorySortingObject, ICategorySortingFn, ICollectionDefinitionFile, ICollectionConfigFile} from "../lib/config"
+import {interfaces} from "inversify";
+import {CollectionStatic} from "./collection.static";
+import {IContentSortingObject, IContentSortingFn, ICategorySortingObject, ICategorySortingFn} from "../lib/config"
 import {SortingHelper} from "../lib/sortingHelper";
 import {Content} from "./content"
 import {Category} from "./category"
+import {lazyInject, provideConstructor, TYPES} from "../inversify.config";
 
+@provideConstructor(TYPES.CollectionConstructor)
 export class Collection {
+  @lazyInject(TYPES.CollectionStatic)
+  private CollectionStatic: CollectionStatic;
+
+  @lazyInject(TYPES.SortingHelper)
+  private SortingHelper: SortingHelper;
+
+  @lazyInject(TYPES.CategoryConstructor)
+  private Category: interfaces.Newable<Category>;
+
   id: string;
   categoryIdGeneratorFunction: (content: Content) => Array<string>;
-  templateOptionsFn: (category: Category) => Object;
 
   collectionPermalink: string;
   categoryFirstPermalink: string;
   categoryPermalink: string;
   pagination: number;
-  categorySortingFn: ICategorySortingFn;
-  contentSortingFn: IContentSortingFn;
+  categorySorting: ICategorySortingObject|ICategorySortingFn;
+  contentSorting: IContentSortingObject|IContentSortingFn;
   subCategorySeparator: string;
   categoryIdToNameFn: (string) => string;
-
   categories: Array<Category> = [];
 
   constructor(
     id: string,
     categoryIdGeneratorFunction: (content: Content) => Array<string> = null,
-    templateOptionsFn: (Category) => Object = Collection.defaultTemplateOptionsFn,
     collectionPermalink: string,
     categoryFirstPermalink: string,
     categoryPermalink: string,
@@ -30,17 +40,16 @@ export class Collection {
     categorySorting: ICategorySortingObject|ICategorySortingFn,
     contentSorting: IContentSortingObject|IContentSortingFn,
     subCategorySeparator: string,
-    categoryIdToNameFn: (string) => string = Collection.defaultCategoryIdToNameFn
+    categoryIdToNameFn: (string) => string = null
   ) {
     this.id = id;
     this.categoryIdGeneratorFunction = categoryIdGeneratorFunction || this.defaultCategoryIdGeneratorFn;
-    this.templateOptionsFn = templateOptionsFn;
     this.collectionPermalink = collectionPermalink;
     this.categoryFirstPermalink = categoryFirstPermalink;
     this.categoryPermalink = categoryPermalink;
     this.pagination = pagination;
-    this.categorySortingFn = SortingHelper.getNormalizedCategorySortingFn(categorySorting);
-    this.contentSortingFn = SortingHelper.getNormalizedContentSortingFn(contentSorting);
+    this.categorySorting = categorySorting;
+    this.contentSorting = contentSorting;
     this.subCategorySeparator = subCategorySeparator;
     this.categoryIdToNameFn = categoryIdToNameFn;
   }
@@ -120,7 +129,7 @@ export class Collection {
    */
   sortCategories(): void {
     this.categories.forEach(c => c.sortCategories());
-    this.categories.sort(this.categorySortingFn);
+    this.categories.sort(this.SortingHelper.getNormalizedCategorySortingFn(this.categorySorting));
   }
 
   calculatePagination(): void {
@@ -159,14 +168,16 @@ export class Collection {
       return maybeCategory;
     }
 
-    let category = new Category(
+    let normalizedCategoryIdToNameFn = this.categoryIdToNameFn || this.CollectionStatic.defaultCategoryIdToNameFn;
+
+    let category = new this.Category(
       categoryId,
-      this.categoryIdToNameFn(categoryId),
+      normalizedCategoryIdToNameFn(categoryId),
       this.categoryFirstPermalink,
       this.categoryPermalink,
       this.pagination,
-      this.categorySortingFn,
-      this.contentSortingFn,
+      this.SortingHelper.getNormalizedCategorySortingFn(this.categorySorting),
+      this.SortingHelper.getNormalizedContentSortingFn(this.contentSorting),
       this
     );
 
@@ -196,37 +207,6 @@ export class Collection {
     }
 
     return maybeCollectionRelatedFrontmatter;
-  }
-
-  static fromCollectionConfig(definition: ICollectionDefinitionFile, config: ICollectionConfigFile): Collection {
-    let normalizedTemplateOptions = undefined;
-    if (definition.templateOptions instanceof Object) {
-      normalizedTemplateOptions = () => definition.templateOptions;
-    } else if (definition.templateOptions instanceof Function) {
-      normalizedTemplateOptions = definition.templateOptions;
-    }
-
-    return new Collection(
-      definition.id,
-      definition.categoryFn,
-      normalizedTemplateOptions,
-      definition.collectionPermalink || config.collectionPermalink,
-      definition.categoryFirstPermalink || config.categoryFirstPermalink,
-      definition.categoryPermalink || config.categoryPermalink,
-      definition.pagination || config.pagination,
-      definition.categorySorting || config.categorySorting,
-      definition.contentSorting || config.contentSorting,
-      definition.subCategorySeparator || config.subCategorySeparator,
-      definition.categoryIdToNameFn
-    );
-  }
-
-  private static defaultTemplateOptionsFn(): Object {
-    return {};
-  }
-
-  private static defaultCategoryIdToNameFn(id: string): string {
-    return id;
   }
 }
 

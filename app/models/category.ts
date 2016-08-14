@@ -1,18 +1,26 @@
-import fs = require("fs-extra");
-import path = require("path");
-
-import {ICategorySortingFn, IContentSortingFn} from "../lib/config";
+import * as fs from "fs-extra";
+import * as path from "path";
+import {lazyInject, provideConstructor, TYPES} from "../inversify.config";
+import {ICategorySortingFn, IContentSortingFn, Config} from "../lib/config";
 import {SortingHelper} from "../lib/sortingHelper";
 import {Content} from "./content";
 import {Collection} from "./collection";
-import {Constants} from "../constants";
 import {Template} from "../lib/template";
-
 let slug = require("slug");
 
 const HTML_PAGE_NAME = "index.html";
 
+@provideConstructor(TYPES.CategoryConstructor)
 export class Category {
+  @lazyInject(TYPES.Config)
+  private Config: Config;
+
+  @lazyInject(TYPES.SortingHelper)
+  private SortingHelper: SortingHelper;
+
+  @lazyInject(TYPES.Template)
+  private Template: Template;
+
   id: string;
   title: string;
 
@@ -64,8 +72,8 @@ export class Category {
    * @param content to be registered as a member of this category
      */
   registerContent(content: Content): void {
-    SortingHelper.putIntoSortedArray(this.ownContents, content, this.contentSortingFn);
-    SortingHelper.putIntoSortedArray(this.contents, content, this.contentSortingFn);
+    this.SortingHelper.putIntoSortedArray(this.ownContents, content, this.contentSortingFn);
+    this.SortingHelper.putIntoSortedArray(this.contents, content, this.contentSortingFn);
     if (this.parentCategory !== null) {
       this.parentCategory.registerFromChild(content);
     }
@@ -76,7 +84,7 @@ export class Category {
     if (indexOfContent > -1) {
       this.ownContents.splice(indexOfContent, 1);
     } else {
-      SortingHelper.putIntoSortedArray(this.contents, content, this.contentSortingFn);
+      this.SortingHelper.putIntoSortedArray(this.contents, content, this.contentSortingFn);
     }
 
     if (this.parentCategory !== null) {
@@ -91,17 +99,17 @@ export class Category {
 
   calculatePagination(): void {
     this.subCategories.forEach(c => c.calculatePagination());
-    let paginatedContents = Category.chunk(this.contents, this.pagination);
+    let paginatedContents = this.chunk(this.contents, this.pagination);
 
     this.paginatedContents = paginatedContents.map(
       (paginatedContents, index, array): IPaginatedCategory => {
         // previous permalink and first page calculation
         let prevPagePermalink = null;
-        let firstPagePermalink = Category.generatePermalink(this.categoryFirstPermalink, this, 1);
+        let firstPagePermalink = this.generatePermalink(this.categoryFirstPermalink, this, 1);
 
         let isFirstPage = true;
         if (index > 1) {
-          prevPagePermalink = Category.generatePermalink(this.categoryPermalink, this, index);
+          prevPagePermalink = this.generatePermalink(this.categoryPermalink, this, index);
           isFirstPage = false;
         } else if (index === 1) {
           prevPagePermalink = firstPagePermalink;
@@ -111,19 +119,19 @@ export class Category {
         // current permalink calculation
         let permalink = null;
         if (index === 0) {
-          permalink = Category.generatePermalink(this.categoryFirstPermalink, this, 1);
+          permalink = this.generatePermalink(this.categoryFirstPermalink, this, 1);
         } else {
-          permalink = Category.generatePermalink(this.categoryPermalink, this, index + 1);
+          permalink = this.generatePermalink(this.categoryPermalink, this, index + 1);
         }
 
         let outputFolder = permalink.replace(new RegExp("/", "g"), path.sep);
 
         // next permalink and last page calculation
         let nextPagePermalink = null;
-        let lastPagePermalink = Category.generatePermalink(this.categoryPermalink, this, array.length);
+        let lastPagePermalink = this.generatePermalink(this.categoryPermalink, this, array.length);
         let isLastPage = true;
         if (index < array.length - 1) {
-          nextPagePermalink = Category.generatePermalink(this.categoryPermalink, this, index + 2);
+          nextPagePermalink = this.generatePermalink(this.categoryPermalink, this, index + 2);
           isLastPage = false;
         }
 
@@ -149,8 +157,8 @@ export class Category {
 
     this.paginatedContents.forEach(
       paginatedContent => {
-        let builtTemplate = Template.renderCategory(this, paginatedContent, collections);
-        let normalizedPath = path.join(Constants.OUTPUT_DIR, paginatedContent.outputFolder, HTML_PAGE_NAME);
+        let builtTemplate = this.Template.renderCategory(this, paginatedContent, collections);
+        let normalizedPath = path.join(this.Config.OUTPUT_DIR, paginatedContent.outputFolder, HTML_PAGE_NAME);
 
         fs.outputFileSync(normalizedPath, builtTemplate);
       }
@@ -173,7 +181,7 @@ export class Category {
     this.subCategories.sort(this.categorySortingFn);
   }
 
-  private static chunk<T>(array: Array<T>, chunkSize: number): Array<Array<T>> {
+  private chunk<T>(array: Array<T>, chunkSize: number): Array<Array<T>> {
     var tbReturned = [];
     for (let i = 0; i < array.length; i += chunkSize) {
       tbReturned.push(array.slice(i, i + chunkSize));
@@ -188,7 +196,7 @@ export class Category {
    * @param page current page
    * @returns {string} Permalink string with real values
    */
-  private static generatePermalink(permalinkTemplateString: string, category: Category, page: number): string {
+  private generatePermalink(permalinkTemplateString: string, category: Category, page: number): string {
     let slugCollection: string = slug(category.belongsToCollection.id, slug.defaults.modes["rfc3986"]);
     let slugSingleCategory: string = slug(category.id, slug.defaults.modes["rfc3986"]);
     let slugPage: string = page.toString();

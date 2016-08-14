@@ -2,7 +2,9 @@
 
 [![Dependency Status](https://david-dm.org/ubenzer/fil.svg)](https://david-dm.org/ubenzer/fil) 
 [![devDependency Status](https://david-dm.org/ubenzer/fil/dev-status.svg)](https://david-dm.org/ubenzer/fil#info=devDependencies)
-
+[![Coverage Status](https://coveralls.io/repos/github/ubenzer/fil/badge.svg?branch=master)](https://coveralls.io/github/ubenzer/fil?branch=master)
+[![Gitter](https://badges.gitter.im/ubenzer/fil.svg)](https://gitter.im/ubenzer/fil?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+                 
 Fil is a static content engine that can be used to host no-so-dynamic web sites such as blogs, technical documents, 
 internal company tech wikies and content management systems.
 
@@ -78,14 +80,15 @@ approach. Only real requirement for the compiler is that, the project needs to p
 Rest is up to the project.
 
 ## ROADMAP
-The following features are planned.
+The following features are planned. Not in particular order.
 1. "Content snippet"s that are not a part of taxonomy which can be included as a part of static pages.
 2. Better handling of async tasks.
 3. Better caching.
 4. Ability to run compiler partially. (e.g. only build pages but not categories etc.)
 5. Hook mechanism similar to frontend build system hook for publishing.
 6. Better console output.
-7. Tests and code coverage.
+7. Tests and code coverage. (base structure established, need to write tests)
+8. Need tslint.
 
 ## Contributing
 No defined way of contributing yet. Just go wild. %-) If you are planning to add a new feature, open a PR and let's
