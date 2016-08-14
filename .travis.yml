@@ -14,6 +14,9 @@ addons:
 osx_image: xcode8
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export CXX=g++-4.8; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install homebrew/science/vips --with-webp; fi
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
 install:
   - npm update
   - npm install
