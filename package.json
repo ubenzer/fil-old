@@ -56,7 +56,7 @@
     "typings": "^1.3.2"
   },
   "scripts": {
-    "prepublish": "npm run dev:compile && npm run dev:typings",
+    "prepublish": "npm run dev:typings && npm run dev:compile",
     "dev:compile": "shx rm -rf build && tsc",
     "dev:typings": "shx rm -rf typings && typings install",
     "test": "istanbul cover _mocha build/test/**/*.js && remap-istanbul --input coverage/coverage.json --output coverage/typescript-html --type html"
