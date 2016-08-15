@@ -5,7 +5,10 @@
 [![David](https://img.shields.io/david/ubenzer/fil.svg?maxAge=3600&style=flat-square)](https://david-dm.org/ubenzer/fil)
 [![David](https://img.shields.io/david/dev/ubenzer/fil.svg?maxAge=3600&style=flat-square)](https://david-dm.org/ubenzer/fil#info=devDependencies)
 [![Codecov](https://img.shields.io/codecov/c/github/ubenzer/fil.svg?maxAge=3600&style=flat-square)](https://codecov.io/gh/ubenzer/fil)
-
+[![npm](https://img.shields.io/npm/v/fil.svg?maxAge=3600&style=flat-square)](https://www.npmjs.com/package/fil)
+[![npm](https://img.shields.io/npm/dt/fil.svg?maxAge=3600&style=flat-square)](https://www.npmjs.com/package/fil)
+[![Beerpay](https://img.shields.io/beerpay/ubenzer/fil.svg?maxAge=2592000&style=flat-square)](https://beerpay.io/ubenzer/fil)
+   
 Fil is a static content engine that can be used to host no-so-dynamic web sites such as blogs, technical documents, 
 internal company tech wikies and content management systems.
 
