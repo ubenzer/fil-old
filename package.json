@@ -60,7 +60,7 @@
     "prepublish": "npm run dev:typings && npm run dev:compile",
     "dev:compile": "shx rm -rf build && tsc",
     "dev:typings": "shx rm -rf typings && typings install",
-    "test": "istanbul cover _mocha build/test/**/*.js && remap-istanbul --input coverage/coverage.json --output coverage/typescript-html --type html && remap-istanbul --input coverage/coverage.json --output coverage/typescript-lcov.info --type json"
+    "test": "istanbul cover _mocha build/test/**/*.js && remap-istanbul --input coverage/coverage.json --output coverage/typescript-html --type html && remap-istanbul --input coverage/coverage.json --output coverage/typescript.json --type json"
   },
   "engines": {
     "node": ">=6.3.1"
