@@ -2,8 +2,7 @@ language: node_js
 node_js:
   - "6"
 os:
-  - linux
-  - osx
+  - linux # - osx
 sudo: false
 addons:
   apt:
@@ -17,6 +16,7 @@ before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install homebrew/science/vips --with-webp; fi
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+  - cat ./coverage/typescript-lcov.info | ./node_modules/coveralls/bin/coveralls.js
 install:
   - npm update
   - npm install
