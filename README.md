@@ -4,8 +4,7 @@
 [![Travis](https://img.shields.io/travis/ubenzer/fil.svg?maxAge=3600&style=flat-square)](https://travis-ci.org/ubenzer/fil)
 [![David](https://img.shields.io/david/ubenzer/fil.svg?maxAge=3600&style=flat-square)](https://david-dm.org/ubenzer/fil)
 [![David](https://img.shields.io/david/dev/ubenzer/fil.svg?maxAge=3600&style=flat-square)](https://david-dm.org/ubenzer/fil#info=devDependencies)
-                 
-[![Coverage Status](https://coveralls.io/repos/github/ubenzer/fil/badge.svg?branch=master)](https://coveralls.io/github/ubenzer/fil?branch=master)
+[![Coveralls](https://img.shields.io/coveralls/ubenzer/fil.svg?maxAge=3600?style=flat-square)](https://coveralls.io/github/ubenzer/fil?branch=master)
 
 Fil is a static content engine that can be used to host no-so-dynamic web sites such as blogs, technical documents, 
 internal company tech wikies and content management systems.
