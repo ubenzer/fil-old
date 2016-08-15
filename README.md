@@ -4,7 +4,7 @@
 [![Travis](https://img.shields.io/travis/ubenzer/fil.svg?maxAge=3600&style=flat-square)](https://travis-ci.org/ubenzer/fil)
 [![David](https://img.shields.io/david/ubenzer/fil.svg?maxAge=3600&style=flat-square)](https://david-dm.org/ubenzer/fil)
 [![David](https://img.shields.io/david/dev/ubenzer/fil.svg?maxAge=3600&style=flat-square)](https://david-dm.org/ubenzer/fil#info=devDependencies)
-[![Coveralls](https://img.shields.io/coveralls/ubenzer/fil.svg?maxAge=3600&style=flat-square)](https://coveralls.io/github/ubenzer/fil?branch=master)
+[![Codecov](https://img.shields.io/codecov/c/github/ubenzer/fil.svg?maxAge=3600&style=flat-square)](https://codecov.io/gh/ubenzer/fil)
 
 Fil is a static content engine that can be used to host no-so-dynamic web sites such as blogs, technical documents, 
 internal company tech wikies and content management systems.
@@ -88,7 +88,7 @@ The following features are planned. Not in particular order.
 4. Ability to run compiler partially. (e.g. only build pages but not categories etc.)
 5. Hook mechanism similar to frontend build system hook for publishing.
 6. Better console output.
-7. Tests and code coverage. (base structure established, need to write tests)
+7. Improve code coverage. (just built test and coverage system!)
 8. Need tslint.
 
 ## Contributing
