@@ -16,7 +16,7 @@ before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install homebrew/science/vips --with-webp; fi
 after_success:
   - bash <(curl -s https://codecov.io/bash)
-  - cat ./coverage/typescript.json | ./node_modules/coveralls/bin/coveralls.js
+  - cat ./coverage/typescript-lcov.info | ./node_modules/coveralls/bin/coveralls.js
 install:
   - npm update
   - npm install
