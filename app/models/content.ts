@@ -21,7 +21,7 @@ export class Content {
 
   title: string; // content title
   content: string; // original content
-  templateFile: string; // which jade template to be used, relative to template folder
+  templateFile: string; // which pug template to be used, relative to template folder
   createDate: moment.Moment; // content's original creation date
   editDate: moment.Moment; // content's last update date
 
@@ -51,7 +51,7 @@ export class Content {
     outputFolder: string,
     title: string,
     content: string,
-    templateFile: string = "content.jade",
+    templateFile: string = "content.pug",
     createDate: Date,
     editDate: Date,
     rawFrontmatter: Object

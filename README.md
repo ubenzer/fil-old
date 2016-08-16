@@ -15,7 +15,7 @@ internal company tech wikies and content management systems.
 ## Features
 1. Super fast!
 2. Supports multiple content hierarchies (date archive, (sub)categories, tags, people etc.) via configuration files.
-3. Uses Jade as template engine.
+3. Uses Pug as template engine.
 4. You can hook your own asset build system for icons, images, javascripts files etc.
 5. Supports static "page"s. (special content such as home page, contact page etc.)
 

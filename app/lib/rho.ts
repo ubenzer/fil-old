@@ -272,7 +272,7 @@ export class Rho {
 
       link = rhoClass.resolveUrl(link);
 
-      // TODO we need to move html creation to jade at some point
+      // TODO we need to move html creation to pug at some point
       this.out.push(`<a href="${link}"${escapedFlagsArr.indexOf("new")>-1?"{ target='_blank'}":""}>${innerLinkHtml}</a>`);
     };
 

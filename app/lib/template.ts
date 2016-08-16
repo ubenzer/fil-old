@@ -5,7 +5,7 @@ import {Content} from "../models/content";
 import {Config, IGeneralConfig} from "./config";
 import {inject} from "inversify";
 import * as path from "path";
-import * as jade from "pug";
+import * as pug from "pug";
 
 @provide(TYPES.Template)
 export class Template {
@@ -22,7 +22,7 @@ export class Template {
    */
   renderContent(content: Content, collections: Array<Collection>): string {
     let templateFile = path.join(this._config.TEMPLATE_DIR, content.templateFile);
-    let compileFn = jade.compileFile(templateFile, {pretty: true});
+    let compileFn = pug.compileFile(templateFile, {pretty: true});
 
     let locals: ISingleContentTemplateVariables = {
       content: content,
@@ -39,8 +39,8 @@ export class Template {
    */
   renderCategory(category: Category, paginationInfo: IPaginatedCategory, collections: Array<Collection>): string {
     // TODO
-    let templateFile = path.join(this._config.TEMPLATE_DIR, "index.jade");
-    let compileFn = jade.compileFile(templateFile, {pretty: true});
+    let templateFile = path.join(this._config.TEMPLATE_DIR, "index.pug");
+    let compileFn = pug.compileFile(templateFile, {pretty: true});
 
     let locals: ICategoryPageTemplateVariables = {
       category: category,
@@ -51,8 +51,8 @@ export class Template {
   }
 
   renderTag(tagName: string, tagData: string): string {
-    let templateFile = path.join(this._config.TEMPLATE_DIR, "tags", `${tagName}.jade`);
-    let compileFn = jade.compileFile(templateFile, {pretty: true});
+    let templateFile = path.join(this._config.TEMPLATE_DIR, "tags", `${tagName}.pug`);
+    let compileFn = pug.compileFile(templateFile, {pretty: true});
 
     let locals: ITagTemplateVariables = {
       data: tagData
@@ -61,7 +61,7 @@ export class Template {
   }
 
   renderPage(filePath: string, collections: Array<Collection>): string {
-    let compileFn = jade.compileFile(filePath, {pretty: true});
+    let compileFn = pug.compileFile(filePath, {pretty: true});
 
     let locals: IPageTemplateVariables = {
       global: this.getTemplateGlobals(collections)

@@ -1,6 +1,6 @@
 root = true
 
-[*.{js,ts,jade,json,styl}]
+[*.{js,ts,pug,json,styl}]
 end_of_line = lf
 insert_final_newline = true
 indent_style = space
