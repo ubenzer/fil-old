@@ -1,9 +1,11 @@
 {
   "dependencies": {
     "chalk": "registry:npm/chalk#1.0.0+20160723033700",
+    "debug": "registry:npm/debug#2.0.0+20160723033700",
     "mime": "registry:npm/mime#1.3.0+20160723033700",
     "pad-left": "registry:npm/pad-left#2.0.0+20160723033700",
-    "semver": "registry:npm/semver#5.0.0+20160723033700"
+    "semver": "registry:npm/semver#5.0.0+20160723033700",
+    "slug": "registry:npm/slug#0.9.0+20160723033700"
   },
   "devDependencies": {},
   "globalDependencies": {
@@ -12,10 +14,10 @@
     "inversify": "file:node_modules/inversify-dts/inversify/inversify.d.ts",
     "inversify-binding-decorators": "file:node_modules/inversify-dts/inversify-binding-decorators/inversify-binding-decorators.d.ts",
     "inversify-inject-decorators": "file:node_modules/inversify-dts/inversify-inject-decorators/inversify-inject-decorators.d.ts",
-    "jade": "registry:dt/jade#0.0.0+20160316155526",
     "minimatch": "registry:dt/minimatch#2.0.8+20160317120654",
     "mocha": "registry:env/mocha#2.2.5+20160723033700",
     "node": "registry:env/node#6.0.0+20160723033700",
+    "custom": "file:custom.d.ts",
     "reflect-metadata": "file:node_modules/reflect-metadata/reflect-metadata.d.ts",
     "string": "registry:dt/string#0.0.0+20160316155526",
     "stylus": "registry:dt/stylus#0.0.0+20160317120654"

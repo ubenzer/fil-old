@@ -23,7 +23,7 @@ export class Fil {
     let startDate = new Date();
 
     // init config
-    let config = this.Config.getConfig();
+    let config = this.Config.get();
 
     // init collections
     let collections = config.collections.definition.map(

@@ -1,22 +1,13 @@
-import {interfaces} from "inversify";
-import {CollectionStatic} from "./collection.static";
-import {IContentSortingObject, IContentSortingFn, ICategorySortingObject, ICategorySortingFn} from "../lib/config"
-import {SortingHelper} from "../lib/sortingHelper";
-import {Content} from "./content"
-import {Category} from "./category"
 import {lazyInject, provideConstructor, TYPES} from "../inversify.config";
+import {ICategorySortingFn, ICategorySortingObject, IContentSortingFn, IContentSortingObject} from "../lib/config";
+import {SortingHelper} from "../lib/sortingHelper";
+import {Category} from "./category";
+import {CollectionStatic} from "./collection.static";
+import {Content} from "./content";
+import {interfaces} from "inversify";
 
 @provideConstructor(TYPES.CollectionConstructor)
 export class Collection {
-  @lazyInject(TYPES.CollectionStatic)
-  private CollectionStatic: CollectionStatic;
-
-  @lazyInject(TYPES.SortingHelper)
-  private SortingHelper: SortingHelper;
-
-  @lazyInject(TYPES.CategoryConstructor)
-  private Category: interfaces.Newable<Category>;
-
   id: string;
   categoryIdGeneratorFunction: (content: Content) => Array<string>;
 
@@ -27,8 +18,12 @@ export class Collection {
   categorySorting: ICategorySortingObject|ICategorySortingFn;
   contentSorting: IContentSortingObject|IContentSortingFn;
   subCategorySeparator: string;
-  categoryIdToNameFn: (string) => string;
+  categoryIdToNameFn: (id: string) => string;
   categories: Array<Category> = [];
+
+  @lazyInject(TYPES.CollectionStatic) private _collectionStatic: CollectionStatic;
+  @lazyInject(TYPES.SortingHelper) private _sortingHelper: SortingHelper;
+  @lazyInject(TYPES.CategoryConstructor) private _category: interfaces.Newable<Category>;
 
   constructor(
     id: string,
@@ -40,7 +35,7 @@ export class Collection {
     categorySorting: ICategorySortingObject|ICategorySortingFn,
     contentSorting: IContentSortingObject|IContentSortingFn,
     subCategorySeparator: string,
-    categoryIdToNameFn: (string) => string = null
+    categoryIdToNameFn: (id: string) => string = null
   ) {
     this.id = id;
     this.categoryIdGeneratorFunction = categoryIdGeneratorFunction || this.defaultCategoryIdGeneratorFn;
@@ -59,7 +54,7 @@ export class Collection {
    * @param content to be registered
    * @returns {Array<IContentBelongsTo>} A relationship lookup representing
    *   categories that this content belongs to for this Collection
-     */
+   */
   registerContent(content: Content): Array<IContentBelongsTo> {
     let categoryIdStrings: Array<string> = this.categoryIdGeneratorFunction(content);
 
@@ -82,7 +77,7 @@ export class Collection {
             }
 
             let contentBelongsToRelationship: IContentBelongsTo =
-              createOrUpdateContentBelongsTo(parentContentBelongsToArray, currentCategory);
+              this.createOrUpdateContentBelongsTo(parentContentBelongsToArray, currentCategory);
 
             parentContentBelongsToArray = contentBelongsToRelationship.subCategories;
             parentCategory = currentCategory;
@@ -92,28 +87,6 @@ export class Collection {
     );
 
     return contentBelongsTo;
-
-    /**
-     * Creates (if not exists) and returns IContentBelongsTo.
-     * Please note that belongsToArray will be mutated/updated.
-     * @param belongsToArray A list of belongs relationships to check existence
-     * @param category Belongs to relationship category
-     * @return Existing or new IContentBelongsTo object
-     */
-    function createOrUpdateContentBelongsTo(belongsToArray: Array<IContentBelongsTo>, category: Category): IContentBelongsTo {
-      let maybeRelationship = belongsToArray.find(bt => bt.category === category);
-
-      if (maybeRelationship instanceof Object) {
-        return maybeRelationship;
-      }
-
-      let belongsTo: IContentBelongsTo = {
-        category: category,
-        subCategories: []
-      };
-      belongsToArray.push(belongsTo);
-      return belongsTo;
-    }
   }
 
   /**
@@ -129,7 +102,7 @@ export class Collection {
    */
   sortCategories(): void {
     this.categories.forEach(c => c.sortCategories());
-    this.categories.sort(this.SortingHelper.getNormalizedCategorySortingFn(this.categorySorting));
+    this.categories.sort(this._sortingHelper.getNormalizedCategorySortingFn(this.categorySorting));
   }
 
   calculatePagination(): void {
@@ -147,6 +120,28 @@ export class Collection {
   }
 
   /**
+   * Creates (if not exists) and returns IContentBelongsTo.
+   * Please note that belongsToArray will be mutated/updated.
+   * @param belongsToArray A list of belongs relationships to check existence
+   * @param category Belongs to relationship category
+   * @return Existing or new IContentBelongsTo object
+   */
+  private createOrUpdateContentBelongsTo(belongsToArray: Array<IContentBelongsTo>, category: Category): IContentBelongsTo {
+    let maybeRelationship = belongsToArray.find(bt => bt.category === category);
+
+    if (maybeRelationship instanceof Object) {
+      return maybeRelationship;
+    }
+
+    let belongsTo: IContentBelongsTo = {
+      category: category,
+      subCategories: []
+    };
+    belongsToArray.push(belongsTo);
+    return belongsTo;
+  }
+
+  /**
    * Returns the category with given id under parentCategory. If
    * category is not existent, it is created.
    *
@@ -154,8 +149,8 @@ export class Collection {
    *
    * @param parentCategory Category to search inside. (null means root for this content type)
    * @param categoryId as string
-   * @returns Category object that represents categoryId
-     */
+   * @returns _category object that represents categoryId
+   */
   private createGetCategory(parentCategory: Category, categoryId: string): Category {
     let maybeCategory = null;
     if (parentCategory === null) {
@@ -168,16 +163,16 @@ export class Collection {
       return maybeCategory;
     }
 
-    let normalizedCategoryIdToNameFn = this.categoryIdToNameFn || this.CollectionStatic.defaultCategoryIdToNameFn;
+    let normalizedCategoryIdToNameFn = this.categoryIdToNameFn || this._collectionStatic.defaultCategoryIdToNameFn;
 
-    let category = new this.Category(
+    let category = new this._category(
       categoryId,
       normalizedCategoryIdToNameFn(categoryId),
       this.categoryFirstPermalink,
       this.categoryPermalink,
       this.pagination,
-      this.SortingHelper.getNormalizedCategorySortingFn(this.categorySorting),
-      this.SortingHelper.getNormalizedContentSortingFn(this.contentSorting),
+      this._sortingHelper.getNormalizedCategorySortingFn(this.categorySorting),
+      this._sortingHelper.getNormalizedContentSortingFn(this.contentSorting),
       this
     );
 
@@ -211,6 +206,6 @@ export class Collection {
 }
 
 export interface IContentBelongsTo {
-  category: Category,
-  subCategories: Array<IContentBelongsTo>
+  category: Category;
+  subCategories: Array<IContentBelongsTo>;
 }

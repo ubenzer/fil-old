@@ -1,13 +1,12 @@
-import * as mime from "mime";
-import * as path from "path";
-import * as s from "string";
-import {ContentLookup} from "../models/contentLookup";
+import {lazyInject, provideConstructor, TYPES} from "../inversify.config";
 import {Content} from "../models/content";
+import {ContentLookup} from "../models/contentLookup";
 import {Config} from "./config";
 import {ImageResizer} from "./imageResizer";
 import {Template} from "./template";
-
-import {lazyInject, provideConstructor, TYPES} from "../inversify.config";
+import * as mime from "mime";
+import * as path from "path";
+import * as s from "string";
 
 enum ParserState {CONTENT_ID, ASSET_ID}
 const CLOSE_DELIMITER = "@";
@@ -44,14 +43,10 @@ const CLOSE_DELIMITER = "@";
  */
 @provideConstructor(TYPES.RhoConstructor)
 export class Rho {
-  @lazyInject(TYPES.Config)
-  private Config: Config;
+  @lazyInject(TYPES.Config) private _config: Config;
+  @lazyInject(TYPES.ImageResizer) private _imageResizer: ImageResizer;
 
-  @lazyInject(TYPES.ImageResizer)
-  private ImageResizer: ImageResizer;
-
-  @lazyInject(TYPES.Template)
-  private Template: Template;
+  @lazyInject(TYPES.Template) private _template: Template;
 
   private post: Content;
   private contentLookup: ContentLookup;
@@ -155,7 +150,7 @@ export class Rho {
         tagData = tagPieces[1];
       }
 
-      let renderedTag = rhoClass.Template.renderTag(tagName, tagData);
+      let renderedTag = rhoClass._template.renderTag(tagName, tagData);
       self.out.push(`${renderedTag}\n`);
     };
 
@@ -222,26 +217,26 @@ export class Rho {
 
       src = rhoClass.resolveUrl(src);
 
-      if (rhoClass.ImageResizer.IMAGE_EXTENSIONS.indexOf(path.extname(src)) > -1) {
+      if (rhoClass._imageResizer.IMAGE_EXTENSIONS.indexOf(path.extname(src)) > -1) {
         this.out.push(`<picture>\n`);
 
-        rhoClass.Config.getConfig().media.imageExtensions.forEach((extension) => {
+        rhoClass._config.get().media.imageExtensions.forEach((extension) => {
           let srcset: Array<string> = [];
           let mimeType = mime.lookup(extension);
 
-          rhoClass.Config.getConfig().media.imageWidths.forEach((width) => {
-            let srcSetDefinition = `${rhoClass.ImageResizer.getResizedUrl(src, width, extension)} ${width}w`;
+          rhoClass._config.get().media.imageWidths.forEach((width) => {
+            let srcSetDefinition = `${rhoClass._imageResizer.getResizedUrl(src, width, extension)} ${width}w`;
             srcset.push(srcSetDefinition);
           });
           this.out.push(`<source type="${mimeType}" srcset="${srcset.join(",")}">\n`);
         });
 
         let srcset: Array<string> = [];
-        rhoClass.Config.getConfig().media.imageWidths.forEach((width) => {
-          let srcSetDefinition = `${rhoClass.ImageResizer.getResizedUrl(src, width)} ${width}w`;
+        rhoClass._config.get().media.imageWidths.forEach((width) => {
+          let srcSetDefinition = `${rhoClass._imageResizer.getResizedUrl(src, width)} ${width}w`;
           srcset.push(srcSetDefinition);
         });
-        this.out.push(`<img src="${rhoClass.ImageResizer.getResizedUrl(src, rhoClass.Config.getConfig().media.defaultWidth)}" srcset="${srcset.join(",")}" alt="${escapedAlt}" title="${escapedAlt}"`);
+        this.out.push(`<img src="${rhoClass._imageResizer.getResizedUrl(src, rhoClass._config.get().media.defaultWidth)}" srcset="${srcset.join(",")}" alt="${escapedAlt}" title="${escapedAlt}"`);
 
         if (escapedTypesArr.length > 0) {
           if (escapedTypesArr.indexOf("left") === -1 && escapedTypesArr.indexOf("right") === -1 &&

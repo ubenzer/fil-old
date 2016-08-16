@@ -48,7 +48,7 @@ describe('Array', function() {
       function() {}, function() {},
       null);
     //console.log(c.Config);
-    console.log(c.Config.getConfig())
+    console.log(c.Config.get())
   });
 });
 

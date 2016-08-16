@@ -1,26 +1,17 @@
+import {lazyInject, provideConstructor, TYPES} from "../inversify.config";
+import {Config, ICategorySortingFn, IContentSortingFn} from "../lib/config";
+import {SortingHelper} from "../lib/sortingHelper";
+import {Template} from "../lib/template";
+import {Collection} from "./collection";
+import {Content} from "./content";
 import * as fs from "fs-extra";
 import * as path from "path";
-import {lazyInject, provideConstructor, TYPES} from "../inversify.config";
-import {ICategorySortingFn, IContentSortingFn, Config} from "../lib/config";
-import {SortingHelper} from "../lib/sortingHelper";
-import {Content} from "./content";
-import {Collection} from "./collection";
-import {Template} from "../lib/template";
-let slug = require("slug");
+import * as slug from "slug";
 
 const HTML_PAGE_NAME = "index.html";
 
 @provideConstructor(TYPES.CategoryConstructor)
 export class Category {
-  @lazyInject(TYPES.Config)
-  private Config: Config;
-
-  @lazyInject(TYPES.SortingHelper)
-  private SortingHelper: SortingHelper;
-
-  @lazyInject(TYPES.Template)
-  private Template: Template;
-
   id: string;
   title: string;
 
@@ -40,6 +31,10 @@ export class Category {
   contents: Array<Content>;
 
   paginatedContents: Array<IPaginatedCategory>;
+
+  @lazyInject(TYPES.Config) private _config: Config;
+  @lazyInject(TYPES.SortingHelper) private _sortingHelper: SortingHelper;
+  @lazyInject(TYPES.Template) private _template: Template;
 
   constructor(
     id: string,
@@ -70,21 +65,21 @@ export class Category {
   /**
    * Processes given content and update index accordingly
    * @param content to be registered as a member of this category
-     */
+   */
   registerContent(content: Content): void {
-    this.SortingHelper.putIntoSortedArray(this.ownContents, content, this.contentSortingFn);
-    this.SortingHelper.putIntoSortedArray(this.contents, content, this.contentSortingFn);
+    this._sortingHelper.putIntoSortedArray(this.ownContents, content, this.contentSortingFn);
+    this._sortingHelper.putIntoSortedArray(this.contents, content, this.contentSortingFn);
     if (this.parentCategory !== null) {
       this.parentCategory.registerFromChild(content);
     }
   }
 
-  registerFromChild(content: Content) {
+  registerFromChild(content: Content): void {
     let indexOfContent = this.ownContents.indexOf(content);
     if (indexOfContent > -1) {
       this.ownContents.splice(indexOfContent, 1);
     } else {
-      this.SortingHelper.putIntoSortedArray(this.contents, content, this.contentSortingFn);
+      this._sortingHelper.putIntoSortedArray(this.contents, content, this.contentSortingFn);
     }
 
     if (this.parentCategory !== null) {
@@ -102,7 +97,7 @@ export class Category {
     let paginatedContents = this.chunk(this.contents, this.pagination);
 
     this.paginatedContents = paginatedContents.map(
-      (paginatedContents, index, array): IPaginatedCategory => {
+      (paginatedContent, index, array): IPaginatedCategory => {
         // previous permalink and first page calculation
         let prevPagePermalink = null;
         let firstPagePermalink = this.generatePermalink(this.categoryFirstPermalink, this, 1);
@@ -136,18 +131,18 @@ export class Category {
         }
 
         return {
-          outputFolder: outputFolder,
-          url: permalink,
+          contents: paginatedContent,
           firstPageUrl: firstPagePermalink,
-          previousPageUrl: prevPagePermalink,
-          nextPageUrl: nextPagePermalink,
-          lastPageUrl: lastPagePermalink,
           isFirstPage: isFirstPage,
           isLastPage: isLastPage,
+          lastPageUrl: lastPagePermalink,
+          nextPageUrl: nextPagePermalink,
+          numberOfPages: paginatedContent.length,
+          outputFolder: outputFolder,
           pageNumber: index + 1,
-          numberOfPages: paginatedContents.length,
-          contents: paginatedContents
-        }
+          previousPageUrl: prevPagePermalink,
+          url: permalink
+        };
       }
     );
   }
@@ -157,8 +152,8 @@ export class Category {
 
     this.paginatedContents.forEach(
       paginatedContent => {
-        let builtTemplate = this.Template.renderCategory(this, paginatedContent, collections);
-        let normalizedPath = path.join(this.Config.OUTPUT_DIR, paginatedContent.outputFolder, HTML_PAGE_NAME);
+        let builtTemplate = this._template.renderCategory(this, paginatedContent, collections);
+        let normalizedPath = path.join(this._config.OUTPUT_DIR, paginatedContent.outputFolder, HTML_PAGE_NAME);
 
         fs.outputFileSync(normalizedPath, builtTemplate);
       }
@@ -197,14 +192,14 @@ export class Category {
    * @returns {string} Permalink string with real values
    */
   private generatePermalink(permalinkTemplateString: string, category: Category, page: number): string {
-    let slugCollection: string = slug(category.belongsToCollection.id, slug.defaults.modes["rfc3986"]);
-    let slugSingleCategory: string = slug(category.id, slug.defaults.modes["rfc3986"]);
+    let slugCollection: string = slug(category.belongsToCollection.id, slug.defaults.modes.rfc3986);
+    let slugSingleCategory: string = slug(category.id, slug.defaults.modes.rfc3986);
     let slugPage: string = page.toString();
 
     let categorySlugsArray = [slugSingleCategory];
     let currentCategory = category.parentCategory;
     while (currentCategory !== null) {
-      categorySlugsArray.unshift(slug(currentCategory.id, slug.defaults.modes["rfc3986"]));
+      categorySlugsArray.unshift(slug(currentCategory.id, slug.defaults.modes.rfc3986));
       currentCategory = currentCategory.parentCategory;
     }
     let slugCategory = categorySlugsArray.join("/");

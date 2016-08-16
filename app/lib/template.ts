@@ -1,31 +1,27 @@
-import {Config, IGeneralConfig, IConfigFile} from "./config";
-import {Content} from "../models/content";
+import {provide, TYPES} from "../inversify.config";
 import {Category, IPaginatedCategory} from "../models/category";
 import {Collection} from "../models/collection";
-import * as jade from "jade";
-import * as path from "path";
-import {provide, TYPES} from "../inversify.config";
+import {Content} from "../models/content";
+import {Config, IGeneralConfig} from "./config";
 import {inject} from "inversify";
+import * as path from "path";
+import * as jade from "pug";
 
 @provide(TYPES.Template)
 export class Template {
-  private config: IConfigFile;
+  private templateGlobals: ITemplateGlobals = null;
 
   constructor(
-    @inject(TYPES.Config) private Config: Config
-  ) {
-    this.config = Config.getConfig();
-  }
-
-  private templateGlobals: ITemplateGlobals = null;
+    @inject(TYPES.Config) private _config: Config
+  ) {}
 
   /**
    * Renders a content into html
    * @param content Content to be rendered
    * @param collections Whole available collections in the system
-     */
+   */
   renderContent(content: Content, collections: Array<Collection>): string {
-    let templateFile = path.join(this.Config.TEMPLATE_DIR, content.templateFile);
+    let templateFile = path.join(this._config.TEMPLATE_DIR, content.templateFile);
     let compileFn = jade.compileFile(templateFile, {pretty: true});
 
     let locals: ISingleContentTemplateVariables = {
@@ -43,19 +39,19 @@ export class Template {
    */
   renderCategory(category: Category, paginationInfo: IPaginatedCategory, collections: Array<Collection>): string {
     // TODO
-    let templateFile = path.join(this.Config.TEMPLATE_DIR, "index.jade");
+    let templateFile = path.join(this._config.TEMPLATE_DIR, "index.jade");
     let compileFn = jade.compileFile(templateFile, {pretty: true});
 
     let locals: ICategoryPageTemplateVariables = {
-      page: paginationInfo,
       category: category,
-      global: this.getTemplateGlobals(collections)
+      global: this.getTemplateGlobals(collections),
+      page: paginationInfo
     };
     return compileFn(locals);
   }
 
   renderTag(tagName: string, tagData: string): string {
-    let templateFile = path.join(this.Config.TEMPLATE_DIR, "tags", `${tagName}.jade`);
+    let templateFile = path.join(this._config.TEMPLATE_DIR, "tags", `${tagName}.jade`);
     let compileFn = jade.compileFile(templateFile, {pretty: true});
 
     let locals: ITagTemplateVariables = {
@@ -64,7 +60,7 @@ export class Template {
     return compileFn(locals);
   }
 
-  renderPage(filePath: string, collections: Array<Collection>) {
+  renderPage(filePath: string, collections: Array<Collection>): string {
     let compileFn = jade.compileFile(filePath, {pretty: true});
 
     let locals: IPageTemplateVariables = {
@@ -77,9 +73,9 @@ export class Template {
     if (this.templateGlobals !== null) { return this.templateGlobals; }
 
     this.templateGlobals = {
-      general: this.Config.getConfig().general,
       collections: collections,
-      template: this.Config.getConfig().template
+      general: this._config.get().general,
+      template: this._config.get().template
     };
 
     return this.templateGlobals;
@@ -92,6 +88,7 @@ interface ITagTemplateVariables {
 interface ITemplateGlobals {
   general: IGeneralConfig;
   collections: Array<Collection>;
+  // tslint:disable-next-line: no-any
   template: any; // Free from config area, corresponds to config/template
 }
 
@@ -101,11 +98,11 @@ interface ISingleContentTemplateVariables {
 }
 
 interface ICategoryPageTemplateVariables {
-  page: IPaginatedCategory,
-  category: Category,
-  global: ITemplateGlobals
+  page: IPaginatedCategory;
+  category: Category;
+  global: ITemplateGlobals;
 }
 
 interface IPageTemplateVariables {
-  global: ITemplateGlobals
+  global: ITemplateGlobals;
 }

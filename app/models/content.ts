@@ -1,32 +1,20 @@
+import {lazyInject, provideConstructor, TYPES} from "../inversify.config";
+import {Config} from "../lib/config";
+import {ImageResizer} from "../lib/imageResizer";
+import {Rho} from "../lib/rho";
+import {Template} from "../lib/template";
+import {Collection, IContentBelongsTo} from "./collection";
+import {ContentAsset} from "./contentAsset";
+import {ContentLookup} from "./contentLookup";
 import * as fs from "fs-extra";
 import * as glob from "glob";
 import * as moment from "moment";
 import * as path from "path";
 
-import {Collection, IContentBelongsTo} from "./collection";
-import {Config} from "../lib/config";
-import {Template} from "../lib/template";
-import {ContentLookup} from "./contentLookup";
-import {Rho} from "../lib/rho";
-import {ContentAsset} from "./contentAsset";
-import {ImageResizer} from "../lib/imageResizer";
-import {lazyInject, provideConstructor, TYPES} from "../inversify.config";
-
-let slug = require("slug");
-
 const HTML_PAGE_NAME = "index.html";
 
 @provideConstructor(TYPES.ContentConstructor)
 export class Content {
-  @lazyInject(TYPES.Config)
-  private Config: Config;
-
-  @lazyInject(TYPES.ImageResizer)
-  private ImageResizer: ImageResizer;
-
-  @lazyInject(TYPES.Template)
-  private Template: Template;
-
   contentId: string; // content's id, using this it can be referenced
   inputFolder: string; // content directory root relative to CONTENTS_DIR
   outputFolder: string; // content's final path, relative to OUTPUT_DIR
@@ -41,7 +29,15 @@ export class Content {
   htmlExcerpt: string = null; // compiled excerpt, this is null, call calculateHtmlContent() once to fill this.
 
   belongsTo: Map<Collection, Array<IContentBelongsTo>>; // relationship map, which categories this content belongs to
+
+  rawFrontmatter: Object; // this is going to be used to calculate category relationships
+
+  @lazyInject(TYPES.Config) private _config: Config;
+  @lazyInject(TYPES.ImageResizer) private _imageResizer: ImageResizer;
+  @lazyInject(TYPES.Template) private _template: Template;
+
   private fileAssetsCache: Array<ContentAsset> = null; // files attached to this content as array of file name relative to inputFolder
+
   get fileAssets(): Array<ContentAsset> {
     if (this.fileAssetsCache === null) {
       this.fileAssetsCache = this.initFileAssets();
@@ -49,7 +45,6 @@ export class Content {
     return this.fileAssetsCache;
   }
 
-  rawFrontmatter: Object; // this is going to be used to calculate category relationships
   constructor(
     contentId: string,
     inputFolder: string,
@@ -82,7 +77,7 @@ export class Content {
    * in their proper Category objects.
    *
    * @param collectionList that this Content is going to be registered
-     */
+   */
   registerOnCollections(collectionList: Array<Collection>): void {
     collectionList.forEach(
       collection => {
@@ -94,10 +89,10 @@ export class Content {
   /**
    * Renders content and writes to specified file
    * @param collections Whole available collections in the system
-     */
+   */
   renderToFile(collections: Array<Collection>): void {
-    let builtTemplate = this.Template.renderContent(this, collections);
-    let normalizedPath = path.join(this.Config.OUTPUT_DIR, this.outputFolder, HTML_PAGE_NAME);
+    let builtTemplate = this._template.renderContent(this, collections);
+    let normalizedPath = path.join(this._config.OUTPUT_DIR, this.outputFolder, HTML_PAGE_NAME);
 
     fs.outputFileSync(normalizedPath, builtTemplate);
   }
@@ -128,7 +123,7 @@ export class Content {
    * Returns permalink URL for this Content. This can be used to reference
    * this content in compiled output.
    * @returns {string}
-     */
+   */
   getUrl(): string {
     return `${this.outputFolder.replace(new RegExp(path.sep, "g"), "/")}/`;
   }
@@ -138,13 +133,13 @@ export class Content {
    */
   processContentAssets(): void {
     this.fileAssets.forEach(asset => {
-      let inputFile = path.join(this.Config.CONTENTS_DIR, this.inputFolder, asset.inputFile);
-      let outputFile = path.join(this.Config.OUTPUT_DIR, asset.getOutputFile());
+      let inputFile = path.join(this._config.CONTENTS_DIR, this.inputFolder, asset.inputFile);
+      let outputFile = path.join(this._config.OUTPUT_DIR, asset.getOutputFile());
       fs.copySync(inputFile, outputFile);
 
       // For images, also create bunch of different sizes for network performance
       if (asset.isImage) {
-        this.ImageResizer.resize(inputFile, outputFile);
+        this._imageResizer.resize(inputFile, outputFile);
       }
     });
   }
@@ -155,7 +150,7 @@ export class Content {
    */
   private initFileAssets(): Array<ContentAsset> {
     return glob.sync("**/*", {
-      cwd: path.join(this.Config.CONTENTS_DIR, this.inputFolder),
+      cwd: path.join(this._config.CONTENTS_DIR, this.inputFolder),
       mark: true
     })
       .filter(f => f !== "index.md")

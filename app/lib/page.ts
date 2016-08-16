@@ -1,11 +1,10 @@
-import * as fs from "fs-extra";
-import * as path from "path";
-
 import {provide, TYPES} from "../inversify.config";
-import {Template} from "./template";
 import {Collection} from "../models/collection";
 import {Config} from "./config";
+import {Template} from "./template";
+import * as fs from "fs-extra";
 import {inject} from "inversify";
+import * as path from "path";
 
 const HTML_PAGE_NAME = "index.html";
 
@@ -13,19 +12,19 @@ const HTML_PAGE_NAME = "index.html";
 export class Page {
 
   constructor(
-    @inject(TYPES.Config) private Config: Config,
-    @inject(TYPES.Template) private Template: Template
+    @inject(TYPES.Config) private _config: Config,
+    @inject(TYPES.Template) private _template: Template
   ) { }
 
   renderPages(collections: Array<Collection>): void {
-    let files = this.getFileList(this.Config.PAGES_DIR);
+    let files = this.getFileList(this._config.PAGES_DIR);
     files.forEach((filePath) => {
       console.log(`Processing page ${filePath}`);
       let extname = path.extname(filePath);
       let fileWithoutExt = path.basename(filePath, extname);
 
-      let builtTemplate = this.Template.renderPage(path.join(this.Config.PAGES_DIR, filePath), collections);
-      let normalizedPath = path.join(this.Config.OUTPUT_DIR, fileWithoutExt, HTML_PAGE_NAME);
+      let builtTemplate = this._template.renderPage(path.join(this._config.PAGES_DIR, filePath), collections);
+      let normalizedPath = path.join(this._config.OUTPUT_DIR, fileWithoutExt, HTML_PAGE_NAME);
 
       console.log(normalizedPath);
 
@@ -33,7 +32,7 @@ export class Page {
     });
   }
 
-  private getFileList(dir: string) {
+  private getFileList(dir: string): Array<string> {
     let files = fs.readdirSync(dir);
     let fileList: Array<string> = [];
     files.forEach((file) => {

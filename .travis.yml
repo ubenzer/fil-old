@@ -20,4 +20,6 @@ after_success:
 install:
   - npm update
   - npm install
-script: npm test
+script:
+ - npm run lint
+ - npm test

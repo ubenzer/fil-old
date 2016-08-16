@@ -1,11 +1,10 @@
-import {IContentSortingObject, IContentSortingFn, ICategorySortingObject, ICategorySortingFn} from "./config";
-import {Content} from "../models/content";
-import {Category} from "../models/category";
 import {provide, TYPES} from "../inversify.config";
+import {Category} from "../models/category";
+import {Content} from "../models/content";
+import {ICategorySortingFn, ICategorySortingObject, IContentSortingFn, IContentSortingObject} from "./config";
 
 @provide(TYPES.SortingHelper)
 export class SortingHelper {
-  constructor() {}
 
   getNormalizedContentSortingFn(contentSorting: IContentSortingObject|IContentSortingFn): IContentSortingFn {
     if (contentSorting instanceof Function) {
@@ -59,7 +58,7 @@ export class SortingHelper {
     };
   }
 
-  putIntoSortedArray<T>(array: Array<T>, item: T, sortingFn: ((item1: T, item2: T) => number)) {
+  putIntoSortedArray<T>(array: Array<T>, item: T, sortingFn: ((item1: T, item2: T) => number)): void {
     if (array.length === 0) {
       array.push(item);
       return;

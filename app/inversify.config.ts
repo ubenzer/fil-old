@@ -1,7 +1,7 @@
-import "reflect-metadata";
-import {interfaces, decorate, injectable, Kernel} from "inversify";
-import getDecorators from "inversify-inject-decorators";
+import {decorate, injectable, Kernel} from "inversify";
 import {makeProvideDecorator} from "inversify-binding-decorators";
+import getDecorators from "inversify-inject-decorators";
+import "reflect-metadata";
 
 let kernel = new Kernel();
 
@@ -10,13 +10,13 @@ let provide = makeProvideDecorator(kernel);
 
 let TYPES = {
   CategoryConstructor: Symbol(),
-  CollectionStatic: Symbol(),
   CollectionConstructor: Symbol(),
+  CollectionStatic: Symbol(),
   Config: Symbol(),
   ContentAssetConstructor: Symbol(),
   ContentConstructor: Symbol(),
-  ContentStatic: Symbol(),
   ContentLookupConstructor: Symbol(),
+  ContentStatic: Symbol(),
   Fil: Symbol(),
   ImageResizer: Symbol(),
   Page: Symbol(),
@@ -26,12 +26,12 @@ let TYPES = {
   Template: Symbol()
 };
 
-function provideConstructor(serviceIdentifier: (string|Symbol|inversify.interfaces.Newable<any>)) {
-  return function (target: any) {
+let provideConstructor = (serviceIdentifier: Symbol) => {
+  return (target) => {
     decorate(injectable(), target);
-    kernel.bind<interfaces.Newable<any>>(serviceIdentifier).toConstructor(target);
+    kernel.bind(serviceIdentifier).toConstructor(target);
     return target;
   };
-}
+};
 
 export { TYPES, lazyInject, provide, kernel, provideConstructor };

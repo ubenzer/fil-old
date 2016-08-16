@@ -1,29 +1,28 @@
-import * as fs from "fs-extra";
-import * as glob from "glob";
-import * as path from "path";
 import {provide, TYPES} from "../inversify.config";
 import {Config, IContentPermalinkCalculatorFnIn} from "../lib/config";
 import {Content} from "./content";
+import * as frontMatter from "front-matter";
+import * as fs from "fs-extra";
+import * as glob from "glob";
 import {inject} from "inversify";
-
-let padleft = require("pad-left");
-let slug = require("slug");
-let frontMatter = require("front-matter");
+import * as padleft from "pad-left";
+import * as path from "path";
+import * as slug from "slug";
 
 @provide(TYPES.ContentStatic)
 export class ContentStatic {
   constructor(
-    @inject(TYPES.Config) private Config: Config
+    @inject(TYPES.Config) private _config: Config
   ) {}
 
   /**
    * Creates a content reading from file
    * @param relativePath path relative to CONTENTS_DIR
-     */
+   */
   fromFile(relativePath: string): Content {
     let inputFolder = this.getContentDirectory(relativePath);
 
-    let fullPath = path.join(this.Config.CONTENTS_DIR, relativePath);
+    let fullPath = path.join(this._config.CONTENTS_DIR, relativePath);
     let rawContent = fs.readFileSync(fullPath, "utf8");
 
     let doc = frontMatter(rawContent);
@@ -61,10 +60,10 @@ export class ContentStatic {
    * Creates content object representation for all
    * posts in CONTENTS_DIR
    * @returns {Array<Content>} Array of posts
-     */
+   */
   fromPostsFolder(): Array<Content> {
     let posts = [];
-    glob.sync("**/index.md", {cwd: this.Config.CONTENTS_DIR})
+    glob.sync("**/index.md", {cwd: this._config.CONTENTS_DIR})
       .forEach((file) => {
         let post = this.fromFile(file);
         posts.push(post);
@@ -75,7 +74,7 @@ export class ContentStatic {
   /**
    * Returns content directory relative to CONTENTS_DIR
    * @param relativePath Content index.md file relative to CONTENTS_DIR
-     */
+   */
   private getContentDirectory(relativePath: string): string {
     let paths = relativePath.split(path.sep);
     paths.pop();
@@ -85,7 +84,7 @@ export class ContentStatic {
   /**
    * Creates a content id based on content file path relative to CONTENTS_DIR
    * @param relativePath
-     */
+   */
   private getFileId(relativePath: string): string {
     let paths = relativePath.split(path.sep);
     paths.pop();
@@ -94,15 +93,15 @@ export class ContentStatic {
 
   /**
    * Calls custom permalink generation function or default permalink function
-   * depending on the configuration that is provided by Config.getConfig
+   * depending on the configuration that is provided by Config.get
    * converts permalink to a folder structure
    * @param id
    * @param title
    * @param date
    * @returns {string} Permalink string with real values
-     */
+   */
   private getTargetDirectory(id: string, title: string, date: Date): string {
-    let permalinkConfig: string|IContentPermalinkCalculatorFnIn = this.Config.getConfig().content.permalink;
+    let permalinkConfig: string|IContentPermalinkCalculatorFnIn = this._config.get().content.permalink;
     if (permalinkConfig instanceof Function) {
       return (<IContentPermalinkCalculatorFnIn>permalinkConfig)(id, title, date).replace(new RegExp("/", "g"), path.sep);
     }
@@ -115,9 +114,9 @@ export class ContentStatic {
    * @param postTitle
    * @param postCreateDate
    * @returns {string} Permalink string with real values
-     */
+   */
   private defaultPermalinkFn(permalinkTemplateString: string, postTitle: string, postCreateDate: Date): string {
-    let slugTitle: string = slug(postTitle, slug.defaults.modes["rfc3986"]);
+    let slugTitle: string = slug(postTitle, slug.defaults.modes.rfc3986);
     let slugDay: string = padleft(postCreateDate.getDay().toString(), 2, "0");
     let slugMonth: string = padleft((postCreateDate.getMonth() + 1).toString(), 2, "0");
     let slugYear: string = postCreateDate.getFullYear().toString();
@@ -134,7 +133,7 @@ export class ContentStatic {
    * the title and the rest separately.
    * @param markdown string
    * @returns {IExtractedTitle} Separated title and content
-     */
+   */
   private extractTitleFromMarkdown(markdown: string): IExtractedTitle {
     let lines = markdown.split("\n");
 
@@ -143,17 +142,17 @@ export class ContentStatic {
       lines.shift();
     }
 
-    if (lines.length === 0 || lines[0].length < 3 || lines[0].substr(0, 2) != "# ") {
+    if (lines.length === 0 || lines[0].length < 3 || lines[0].substr(0, 2) !== "# ") {
       return {
-        title: null,
-        content: lines.join("\n")
+        content: lines.join("\n"),
+        title: null
       };
     }
 
     let titleLine = lines.shift();
     return {
-      title: titleLine.substr(2),
-      content: lines.join("\n")
+      content: lines.join("\n"),
+      title: titleLine.substr(2)
     };
   }
 }

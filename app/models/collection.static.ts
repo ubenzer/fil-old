@@ -1,15 +1,15 @@
-import {interfaces, inject} from "inversify";
 import {provide, TYPES} from "../inversify.config";
-import {ICollectionDefinitionFile, ICollectionConfigFile} from "../lib/config";
+import {ICollectionConfigFile, ICollectionDefinitionFile} from "../lib/config";
 import {Collection} from "./collection";
+import {inject, interfaces} from "inversify";
 
 @provide(TYPES.CollectionStatic)
 export class CollectionStatic {
   constructor(
-    @inject(TYPES.CollectionConstructor) private Collection: interfaces.Newable<Collection>
+    @inject(TYPES.CollectionConstructor) private _collection: interfaces.Newable<Collection>
   ) {}
   fromCollectionConfig(definition: ICollectionDefinitionFile, config: ICollectionConfigFile): Collection {
-    return new this.Collection(
+    return new this._collection(
       definition.id,
       definition.categoryFn,
       definition.collectionPermalink || config.collectionPermalink,

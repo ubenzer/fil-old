@@ -1,28 +1,29 @@
-import * as path from "path";
+import {provide, TYPES} from "../inversify.config";
 import {Category} from "../models/category";
 import {Content} from "../models/content";
-import {provide, TYPES} from "../inversify.config";
+import * as path from "path";
 
 @provide(TYPES.Config)
 export class Config implements IConfig {
-  private configCache: IConfigFile = null;
-
-  constructor() {
-    this.configCache = <IConfigFile>require(path.join(process.cwd(), process.env.CONFIG || "filconfig.js"));
-    this.CONTENTS_DIR = path.join(process.cwd(), this.getConfig().build.contentPath);
-    this.TEMPLATE_DIR = path.join(process.cwd(), this.getConfig().build.skeletonPath, "template");
-    this.PAGES_DIR = path.join(process.cwd(), this.getConfig().build.skeletonPath, "pages");
-    this.OUTPUT_DIR = path.join(process.cwd(), this.getConfig().build.buildPath);
-  }
-
-  getConfig(): IConfigFile {
-    return this.configCache;
-  }
-
   CONTENTS_DIR: string = null;
   TEMPLATE_DIR: string = null;
   PAGES_DIR: string = null;
   OUTPUT_DIR: string = null;
+
+  private configCache: IConfigFile = null;
+
+  constructor() {
+    // tslint:disable-next-line:no-require-imports
+    this.configCache = <IConfigFile>require(path.join(process.cwd(), process.env.CONFIG || "filconfig.js"));
+    this.CONTENTS_DIR = path.join(process.cwd(), this.get().build.contentPath);
+    this.TEMPLATE_DIR = path.join(process.cwd(), this.get().build.skeletonPath, "template");
+    this.PAGES_DIR = path.join(process.cwd(), this.get().build.skeletonPath, "pages");
+    this.OUTPUT_DIR = path.join(process.cwd(), this.get().build.buildPath);
+  }
+
+  get(): IConfigFile {
+    return this.configCache;
+  }
 }
 
 export interface IConfigFile {
@@ -31,23 +32,24 @@ export interface IConfigFile {
     skeletonPath: string,
     buildPath: string,
     siteBuildScript: string,
-  }
-  general: IGeneralConfig
+  };
+  general: IGeneralConfig;
   collections: {
     config: ICollectionConfigFile,
     definition: Array<ICollectionDefinitionFile>
-  },
+  };
   media: {
     defaultWidth: number,
     imageWidths: Array<number>,
     imageExtensions: Array<string>
-  },
-  template: any,
-  content: IContentConfig
+  };
+  // tslint:disable-next-line:no-any
+  template: any;
+  content: IContentConfig;
 }
 
 export interface IGeneralConfig {
-  baseUrl: string
+  baseUrl: string;
 }
 export interface ICollectionConfigFile {
   collectionsPermalink: string;
@@ -86,7 +88,7 @@ export interface ICollectionDefinitionFile {
   categorySorting?: ICategorySortingObject|ICategorySortingFn;
   contentSorting?: IContentSortingObject|IContentSortingFn;
   subCategorySeparator?: string;
-  categoryIdToNameFn?: (string) => string;
+  categoryIdToNameFn?: (id: string) => string;
 }
 
 // // config in app representation
@@ -105,7 +107,7 @@ export interface ICollectionDefinitionFile {
 
 interface IContentConfig {
   permalink: string|IContentPermalinkCalculatorFnIn; // valid: :title :day :month :year
-  templateOptions: Object|((content: Content) => Object)
+  templateOptions: Object|((content: Content) => Object);
 }
 export type IContentPermalinkCalculatorFnIn = (contentId: string, contentTitle: string, contentCreateDate: Date) => string;
 
