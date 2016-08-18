@@ -38,7 +38,7 @@
     "reflect-metadata": "^0.1.8",
     "rho": "^0.2.4",
     "semver": "^5.3.0",
-    "sharp": "^0.15.1",
+    "sharp": "^0.16.0",
     "sitemap": "^1.8.1",
     "slug": "^0.9.1",
     "string": "^3.3.1",
