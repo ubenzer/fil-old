@@ -1,3 +1,6 @@
 /node_modules
 /typings
 npm-debug.log
+/coverage/
+.nyc_output
+.idea
