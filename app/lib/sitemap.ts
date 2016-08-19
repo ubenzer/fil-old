@@ -1,4 +1,4 @@
-import {provide, TYPES} from "../inversify.config";
+import {provideSingleton, TYPES} from "../core/inversify.config";
 import {Content} from "../models/content";
 import {Config} from "./config";
 import * as fs from "fs-extra";
@@ -7,7 +7,7 @@ import * as moment from "moment/moment";
 import * as path from "path";
 import * as sitemap from "sitemap";
 
-@provide(TYPES.Sitemap)
+@provideSingleton(TYPES.Sitemap)
 export class Sitemap {
   constructor(
     @inject(TYPES.Config) private _config: Config

@@ -1,9 +1,9 @@
-import {provide, TYPES} from "../inversify.config";
+import {provideSingleton, TYPES} from "../core/inversify.config";
 import {Category} from "../models/category";
 import {Content} from "../models/content";
 import * as path from "path";
 
-@provide(TYPES.Config)
+@provideSingleton(TYPES.Config)
 export class Config implements IConfig {
   CONTENTS_DIR: string = null;
   TEMPLATE_DIR: string = null;

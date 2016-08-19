@@ -1,4 +1,4 @@
-import {lazyInject, provideConstructor, TYPES} from "../inversify.config";
+import {lazyInject, provideConstructor, TYPES} from "../core/inversify.config";
 import {Config, ICategorySortingFn, IContentSortingFn} from "../lib/config";
 import {SortingHelper} from "../lib/sortingHelper";
 import {Template} from "../lib/template";
@@ -32,7 +32,7 @@ export class Category {
 
   paginatedContents: Array<IPaginatedCategory>;
 
-  @lazyInject(TYPES.Config) private _config: Config;
+  @lazyInject(TYPES.Config) _config: Config; // TODO Make private
   @lazyInject(TYPES.SortingHelper) private _sortingHelper: SortingHelper;
   @lazyInject(TYPES.Template) private _template: Template;
 

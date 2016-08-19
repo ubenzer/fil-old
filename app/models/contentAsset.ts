@@ -1,4 +1,4 @@
-import {lazyInject, provideConstructor, TYPES} from "../inversify.config";
+import {lazyInject, provideConstructor, TYPES} from "../core/inversify.config";
 import {ImageResizer} from "../lib/imageResizer";
 import {Content} from "./content";
 import * as path from "path";

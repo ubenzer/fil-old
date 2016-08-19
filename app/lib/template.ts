@@ -1,4 +1,4 @@
-import {provide, TYPES} from "../inversify.config";
+import {provideSingleton, TYPES} from "../core/inversify.config";
 import {Category, IPaginatedCategory} from "../models/category";
 import {Collection} from "../models/collection";
 import {Content} from "../models/content";
@@ -7,7 +7,7 @@ import {inject} from "inversify";
 import * as path from "path";
 import * as pug from "pug";
 
-@provide(TYPES.Template)
+@provideSingleton(TYPES.Template)
 export class Template {
   private templateGlobals: ITemplateGlobals = null;
 

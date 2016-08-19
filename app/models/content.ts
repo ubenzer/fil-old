@@ -1,6 +1,7 @@
-import {lazyInject, provideConstructor, TYPES} from "../inversify.config";
+import {lazyInject, provideConstructor, TYPES} from "../core/inversify.config";
 import {Config} from "../lib/config";
 import {ImageResizer} from "../lib/imageResizer";
+import {l} from "../lib/logger";
 import {Rho} from "../lib/rho";
 import {Template} from "../lib/template";
 import {Collection, IContentBelongsTo} from "./collection";
@@ -104,7 +105,7 @@ export class Content {
    * to be used to resolve references to file assets and other contents.
    */
   calculateHtmlContent(contentLookup: ContentLookup): void {
-    console.log(`Compiling ${this.contentId}...`);
+    l.info(`Compiling ${this.contentId}...`);
 
     let compiler = new Rho(this, contentLookup);
 

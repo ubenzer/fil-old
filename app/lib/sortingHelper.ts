@@ -1,9 +1,9 @@
-import {provide, TYPES} from "../inversify.config";
+import {provideSingleton, TYPES} from "../core/inversify.config";
 import {Category} from "../models/category";
 import {Content} from "../models/content";
 import {ICategorySortingFn, ICategorySortingObject, IContentSortingFn, IContentSortingObject} from "./config";
 
-@provide(TYPES.SortingHelper)
+@provideSingleton(TYPES.SortingHelper)
 export class SortingHelper {
 
   getNormalizedContentSortingFn(contentSorting: IContentSortingObject|IContentSortingFn): IContentSortingFn {

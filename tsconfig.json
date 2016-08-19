@@ -7,8 +7,9 @@
     "declaration": false,
     "noImplicitAny": false,
     "removeComments": true,
-    "inlineSourceMap": true,
+    "inlineSourceMap": false,
     "inlineSources": false,
+    "sourceMap": true,
     "outDir": "./build",
     "rootDir": "."
   },

@@ -1,9 +1,9 @@
-import {provide, TYPES} from "../inversify.config";
+import {provideSingleton, TYPES} from "../core/inversify.config";
 import {ICollectionConfigFile, ICollectionDefinitionFile} from "../lib/config";
 import {Collection} from "./collection";
 import {inject, interfaces} from "inversify";
 
-@provide(TYPES.CollectionStatic)
+@provideSingleton(TYPES.CollectionStatic)
 export class CollectionStatic {
   constructor(
     @inject(TYPES.CollectionConstructor) private _collection: interfaces.Newable<Collection>

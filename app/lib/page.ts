@@ -1,6 +1,7 @@
-import {provide, TYPES} from "../inversify.config";
+import {provideSingleton, TYPES} from "../core/inversify.config";
 import {Collection} from "../models/collection";
 import {Config} from "./config";
+import {l} from "./logger";
 import {Template} from "./template";
 import * as fs from "fs-extra";
 import {inject} from "inversify";
@@ -8,7 +9,7 @@ import * as path from "path";
 
 const HTML_PAGE_NAME = "index.html";
 
-@provide(TYPES.Page)
+@provideSingleton(TYPES.Page)
 export class Page {
 
   constructor(
@@ -19,14 +20,14 @@ export class Page {
   renderPages(collections: Array<Collection>): void {
     let files = this.getFileList(this._config.PAGES_DIR);
     files.forEach((filePath) => {
-      console.log(`Processing page ${filePath}`);
+      l.info(`Processing page ${filePath}`);
       let extname = path.extname(filePath);
       let fileWithoutExt = path.basename(filePath, extname);
 
       let builtTemplate = this._template.renderPage(path.join(this._config.PAGES_DIR, filePath), collections);
       let normalizedPath = path.join(this._config.OUTPUT_DIR, fileWithoutExt, HTML_PAGE_NAME);
 
-      console.log(normalizedPath);
+      l.info(normalizedPath);
 
       fs.outputFileSync(normalizedPath, builtTemplate);
     });

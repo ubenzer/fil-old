@@ -1,11 +1,12 @@
-import {provide, TYPES} from "../inversify.config";
+import {provideSingleton, TYPES} from "../core/inversify.config";
 import {Config} from "./config";
+import {l} from "./logger";
 import * as fs from "fs-extra";
 import {inject} from "inversify";
 import * as path from "path";
 import * as sharp from "sharp";
 
-@provide(TYPES.ImageResizer)
+@provideSingleton(TYPES.ImageResizer)
 export class ImageResizer {
   IMAGE_EXTENSIONS: Array<string> = [".jpg", ".png"];
 
@@ -47,8 +48,8 @@ export class ImageResizer {
         .quality(80)
         .toFile(outFullPath, (err) => {
           if (err) {
-            console.log(`Couldn't resize file to ${outFullPath}`);
-            console.log(err);
+            l.error(`Couldn't resize file to ${outFullPath}`);
+            l.error(err);
           }
         });
     }

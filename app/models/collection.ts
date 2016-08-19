@@ -1,5 +1,6 @@
-import {lazyInject, provideConstructor, TYPES} from "../inversify.config";
+import {lazyInject, provideConstructor, TYPES} from "../core/inversify.config";
 import {ICategorySortingFn, ICategorySortingObject, IContentSortingFn, IContentSortingObject} from "../lib/config";
+import {l} from "../lib/logger";
 import {SortingHelper} from "../lib/sortingHelper";
 import {Category} from "./category";
 import {CollectionStatic} from "./collection.static";
@@ -197,7 +198,7 @@ export class Collection {
       maybeCollectionRelatedFrontmatter = [maybeCollectionRelatedFrontmatter];
     }
     if (!(maybeCollectionRelatedFrontmatter instanceof Array)) {
-      console.log(`"${this.id}" collection related information in content "${content.contentId}" is not understood.`);
+      l.info(`"${this.id}" collection related information in content "${content.contentId}" is not understood.`);
       return [];
     }
 

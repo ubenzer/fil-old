@@ -19,6 +19,7 @@ let TYPES = {
   ContentStatic: Symbol(),
   Fil: Symbol(),
   ImageResizer: Symbol(),
+  Logger: Symbol(),
   Page: Symbol(),
   RhoConstructor: Symbol(),
   Sitemap: Symbol(),
@@ -33,5 +34,12 @@ let provideConstructor = (serviceIdentifier: Symbol) => {
     return target;
   };
 };
+let provideSingleton = (serviceIdentifier: Symbol) => {
+  return (target) => {
+    decorate(injectable(), target);
+    kernel.bind(serviceIdentifier).to(target).inSingletonScope();
+    return target;
+  };
+};
 
-export { TYPES, lazyInject, provide, kernel, provideConstructor };
+export { TYPES, lazyInject, provide, kernel, provideConstructor, provideSingleton };
