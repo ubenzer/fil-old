@@ -19,8 +19,8 @@
     "collections",
     "taxonomy"
   ],
-  "bin": "build/app/cli.js",
-  "main": "build/app/index.js",
+  "bin": "build/app/bin/cli.js",
+  "main": "build/app/core/index.js",
   "license": "MIT",
   "preferGlobal": true,
   "dependencies": {
