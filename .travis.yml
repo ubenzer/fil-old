@@ -17,7 +17,6 @@ before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew install homebrew/science/vips --with-webp; fi
 after_success:
   - codecov -f coverage/coverage-final.json
-  - bithound check git@github.com:ubenzer/fil.git
 install:
   - npm update
   - npm install
