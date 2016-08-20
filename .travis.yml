@@ -3,7 +3,7 @@ node_js:
   - "6"
 os:
   - linux
-  - osx
+  #- osx
 sudo: false
 addons:
   apt:
