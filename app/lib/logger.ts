@@ -45,7 +45,8 @@ let l = tracer.console(
     format : [
       "{{timestamp}} {{icon}} {{message}} (in {{method}}@{{file}}:{{line}})",
       {
-        error : "{{timestamp}} {{icon}} {{message}} (in {{method}}@{{file}}:{{line}})\nCall Stack:\n{{stack}}"
+        error: "{{timestamp}} {{icon}} {{message}} (in {{method}}@{{file}}:{{line}})\nCall Stack:\n{{stack}}",
+        info: "{{timestamp}} {{icon}} {{message}}"
       }
     ],
     preprocess: (data) => {
