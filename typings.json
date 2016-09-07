@@ -3,6 +3,7 @@
     "chalk": "registry:npm/chalk#1.1.1+20160812215109",
     "mime": "registry:npm/mime#1.3.0+20160723033700",
     "semver": "registry:npm/semver#5.0.0+20160723033700",
+    "sinon": "registry:npm/sinon#1.16.0+20160723033700",
     "slug": "registry:npm/slug#0.9.0+20160723033700",
     "source-map": "registry:npm/source-map#0.4.0+20160723033700"
   },
@@ -15,9 +16,8 @@
     "inversify-inject-decorators": "file:node_modules/inversify-dts/inversify-inject-decorators/inversify-inject-decorators.d.ts",
     "minimatch": "registry:dt/minimatch#2.0.8+20160317120654",
     "mocha": "registry:env/mocha#2.2.5+20160723033700",
-    "node": "registry:env/node#6.0.0+20160813135048",
+    "node": "registry:env/node#6.0.0+20160902022231",
     "reflect-metadata": "file:node_modules/reflect-metadata/reflect-metadata.d.ts",
-    "string": "registry:dt/string#0.0.0+20160316155526",
-    "stylus": "registry:dt/stylus#0.0.0+20160317120654"
+    "string": "registry:dt/string#0.0.0+20160316155526"
   }
 }

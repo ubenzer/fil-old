@@ -1,6 +1,6 @@
 {
   "name": "fil",
-  "version": "1.0.3",
+  "version": "2.0.0",
   "description": "A static site generator",
   "author": "Umut Benzer <umut@benzer.me>",
   "repository": {
@@ -64,11 +64,11 @@
     "prepublish": "npm run dev:typings && npm run dev:compile",
     "dev:compile": "shx rm -rf build && tsc",
     "dev:typings": "shx rm -rf typings && typings install",
-    "test": "nyc mocha build/test/temporaryTestAreaUntilIWriteSomeRealTest/**/*.js",
+    "test": "nyc mocha './{,!(node_modules)/**/}*.test.js'",
     "lint": "tslint --project=tslint.json"
   },
   "engines": {
-    "node": ">=6.3.1"
+    "node": ">=6.5.0"
   },
   "nyc": {
     "include": [

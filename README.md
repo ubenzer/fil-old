@@ -90,9 +90,7 @@ The following features are planned. Not in particular order.
 3. Better caching.
 4. Ability to run compiler partially. (e.g. only build pages but not categories etc.)
 5. Hook mechanism similar to frontend build system hook for publishing.
-6. Better console output.
-7. Improve code coverage. (just built test and coverage system!)
-8. Need tslint.
+6. Improve code coverage. (just built test and coverage system!)
 
 ## Contributing
 No defined way of contributing yet. Just go wild. %-) If you are planning to add a new feature, open a PR and let's

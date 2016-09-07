@@ -1,7 +1,11 @@
 import {kernel} from "../app/core/inversify.config";
+import {Loader} from "../app/core/loader";
 import {decorate, injectable} from "inversify";
+import {SinonStub} from "sinon";
 
 export class TestUtils {
+  static stub: Array<SinonStub>;
+
   private static gotSnapshot: boolean = false;
 
   // tslint:disable-next-line:no-empty
@@ -13,7 +17,11 @@ export class TestUtils {
       kernel.snapshot();
       TestUtils.gotSnapshot = true;
     }
-    decorate(injectable(), mock);
+    try {
+      // Mocks needs to be decorated once
+      decorate(injectable(), mock);
+      // tslint:disable-next-line:no-empty
+    } catch (e) {}
     kernel.unbind(target);
     kernel.bind<T>(target).to(mock);
     return kernel.get<T>(target);
@@ -21,5 +29,19 @@ export class TestUtils {
   static restore(): void {
     if (!TestUtils.gotSnapshot) { return; }
     kernel.restore();
+    TestUtils.gotSnapshot = false;
+  }
+
+  static initTestSystem(): void {
+    Loader.loadProject();
+    beforeEach(() => {
+      TestUtils.stub = [];
+    });
+    afterEach(() => {
+      TestUtils.restore();
+      TestUtils.stub.forEach((stub) => {
+        stub.restore();
+      });
+    });
   }
 }
