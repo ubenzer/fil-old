@@ -35,6 +35,8 @@ export class ContentStatic {
 
     let editDate = (doc.attributes.edited instanceof Date) ? doc.attributes.edited : new Date(createDate);
 
+    let taxonomy = (doc.attributes.taxonomy instanceof Object) ? doc.attributes.taxonomy : {};
+
     let extractedTitleObject = this.extractTitleFromMarkdown(doc.body);
 
     let markdownContent = extractedTitleObject.content;
@@ -52,7 +54,7 @@ export class ContentStatic {
       templateFile,
       createDate,
       editDate,
-      doc.attributes
+      taxonomy
     );
   }
 

@@ -26,6 +26,17 @@ export class Config implements IConfig {
   }
 }
 
+export class MockConfig implements IConfig {
+  CONTENTS_DIR: string = "MOCK_CONTENTS_DIR";
+  TEMPLATE_DIR: string = "MOCK_TEMPLATE_DIR";
+  PAGES_DIR: string = "MOCK_PAGES_DIR";
+  OUTPUT_DIR: string = "MOCK_OUTPUT_DIR";
+
+  get(): IConfigFile {
+    throw new Error("Trying to get config from mock object!");
+  }
+}
+
 export interface IConfigFile {
   build: {
     contentPath: string,
@@ -111,4 +122,10 @@ interface IContentConfig {
 }
 export type IContentPermalinkCalculatorFnIn = (contentId: string, contentTitle: string, contentCreateDate: Date) => string;
 
-export interface IConfig {}
+export interface IConfig {
+  CONTENTS_DIR: string;
+  TEMPLATE_DIR: string;
+  PAGES_DIR: string;
+  OUTPUT_DIR: string;
+  get(): IConfigFile;
+}

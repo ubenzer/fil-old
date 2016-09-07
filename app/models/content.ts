@@ -31,7 +31,7 @@ export class Content {
 
   belongsTo: Map<Collection, Array<IContentBelongsTo>>; // relationship map, which categories this content belongs to
 
-  rawFrontmatter: Object; // this is going to be used to calculate category relationships
+  taxonomy: Object; // this is going to be used to calculate category relationships
 
   @lazyInject(TYPES.Config) private _config: Config;
   @lazyInject(TYPES.ImageResizer) private _imageResizer: ImageResizer;
@@ -55,7 +55,7 @@ export class Content {
     templateFile: string = "content.pug",
     createDate: Date,
     editDate: Date,
-    rawFrontmatter: Object
+    taxonomy: Object = {}
   ) {
     this.inputFolder = inputFolder;
     this.title = title;
@@ -65,7 +65,7 @@ export class Content {
     this.editDate = moment(editDate);
     this.contentId = contentId;
     this.outputFolder = outputFolder;
-    this.rawFrontmatter = rawFrontmatter;
+    this.taxonomy = taxonomy;
     this.belongsTo = new Map();
   }
 

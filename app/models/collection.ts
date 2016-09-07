@@ -1,6 +1,5 @@
 import {lazyInject, provideConstructor, TYPES} from "../core/inversify.config";
 import {ICategorySortingFn, ICategorySortingObject, IContentSortingFn, IContentSortingObject} from "../lib/config";
-import {l} from "../lib/logger";
 import {SortingHelper} from "../lib/sortingHelper";
 import {Category} from "./category";
 import {CollectionStatic} from "./collection.static";
@@ -193,12 +192,11 @@ export class Collection {
   }
 
   private defaultCategoryIdGeneratorFn(content: Content): Array<string> {
-    let maybeCollectionRelatedFrontmatter = content.rawFrontmatter[this.id];
+    let maybeCollectionRelatedFrontmatter = content.taxonomy[this.id];
     if (typeof maybeCollectionRelatedFrontmatter === "string") {
       maybeCollectionRelatedFrontmatter = [maybeCollectionRelatedFrontmatter];
     }
     if (!(maybeCollectionRelatedFrontmatter instanceof Array)) {
-      l.info(`"${this.id}" collection related information in content "${content.contentId}" is not understood.`);
       return [];
     }
 
