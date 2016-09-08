@@ -8,7 +8,7 @@ import {ContentStatic} from "../models/content.static";
 import {ContentLookup} from "../models/contentLookup";
 import {provideSingleton, TYPES} from "./inversify.config";
 import * as ChildProcess from "child_process";
-import {inject} from "inversify";
+import {inject, interfaces} from "inversify";
 
 @provideSingleton(TYPES.Fil)
 export class Fil {
@@ -17,7 +17,8 @@ export class Fil {
     @inject(TYPES.Config) private _config: Config,
     @inject(TYPES.ContentStatic) private _contentStatic: ContentStatic,
     @inject(TYPES.Page) private _page: Page,
-    @inject(TYPES.Sitemap) private _sitemap: Sitemap
+    @inject(TYPES.Sitemap) private _sitemap: Sitemap,
+    @inject(TYPES.ContentLookupConstructor) private _contentLookup: interfaces.Newable<ContentLookup>
   ) {}
 
   generate(): void {
@@ -48,7 +49,7 @@ export class Fil {
     );
 
     // write contents
-    let contentLookup = new ContentLookup(contents);
+    let contentLookup = new this._contentLookup(contents);
     contents.forEach((content) => {
       content.calculateHtmlContent(contentLookup);
       content.renderToFile(collections);

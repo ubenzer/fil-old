@@ -9,6 +9,7 @@ import {ContentAsset} from "./contentAsset";
 import {ContentLookup} from "./contentLookup";
 import * as fs from "fs-extra";
 import * as glob from "glob";
+import {interfaces} from "inversify";
 import * as moment from "moment";
 import * as path from "path";
 
@@ -36,6 +37,7 @@ export class Content {
   @lazyInject(TYPES.Config) private _config: Config;
   @lazyInject(TYPES.ImageResizer) private _imageResizer: ImageResizer;
   @lazyInject(TYPES.Template) private _template: Template;
+  @lazyInject(TYPES.RhoConstructor) private _rho: interfaces.Newable<Rho>;
 
   private fileAssetsCache: Array<ContentAsset> = null; // files attached to this content as array of file name relative to inputFolder
 
@@ -52,7 +54,7 @@ export class Content {
     outputFolder: string,
     title: string,
     content: string,
-    templateFile: string = "content.pug",
+    templateFile: string,
     createDate: Date,
     editDate: Date,
     taxonomy: Object = {}
@@ -107,7 +109,7 @@ export class Content {
   calculateHtmlContent(contentLookup: ContentLookup): void {
     l.info(`Compiling ${this.contentId}...`);
 
-    let compiler = new Rho(this, contentLookup);
+    let compiler = new this._rho(this, contentLookup);
 
     // check if we have predetermined excerpt break
     let separatedContent = this.content.split("---more---");

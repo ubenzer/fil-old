@@ -4,10 +4,13 @@ import {decorate, injectable} from "inversify";
 import {SinonStub} from "sinon";
 
 export class TestUtils {
-  static stub: Array<SinonStub>;
+  private static stub: Array<SinonStub>;
 
   private static gotSnapshot: boolean = false;
 
+  static addStub(...stubList: Array<SinonStub>): void {
+    stubList.forEach((s) => { TestUtils.stub.push(s); });
+  }
   // tslint:disable-next-line:no-empty
   static noop(): void {}
 
@@ -26,6 +29,7 @@ export class TestUtils {
     kernel.bind<T>(target).to(mock);
     return kernel.get<T>(target);
   }
+
   static restore(): void {
     if (!TestUtils.gotSnapshot) { return; }
     kernel.restore();

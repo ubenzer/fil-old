@@ -26,7 +26,7 @@ export class ContentStatic {
     let rawContent = fs.readFileSync(fullPath, "utf8");
 
     let doc = frontMatter(rawContent);
-    let templateFile = (typeof doc.attributes.templateFile === "string") ? doc.attributes.templateFile : undefined;
+    let templateFile = (typeof doc.attributes.templateFile === "string") ? doc.attributes.templateFile : "content.pug";
 
     let createDate = doc.attributes.created;
     if (!(createDate instanceof Date)) {

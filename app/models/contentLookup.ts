@@ -1,6 +1,8 @@
+import {provideConstructor, TYPES} from "../core/inversify.config";
 import {Content} from "./content";
 import {ContentAsset} from "./contentAsset";
 
+@provideConstructor(TYPES.ContentLookupConstructor)
 export class ContentLookup {
   private contentLookupById: Map<string, Content> = null;
 

@@ -1,9 +1,13 @@
 import {kernel, TYPES} from "../../app/core/inversify.config";
 import {TestUtils} from "../../test/testUtils";
-import {MockConfig} from "../lib/config";
+import {MockConfig} from "../lib/config.mock";
+import {ImageResizer} from "../lib/imageResizer";
+import {Rho} from "../lib/rho";
 import {Template} from "../lib/template";
 import {Collection} from "./collection";
 import {Content} from "./content";
+import {ContentAsset} from "./contentAsset";
+import {ContentLookup} from "./contentLookup";
 import * as assert from "assert";
 import * as fs from "fs-extra";
 import {interfaces} from "inversify";
@@ -66,9 +70,7 @@ describe("Content", () => {
     let join = sinon.stub(path, "join").returns("pathJoinResult");
     let outputFileSync = sinon.stub(fs, "outputFileSync");
 
-    TestUtils.stub.push(renderContent);
-    TestUtils.stub.push(join);
-    TestUtils.stub.push(outputFileSync);
+    TestUtils.addStub(renderContent, join, outputFileSync);
 
     let content = Helper.getMockContent();
     let collectionsArray = [
@@ -85,6 +87,84 @@ describe("Content", () => {
     assert(renderContent.calledWithExactly(content, collectionsArray));
     assert(join.calledWithExactly("MOCK_OUTPUT_DIR", "outputFolder", "index.html"));
     assert(outputFileSync.calledWithExactly("pathJoinResult", "<html></html>"));
+  });
+
+  describe("calculateHtmlContent", () => {
+    it("compiles rho with --more-- into html and reflects it to the instance", () => {
+      let _contentLookup = <interfaces.Newable<ContentLookup>>kernel.get(TYPES.ContentLookupConstructor);
+      let _rho = <interfaces.Newable<Rho>>kernel.get(TYPES.RhoConstructor);
+      let init = sinon.stub(_rho.prototype, "init");
+      let toHtml = sinon.stub(_rho.prototype, "toHtml");
+      toHtml.onCall(0).returns("excerpt");
+      toHtml.onCall(1).returns("content");
+      TestUtils.addStub(init, toHtml);
+
+      let contentLookup = new _contentLookup([]);
+      let content = Helper.getMockContent();
+
+      content.content = "a ---more--- b";
+      content.calculateHtmlContent(contentLookup);
+
+      assert(init.alwaysCalledWithExactly(content, contentLookup));
+      assert(toHtml.calledTwice);
+      assert(toHtml.calledWithExactly("a "));
+      assert(toHtml.calledWithExactly("a \n\n b"));
+
+      assert(content.htmlContent, "content");
+      assert(content.htmlExcerpt, "excerpt");
+    });
+
+    it("compiles rho without --more-- into html and reflects it to the instance", () => {
+      let _contentLookup = <interfaces.Newable<ContentLookup>>kernel.get(TYPES.ContentLookupConstructor);
+      let _rho = <interfaces.Newable<Rho>>kernel.get(TYPES.RhoConstructor);
+      let init = sinon.stub(_rho.prototype, "init");
+      let toHtml = sinon.stub(_rho.prototype, "toHtml").returns("content");
+      TestUtils.addStub(init, toHtml);
+
+      let contentLookup = new _contentLookup([]);
+      let content = Helper.getMockContent();
+
+      content.content = "a b c";
+      content.calculateHtmlContent(contentLookup);
+
+      assert(toHtml.calledOnce);
+      assert(toHtml.calledWithExactly("a b c"));
+
+      assert(content.htmlContent, "content");
+      assert(content.htmlExcerpt, "content");
+    });
+  });
+
+  it("returns url for a content", () => {
+    let content = Helper.getMockContent();
+    content.outputFolder = "folder";
+    let url = content.getUrl();
+    assert.equal(url, "folder/");
+  });
+
+  it("process assets of this content", () => {
+    let _imageResizer = <ImageResizer>kernel.get(TYPES.ImageResizer);
+    let copySync = sinon.stub(fs, "copySync");
+    let resize = sinon.stub(_imageResizer, "resize");
+    TestUtils.addStub(resize);
+
+    let content = Helper.getMockContent();
+    content.inputFolder = "if";
+
+    let a1 = new ContentAsset("file1", content);
+    let a2 = new ContentAsset("file2", content);
+
+    sinon.stub(content, "fileAssets", { get: () => { return [a1, a2]; }});
+
+    a1.isImage = true;
+    sinon.stub(a1, "getOutputFile").returns("of1");
+    sinon.stub(a2, "getOutputFile").returns("of2");
+
+    content.processContentAssets();
+    assert(copySync.calledTwice);
+    assert(resize.calledOnce);
+    assert(copySync.calledWithExactly("MOCK_CONTENTS_DIR/if/file1", "MOCK_OUTPUT_DIR/of1"));
+    assert(copySync.calledWithExactly("MOCK_CONTENTS_DIR/if/file1", "MOCK_OUTPUT_DIR/of1"));
   });
 
   class Helper {

@@ -343,9 +343,7 @@ export class Rho {
   private blockCompiler: ExtendedBlockCompiler;
 
   constructor(post: Content, contentLookup: ContentLookup) {
-    this.post = post;
-    this.contentLookup = contentLookup;
-    this.blockCompiler = new ExtendedBlockCompiler(this);
+    this.init(post, contentLookup);
   }
 
   resolveUrl(url: string): string {
@@ -355,6 +353,12 @@ export class Rho {
 
   toHtml(str: string): string {
     return this.blockCompiler.toHtml(str);
+  }
+
+  private init(post: Content, contentLookup: ContentLookup): void {
+    this.post = post;
+    this.contentLookup = contentLookup;
+    this.blockCompiler = new ExtendedBlockCompiler(this);
   }
 
   private checkOwnUrl(url: string): boolean {
