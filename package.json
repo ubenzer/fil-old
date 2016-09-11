@@ -29,7 +29,7 @@
     "fs-extra": "^0.30.0",
     "glob": "^7.0.5",
     "inversify": "^2.0.0-rc.10",
-    "inversify-binding-decorators": "^1.0.0-rc.2",
+    "inversify-binding-decorators": "^2.0.0",
     "inversify-inject-decorators": "^1.0.0-beta.1",
     "liftoff": "^2.3.0",
     "mime": "^1.3.4",
