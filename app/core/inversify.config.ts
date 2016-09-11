@@ -27,14 +27,14 @@ let TYPES = {
   Template: Symbol()
 };
 
-let provideConstructor = (serviceIdentifier: Symbol) => {
+let provideConstructor = (serviceIdentifier: symbol) => {
   return (target) => {
     decorate(injectable(), target);
     kernel.bind(serviceIdentifier).toConstructor(target);
     return target;
   };
 };
-let provideSingleton = (serviceIdentifier: Symbol) => {
+let provideSingleton = (serviceIdentifier: symbol) => {
   return (target) => {
     decorate(injectable(), target);
     kernel.bind(serviceIdentifier).to(target).inSingletonScope();

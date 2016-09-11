@@ -15,7 +15,7 @@ export class TestUtils {
   static noop(): void {}
 
   // tslint:disable-next-line:no-any
-  static mock<T>(target: Symbol, mock: { new(...args: any[]): T; }): T {
+  static mock<T>(target: symbol, mock: { new(...args: any[]): T; }): T {
     if (!TestUtils.gotSnapshot) {
       kernel.snapshot();
       TestUtils.gotSnapshot = true;

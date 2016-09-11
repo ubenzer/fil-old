@@ -9,11 +9,8 @@
   },
   "devDependencies": {},
   "globalDependencies": {
-    "fs-extra": "registry:dt/fs-extra#0.0.0+20160517121359",
+    "fs-extra": "registry:dt/fs-extra#0.0.0+20160907105211",
     "glob": "registry:dt/glob#5.0.10+20160317120654",
-    "inversify": "file:node_modules/inversify-dts/inversify/inversify.d.ts",
-    "inversify-binding-decorators": "file:node_modules/inversify-dts/inversify-binding-decorators/inversify-binding-decorators.d.ts",
-    "inversify-inject-decorators": "file:node_modules/inversify-dts/inversify-inject-decorators/inversify-inject-decorators.d.ts",
     "minimatch": "registry:dt/minimatch#2.0.8+20160317120654",
     "mocha": "registry:env/mocha#2.2.5+20160723033700",
     "node": "registry:env/node#6.0.0+20160902022231",
