@@ -1,4 +1,4 @@
-import {ExtendedInlineCompiler} from "./ExtendedInlineCompiler";
+import {ExtendedInlineCompiler} from "./extendedInlineCompiler";
 import {Rho} from "./rho";
 import * as rho from "rho";
 

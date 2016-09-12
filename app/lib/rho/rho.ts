@@ -4,7 +4,7 @@ import {ContentLookup} from "../../models/contentLookup";
 import {Config} from "../config";
 import {ImageResizer} from "../imageResizer";
 import {Template} from "../template";
-import {ExtendedBlockCompiler} from "./ExtendedBlockCompiler";
+import {ExtendedBlockCompiler} from "./extendedBlockCompiler";
 import * as s from "string";
 
 enum ParserState {CONTENT_ID, ASSET_ID}
