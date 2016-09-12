@@ -2,7 +2,7 @@ import {kernel, TYPES} from "../../app/core/inversify.config";
 import {TestUtils} from "../../test/testUtils";
 import {MockConfig} from "../lib/config.mock";
 import {ImageResizer} from "../lib/imageResizer";
-import {Rho} from "../lib/rho";
+import {Rho} from "../lib/rho/rho";
 import {Template} from "../lib/template";
 import {Collection} from "./collection";
 import {Content} from "./content";

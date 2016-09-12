@@ -2,7 +2,7 @@ import {lazyInject, provideConstructor, TYPES} from "../core/inversify.config";
 import {Config} from "../lib/config";
 import {ImageResizer} from "../lib/imageResizer";
 import {l} from "../lib/logger";
-import {Rho} from "../lib/rho";
+import {Rho} from "../lib/rho/rho";
 import {Template} from "../lib/template";
 import {Collection, IContentBelongsTo} from "./collection";
 import {ContentAsset} from "./contentAsset";
