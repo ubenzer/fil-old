@@ -26,6 +26,9 @@ export class Page {
 
       let builtTemplate = this._template.renderPage(path.join(this._config.PAGES_DIR, filePath), collections);
       let normalizedPath = path.join(this._config.OUTPUT_DIR, fileWithoutExt, HTML_PAGE_NAME);
+      if (fileWithoutExt === "index") {
+        normalizedPath = path.join(this._config.OUTPUT_DIR, HTML_PAGE_NAME);
+      }
 
       l.info(normalizedPath);
 
@@ -40,7 +43,7 @@ export class Page {
       let filePath = path.join(dir, file);
       if (fs.statSync(filePath).isDirectory()) {
         fileList = [...fileList, ...this.getFileList(filePath)];
-      } else {
+      } else if (path.extname(file) === "pug") {
         fileList.push(file);
       }
     });
