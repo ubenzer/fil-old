@@ -50,7 +50,7 @@ cli.launch({}, (env: IEnv) => {
     let filModule = require(env.modulePath);
     fil = new filModule.Fil();
   }
-  fil.generate();
+  fil.start();
 });
 
 interface IEnv {
