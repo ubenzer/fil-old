@@ -34,15 +34,15 @@ posts that demonstrates `fil`'s various features. This way, it will be faster to
 3. Go into starter project directory. `cd fil-starter-project`.
 4. Install dependencies of starter project. `npm i`.
 5. To customize most of the settings, you can edit `config.js`.
-6. To build it via `fil`, run `fil` on your console.
+6. To build it via `fil`, run `fil` on your console. If you want to build continiously you can type `fil --watch`.
 7. That is it, it is built into `dist` folder!
 8. Run `npm run serve` to start a web server on `http://localhost:8765` to view your brand new static web site.
 
 To learn more about starter project and development specifics tasks, see 
-[README of starter project]( https://github.com/ubenzer/fil-starter-project).
+[README of starter project](https://github.com/ubenzer/fil-starter-project).
 
 ## Requirements
-1. Node.js 6.3.1+
+1. Node.js 6.5.0+
 2. npm 3.x
 3. System libraries required for [sharp](http://sharp.readthedocs.io/en/stable/install/).
 

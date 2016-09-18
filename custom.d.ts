@@ -133,16 +133,3 @@ declare module 'tildify' {
   namespace tildify {}
   export = tildify;
 }
-
-declare module 'liftoff' {
-  function liftoff(settings: ILiftoffConstructor): void;
-  namespace liftoff {}
-
-  interface ILiftoffConstructor {
-    configName: string;
-    name: string;
-  }
-  export = liftoff;
-}
-
-
