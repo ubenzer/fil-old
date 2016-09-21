@@ -1,4 +1,5 @@
 import {kernel, TYPES} from "../../app/core/inversify.config";
+import {Helper} from "../../test/testHelpers";
 import {TestUtils} from "../../test/testUtils";
 import {MockConfig} from "../lib/config.mock";
 import {ImageResizer} from "../lib/imageResizer";
@@ -166,11 +167,4 @@ describe("Content", () => {
     assert(copySync.calledWithExactly("MOCK_CONTENTS_DIR/if/file1", "MOCK_OUTPUT_DIR/of1"));
     assert(copySync.calledWithExactly("MOCK_CONTENTS_DIR/if/file1", "MOCK_OUTPUT_DIR/of1"));
   });
-
-  class Helper {
-    static getMockContent(): Content {
-      return new _content("contentId", "inputFolder", "outputFolder", "title", "content", "template",
-                          new Date("2000-01-01"), new Date("2010-01-01"), {});
-    }
-  }
 });
