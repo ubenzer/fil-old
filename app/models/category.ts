@@ -32,7 +32,7 @@ export class Category {
 
   paginatedContents: Array<IPaginatedCategory>;
 
-  @lazyInject(TYPES.Config) _config: Config; // TODO Make private
+  @lazyInject(TYPES.Config) private _config: Config;
   @lazyInject(TYPES.SortingHelper) private _sortingHelper: SortingHelper;
   @lazyInject(TYPES.Template) private _template: Template;
 
@@ -87,9 +87,9 @@ export class Category {
     }
   }
 
-  registerSubcategory(category: Category, parentCategory: Category): void {
+  registerSubcategory(category: Category): void {
     this.subCategories.push(category);
-    category.parentCategory = parentCategory;
+    category.parentCategory = this;
   }
 
   calculatePagination(): void {

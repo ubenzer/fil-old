@@ -181,7 +181,7 @@ export class Collection {
       this.categories.push(category);
     } else {
       // register on parent category
-      parentCategory.registerSubcategory(category, parentCategory);
+      parentCategory.registerSubcategory(category);
     }
 
     return category;
