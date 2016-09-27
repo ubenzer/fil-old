@@ -106,16 +106,19 @@ export class Rho {
       }
     }
 
-    let post = this.contentLookup.getContentById(contentId);
-    if (post === null) {
+    let content = this.contentLookup.getContentById(contentId);
+    if (content === null) {
       throw new Error(`Cannot resolve content in ${urlWithReference}`);
     }
 
     if (assetId.length === 0) {
-      return post.getUrl();
+      if (!content.render) {
+        throw new Error(`Content ${urlWithReference} is marked as render:false. You can't reference it!`);
+      }
+      return content.getUrl();
     }
 
-    let postContent = this.contentLookup.getContentAssetByContent(post, assetId);
+    let postContent = this.contentLookup.getContentAssetByContent(content, assetId);
     if (postContent === null) {
       throw new Error(`Cannot resolve content asset in ${urlWithReference}`);
     }

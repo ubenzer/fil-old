@@ -1,6 +1,6 @@
 {
   "name": "fil",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "A static site generator",
   "author": "Umut Benzer <umut@benzer.me>",
   "repository": {

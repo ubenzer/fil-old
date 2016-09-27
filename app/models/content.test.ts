@@ -64,30 +64,40 @@ describe("Content", () => {
     assert.equal(content.belongsTo.get(collection2), "collection #2 Array<IContentBelongsTo>");
   });
 
-  it("renders content into a file as html", () => {
-    let _collection = <interfaces.Newable<Collection>>kernel.get(TYPES.CollectionConstructor);
+  describe("renderToFile", () => {
+    it("renders content into a file as html", () => {
+      let _collection = <interfaces.Newable<Collection>>kernel.get(TYPES.CollectionConstructor);
 
-    let renderContent = sinon.stub(Template.prototype, "renderContent").returns("<html></html>");
-    let join = sinon.stub(path, "join").returns("pathJoinResult");
-    let outputFileSync = sinon.stub(fs, "outputFileSync");
+      let renderContent = sinon.stub(Template.prototype, "renderContent").returns("<html></html>");
+      let join = sinon.stub(path, "join").returns("pathJoinResult");
+      let outputFileSync = sinon.stub(fs, "outputFileSync");
 
-    TestUtils.addStub(renderContent, join, outputFileSync);
+      TestUtils.addStub(renderContent, join, outputFileSync);
 
-    let content = Helper.getMockContent();
-    let collectionsArray = [
-      new _collection("id", TestUtils.noop, "collectionPermalink", "categoryFirstPermalink",
-                      "categoryPermalink", 2,  TestUtils.noop, TestUtils.noop, "/",
-                      TestUtils.noop),
-      new _collection("id2", TestUtils.noop, "collectionPermalink", "categoryFirstPermalink",
-                      "categoryPermalink", 2,  TestUtils.noop, TestUtils.noop, "/",
-                      TestUtils.noop)
-    ];
+      let content = Helper.getMockContent();
+      let collectionsArray = [
+        new _collection("id", TestUtils.noop, "collectionPermalink", "categoryFirstPermalink",
+                        "categoryPermalink", 2,  TestUtils.noop, TestUtils.noop, "/",
+                        TestUtils.noop),
+        new _collection("id2", TestUtils.noop, "collectionPermalink", "categoryFirstPermalink",
+                        "categoryPermalink", 2,  TestUtils.noop, TestUtils.noop, "/",
+                        TestUtils.noop)
+      ];
 
-    content.renderToFile(collectionsArray);
+      content.renderToFile(collectionsArray);
 
-    assert(renderContent.calledWithExactly(content, collectionsArray));
-    assert(join.calledWithExactly("MOCK_OUTPUT_DIR", "outputFolder", "index.html"));
-    assert(outputFileSync.calledWithExactly("pathJoinResult", "<html></html>"));
+      assert(renderContent.calledWithExactly(content, collectionsArray));
+      assert(join.calledWithExactly("MOCK_OUTPUT_DIR", "outputFolder", "index.html"));
+      assert(outputFileSync.calledWithExactly("pathJoinResult", "<html></html>"));
+    });
+    it("doesn't do anything, if content is marked as render:false", () => {
+      let renderContent = sinon.stub(Template.prototype, "renderContent").returns("<html></html>");
+      TestUtils.addStub(renderContent);
+      let content = Helper.getMockContent();
+      content.render = false;
+      content.renderToFile([]);
+      assert.equal(renderContent.callCount, 0);
+    });
   });
 
   describe("calculateHtmlContent", () => {

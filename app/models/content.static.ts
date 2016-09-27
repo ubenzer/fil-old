@@ -37,6 +37,8 @@ export class ContentStatic {
 
     let taxonomy = (doc.attributes.taxonomy instanceof Object) ? doc.attributes.taxonomy : {};
 
+    let render = (typeof doc.attributes.render === "boolean") ? doc.attributes.render : true;
+
     let extractedTitleObject = this.extractTitleFromMarkdown(doc.body);
 
     let markdownContent = extractedTitleObject.content;
@@ -54,7 +56,8 @@ export class ContentStatic {
       templateFile,
       createDate,
       editDate,
-      taxonomy
+      taxonomy,
+      render
     );
   }
 

@@ -14,7 +14,7 @@ export class Config implements IConfig {
 
   constructor() {
     // tslint:disable-next-line:no-require-imports
-    this.configCache = <IConfigFile>require(path.join(process.cwd(), process.env.CONFIG || "filconfig.js"));
+    this.configCache = <IConfigFile>require(path.join(process.cwd(), process.env["CONFIG"] || "filconfig.js"));
     this.CONTENTS_DIR = path.join(process.cwd(), this.get().build.contentPath);
     this.TEMPLATE_DIR = path.join(process.cwd(), this.get().build.templatePath);
     this.PAGES_DIR = path.join(process.cwd(), this.get().build.pagePath);

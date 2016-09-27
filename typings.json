@@ -13,8 +13,8 @@
     "fs-extra": "registry:dt/fs-extra#0.0.0+20160907105211",
     "glob": "registry:dt/glob#5.0.10+20160317120654",
     "minimatch": "registry:dt/minimatch#2.0.8+20160317120654",
-    "mocha": "registry:env/mocha#2.2.5+20160723033700",
-    "node": "registry:env/node#6.0.0+20160902022231",
+    "mocha": "registry:env/mocha#2.2.5+20160926180742",
+    "node": "registry:env/node#6.0.0+20160918225031",
     "reflect-metadata": "file:node_modules/reflect-metadata/reflect-metadata.d.ts",
     "string": "registry:dt/string#0.0.0+20160316155526"
   }
