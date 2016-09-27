@@ -84,7 +84,7 @@ declare module "tracer" {
   class Console {
     info(message: string): void;
     warn(message: string): void;
-    error(message: string): void;
+    error(message: string, error?: Error): void;
   }
   interface IConsoleSettings {
     format: Array<string|IFormatSettings>;
