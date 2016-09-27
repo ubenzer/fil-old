@@ -87,7 +87,7 @@ export class Fil {
     try {
       this.generate();
     } catch (e) {
-      l.error("Generation failed. Check errors above.");
+      l.error("Generation failed because of the following:", e);
     }
   }
   private generate(): void {

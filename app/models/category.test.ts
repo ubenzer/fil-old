@@ -117,6 +117,8 @@ describe("Category", () => {
   });
 
   describe("calculatePagination", () => {
+    it("triggers pagination calculation for all sub categories");
+    it("splits content to pages with desired settings which contains first, intermediate and last page");
     // TODO
   });
 

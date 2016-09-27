@@ -43,7 +43,7 @@ export class Page {
       let filePath = path.join(dir, file);
       if (fs.statSync(filePath).isDirectory()) {
         fileList = [...fileList, ...this.getFileList(filePath)];
-      } else if (path.extname(file) === "pug") {
+      } else if (path.extname(file) === ".pug") {
         fileList.push(file);
       }
     });
