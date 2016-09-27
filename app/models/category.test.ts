@@ -117,9 +117,70 @@ describe("Category", () => {
   });
 
   describe("calculatePagination", () => {
-    it("triggers pagination calculation for all sub categories");
-    it("splits content to pages with desired settings which contains first, intermediate and last page");
-    // TODO
+    it("triggers pagination calculation for all sub categories", () => {
+      let parentCategory = Helper.getMockCategory();
+      let childCategory = Helper.getMockCategory();
+      parentCategory.subCategories.push(childCategory);
+
+      let calculatePagination = sinon.stub(childCategory, "calculatePagination");
+
+      parentCategory.calculatePagination();
+      assert(calculatePagination.calledOnce);
+    });
+    it("splits content to pages with desired settings which contains first, intermediate and last page", () => {
+      let category = Helper.getMockCategory();
+      let collection = Helper.getMockCollection();
+      category.belongsToCollection = collection;
+      let contents = [];
+      for (let i = 0; i < 5; i++) {
+        contents.push(Helper.getMockContent());
+      }
+      category.contents = contents;
+      category.pagination = 2;
+
+      assert.equal(category.paginatedContents.length, 0);
+      category.calculatePagination();
+      assert.equal(category.paginatedContents.length, 3);
+
+      // start
+      assert.equal(category.paginatedContents[0].contents.length, 2);
+      assert.deepEqual(category.paginatedContents[0].contents, [contents[0], contents[1]]);
+      assert.equal(category.paginatedContents[0].firstPageUrl, "categoryFirstPermalink/1");
+      assert.equal(category.paginatedContents[0].isFirstPage, true);
+      assert.equal(category.paginatedContents[0].isLastPage, false);
+      assert.equal(category.paginatedContents[0].nextPageUrl, "categoryPermalink/2");
+      assert.equal(category.paginatedContents[0].numberOfPages, 3);
+      assert.equal(category.paginatedContents[0].outputFolder, "categoryFirstPermalink/1");
+      assert.equal(category.paginatedContents[0].pageNumber, 1);
+      assert.equal(category.paginatedContents[0].previousPageUrl, null);
+      assert.equal(category.paginatedContents[0].url, "categoryFirstPermalink/1");
+
+      // middle
+      assert.equal(category.paginatedContents[1].contents.length, 2);
+      assert.deepEqual(category.paginatedContents[1].contents, [contents[2], contents[3]]);
+      assert.equal(category.paginatedContents[1].firstPageUrl, "categoryFirstPermalink/1");
+      assert.equal(category.paginatedContents[1].isFirstPage, false);
+      assert.equal(category.paginatedContents[1].isLastPage, false);
+      assert.equal(category.paginatedContents[1].nextPageUrl, "categoryPermalink/3");
+      assert.equal(category.paginatedContents[1].numberOfPages, 3);
+      assert.equal(category.paginatedContents[1].outputFolder, "categoryPermalink/2");
+      assert.equal(category.paginatedContents[1].pageNumber, 2);
+      assert.equal(category.paginatedContents[1].previousPageUrl, "categoryFirstPermalink/1");
+      assert.equal(category.paginatedContents[1].url, "categoryPermalink/2");
+
+      // end
+      assert.equal(category.paginatedContents[2].contents.length, 1);
+      assert.deepEqual(category.paginatedContents[2].contents, [contents[4]]);
+      assert.equal(category.paginatedContents[2].firstPageUrl, "categoryFirstPermalink/1");
+      assert.equal(category.paginatedContents[2].isFirstPage, false);
+      assert.equal(category.paginatedContents[2].isLastPage, true);
+      assert.equal(category.paginatedContents[2].nextPageUrl, null);
+      assert.equal(category.paginatedContents[2].numberOfPages, 3);
+      assert.equal(category.paginatedContents[2].outputFolder, "categoryPermalink/3");
+      assert.equal(category.paginatedContents[2].pageNumber, 3);
+      assert.equal(category.paginatedContents[2].previousPageUrl, "categoryPermalink/2");
+      assert.equal(category.paginatedContents[2].url, "categoryPermalink/3");
+    });
   });
 
   it("renders category and sub categories into html files, paginated", () => {

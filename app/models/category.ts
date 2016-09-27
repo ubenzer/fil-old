@@ -137,7 +137,7 @@ export class Category {
           isLastPage: isLastPage,
           lastPageUrl: lastPagePermalink,
           nextPageUrl: nextPagePermalink,
-          numberOfPages: paginatedContent.length,
+          numberOfPages: paginatedContents.length,
           outputFolder: outputFolder,
           pageNumber: index + 1,
           previousPageUrl: prevPagePermalink,
