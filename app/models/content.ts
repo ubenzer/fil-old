@@ -27,6 +27,8 @@ export class Content {
   createDate: moment.Moment; // content's original creation date
   editDate: moment.Moment; // content's last update date
 
+  render: boolean; // should we render this content
+
   htmlContent: string = null; // compiled html content, this is null, call calculateHtmlContent() once to fill this.
   htmlExcerpt: string = null; // compiled excerpt, this is null, call calculateHtmlContent() once to fill this.
 
@@ -57,7 +59,8 @@ export class Content {
     templateFile: string,
     createDate: Date,
     editDate: Date,
-    taxonomy: Object = {}
+    taxonomy: Object = {},
+    render: boolean
   ) {
     this.inputFolder = inputFolder;
     this.title = title;
@@ -68,6 +71,7 @@ export class Content {
     this.contentId = contentId;
     this.outputFolder = outputFolder;
     this.taxonomy = taxonomy;
+    this.render = render;
     this.belongsTo = new Map();
   }
 
@@ -94,6 +98,7 @@ export class Content {
    * @param collections Whole available collections in the system
    */
   renderToFile(collections: Array<Collection>): void {
+    if (!this.render) { return; }
     let builtTemplate = this._template.renderContent(this, collections);
     let normalizedPath = path.join(this._config.OUTPUT_DIR, this.outputFolder, HTML_PAGE_NAME);
 

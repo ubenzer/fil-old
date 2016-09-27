@@ -7,7 +7,7 @@ export class Helper {
   static getMockContent(): Content {
     let _content = <interfaces.Newable<Content>>kernel.get(TYPES.ContentConstructor);
     return new _content("contentId", "inputFolder", "outputFolder", "title", "content", "template",
-                        new Date("2000-01-01"), new Date("2010-01-01"), {});
+                        new Date("2000-01-01"), new Date("2010-01-01"), {}, true);
   }
 
   static getMockCategory(): Category {

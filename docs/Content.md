@@ -39,4 +39,4 @@ with [rho](Rho.md), which is a very similar language to `markdown` with some add
 Content assets are other files that are in content folder. These can be anything: Binary files, images, text files...
 
 ## In progress
-`render` and `data` fields are not implemented yet.
+`data` fields are not implemented yet.
