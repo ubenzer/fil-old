@@ -39,7 +39,7 @@
     "pug": "^2.0.0-beta6",
     "reflect-metadata": "^0.1.8",
     "require-all": "^2.0.0",
-    "rho": "^0.2.4",
+    "rho": "^0.3.0",
     "rxjs": "^5.0.0-beta.12",
     "sharp": "^0.16.0",
     "sitemap": "^1.8.1",
