@@ -32,7 +32,7 @@ export interface IConfigFile {
     templatePath: string,
     pagePath: string,
     buildPath: string,
-    siteBuildScript: string,
+    siteBuildScript: string
   };
   general: IGeneralConfig;
   collections: {

@@ -2,13 +2,13 @@ import {Config} from "../lib/config";
 import {l} from "../lib/logger";
 import {Page} from "../lib/page";
 import {Sitemap} from "../lib/sitemap";
+import {Watcher} from "../lib/watcher";
 import {CollectionStatic} from "../models/collection.static";
 import {Content} from "../models/content";
 import {ContentStatic} from "../models/content.static";
 import {ContentLookup} from "../models/contentLookup";
 import {provideSingleton, TYPES} from "./inversify.config";
 import * as ChildProcess from "child_process";
-import * as chokidar from "chokidar";
 import {inject, interfaces} from "inversify";
 import * as minimist from "minimist";
 import * as Rx from "rxjs/Rx";
@@ -18,7 +18,7 @@ export class Fil {
   private busy: boolean = false;
   private hasPendingBuild: boolean = false;
   private buildFinishedSubject: Rx.Subject<void> = new Rx.Subject<void>();
-  private buildFinishedObserveable: Rx.Observable<void> = this.buildFinishedSubject.asObservable();
+  private buildFinishedObservable: Rx.Observable<void> = this.buildFinishedSubject.asObservable();
 
   constructor(
     @inject(TYPES.CollectionStatic) private _collectionStatic: CollectionStatic,
@@ -26,17 +26,18 @@ export class Fil {
     @inject(TYPES.ContentStatic) private _contentStatic: ContentStatic,
     @inject(TYPES.Page) private _page: Page,
     @inject(TYPES.Sitemap) private _sitemap: Sitemap,
+    @inject(TYPES.Watcher) private _watcher: Watcher,
     @inject(TYPES.ContentLookupConstructor) private _contentLookup: interfaces.Newable<ContentLookup>
   ) {}
 
   start(): void {
     let argv = minimist<IParams>(process.argv.slice(2), {
       alias: {w: "watch"},
-      boolean: "watch"
+      boolean: ["watch"]
     });
     if (argv.watch) {
       l.info("Auto build on file change is enabled!");
-      let fileChangeObservable = this.createFileWatcher();
+      let fileChangeObservable = this._watcher.startFileWatcher();
       fileChangeObservable.subscribe(() => {
         if (this.busy) {
           this.hasPendingBuild = true;
@@ -44,7 +45,7 @@ export class Fil {
           this.safeGenerate();
         }
       });
-      this.buildFinishedObserveable.subscribe(() => {
+      this.buildFinishedObservable.subscribe(() => {
         if (!this.hasPendingBuild) { return; }
         this.hasPendingBuild = false;
         this.generate();
@@ -55,34 +56,6 @@ export class Fil {
     }
   }
 
-  private createFileWatcher(): Rx.Observable<void> {
-    let subject = new Rx.Subject<void>();
-    let watcher = chokidar.watch(
-      [
-        this._config.get().build.contentPath,
-        this._config.get().build.pagePath,
-        this._config.get().build.templatePath
-      ],
-      {
-        atomic: true,
-        awaitWriteFinish: {
-          pollInterval: 100,
-          stabilityThreshold: 2000
-        },
-        cwd: process.cwd(),
-        followSymlinks: true,
-        ignoreInitial: true,
-        ignorePermissionErrors: false,
-        ignored: ["**/.*"],
-        persistent: true
-      }
-    );
-    watcher.on("all", () => {
-      subject.next();
-    });
-    return subject.asObservable()
-      .debounce((x) => { return Rx.Observable.timer(700); });
-  }
   private safeGenerate(): void {
     try {
       this.generate();

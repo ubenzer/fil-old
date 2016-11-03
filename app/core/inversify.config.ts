@@ -24,7 +24,8 @@ let TYPES = {
   RhoConstructor: Symbol(),
   Sitemap: Symbol(),
   SortingHelper: Symbol(),
-  Template: Symbol()
+  Template: Symbol(),
+  Watcher: Symbol()
 };
 
 let provideConstructor = (serviceIdentifier: symbol) => {
