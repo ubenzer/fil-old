@@ -52,7 +52,7 @@
   "devDependencies": {
     "codecov": "^1.0.1",
     "mocha": "^3.1.2",
-    "nyc": "^8.4.0",
+    "nyc": "^9.0.1",
     "shx": "^0.1.4",
     "sinon": "^1.17.6",
     "tslint": "^3.15.1",
