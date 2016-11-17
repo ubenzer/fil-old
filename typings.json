@@ -14,7 +14,7 @@
     "glob": "registry:dt/glob#5.0.10+20160317120654",
     "minimatch": "registry:dt/minimatch#2.0.8+20160317120654",
     "mocha": "registry:env/mocha#2.2.5+20160926180742",
-    "node": "registry:env/node#6.0.0+20161019193037",
+    "node": "registry:env/node#6.0.0+20161105011511",
     "reflect-metadata": "file:node_modules/reflect-metadata/reflect-metadata.d.ts",
     "string": "registry:dt/string#0.0.0+20160316155526"
   }
