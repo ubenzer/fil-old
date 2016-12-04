@@ -1,3 +1,9 @@
+import * as assert from "assert";
+import * as fs from "fs-extra";
+import {interfaces} from "inversify";
+import * as moment from "moment";
+import * as path from "path";
+import * as sinon from "sinon";
 import {kernel, TYPES} from "../../app/core/inversify.config";
 import {Helper} from "../../test/testHelpers";
 import {TestUtils} from "../../test/testUtils";
@@ -9,12 +15,6 @@ import {Collection} from "./collection";
 import {Content} from "./content";
 import {ContentAsset} from "./contentAsset";
 import {ContentLookup} from "./contentLookup";
-import * as assert from "assert";
-import * as fs from "fs-extra";
-import {interfaces} from "inversify";
-import * as moment from "moment";
-import * as path from "path";
-import * as sinon from "sinon";
 
 TestUtils.initTestSystem();
 

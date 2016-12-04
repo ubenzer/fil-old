@@ -4,7 +4,7 @@ import * as sourceMap from "source-map";
 import * as tracer from "tracer";
 
 interface ISourceMap {
-  version: string;
+  version: number;
   sources: Array<string>;
   names: Array<string>;
   sourcesContent?: string[];

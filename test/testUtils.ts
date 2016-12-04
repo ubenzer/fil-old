@@ -1,7 +1,7 @@
-import {kernel} from "../app/core/inversify.config";
-import {Loader} from "../app/core/loader";
 import {decorate, injectable} from "inversify";
 import {SinonStub} from "sinon";
+import {kernel} from "../app/core/inversify.config";
+import {Loader} from "../app/core/loader";
 
 export class TestUtils {
   private static stub: Array<SinonStub>;

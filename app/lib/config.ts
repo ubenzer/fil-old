@@ -1,7 +1,7 @@
+import * as path from "path";
 import {provideSingleton, TYPES} from "../core/inversify.config";
 import {Category} from "../models/category";
 import {Content} from "../models/content";
-import * as path from "path";
 
 @provideSingleton(TYPES.Config)
 export class Config implements IConfig {

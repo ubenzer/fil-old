@@ -1,11 +1,11 @@
+import * as fs from "fs-extra";
+import {inject} from "inversify";
+import * as path from "path";
 import {provideSingleton, TYPES} from "../core/inversify.config";
 import {Collection} from "../models/collection";
 import {Config} from "./config";
 import {l} from "./logger";
 import {Template} from "./template";
-import * as fs from "fs-extra";
-import {inject} from "inversify";
-import * as path from "path";
 
 const HTML_PAGE_NAME = "index.html";
 

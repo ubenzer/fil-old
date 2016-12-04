@@ -1,9 +1,9 @@
-import {Rho} from "./rho";
 import * as mime from "mime";
 import * as path from "path";
 import {IWalker} from "rho";
 import * as rho from "rho";
 import * as s from "string";
+import {Rho} from "./rho";
 
 export class ExtendedInlineCompiler extends rho.InlineCompiler {
   constructor(private rhoClass: Rho) {

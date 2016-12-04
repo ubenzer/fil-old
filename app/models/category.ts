@@ -1,12 +1,12 @@
+import * as fs from "fs-extra";
+import * as path from "path";
+import * as slug from "slug";
 import {lazyInject, provideConstructor, TYPES} from "../core/inversify.config";
 import {Config, ICategorySortingFn, IContentSortingFn} from "../lib/config";
 import {SortingHelper} from "../lib/sortingHelper";
 import {Template} from "../lib/template";
 import {Collection} from "./collection";
 import {Content} from "./content";
-import * as fs from "fs-extra";
-import * as path from "path";
-import * as slug from "slug";
 
 const HTML_PAGE_NAME = "index.html";
 

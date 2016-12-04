@@ -1,8 +1,8 @@
+import * as path from "path";
+import * as slug from "slug";
 import {lazyInject, provideConstructor, TYPES} from "../core/inversify.config";
 import {ImageResizer} from "../lib/imageResizer";
 import {Content} from "./content";
-import * as path from "path";
-import * as slug from "slug";
 
 @provideConstructor(TYPES.ContentAssetConstructor)
 export class ContentAsset {

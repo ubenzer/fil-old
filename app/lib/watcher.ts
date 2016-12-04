@@ -1,8 +1,8 @@
-import {provideSingleton, TYPES} from "../core/inversify.config";
-import {Config} from "../lib/config";
 import * as chokidar from "chokidar";
 import {inject} from "inversify";
 import * as Rx from "rxjs/Rx";
+import {provideSingleton, TYPES} from "../core/inversify.config";
+import {Config} from "../lib/config";
 
 @provideSingleton(TYPES.Watcher)
 export class Watcher {

@@ -1,10 +1,10 @@
+import {interfaces} from "inversify";
 import {lazyInject, provideConstructor, TYPES} from "../core/inversify.config";
 import {ICategorySortingFn, ICategorySortingObject, IContentSortingFn, IContentSortingObject} from "../lib/config";
 import {SortingHelper} from "../lib/sortingHelper";
 import {Category} from "./category";
 import {CollectionStatic} from "./collection.static";
 import {Content} from "./content";
-import {interfaces} from "inversify";
 
 @provideConstructor(TYPES.CollectionConstructor)
 export class Collection {

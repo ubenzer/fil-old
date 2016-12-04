@@ -1,7 +1,7 @@
+import {inject, interfaces} from "inversify";
 import {provideSingleton, TYPES} from "../core/inversify.config";
 import {ICollectionConfigFile, ICollectionDefinitionFile} from "../lib/config";
 import {Collection} from "./collection";
-import {inject, interfaces} from "inversify";
 
 @provideSingleton(TYPES.CollectionStatic)
 export class CollectionStatic {

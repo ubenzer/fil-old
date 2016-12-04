@@ -1,6 +1,3 @@
-import {provideSingleton, TYPES} from "../core/inversify.config";
-import {Config} from "./config";
-import {l} from "./logger";
 import * as chalk from "chalk";
 import * as fs from "fs-extra";
 import {inject} from "inversify";
@@ -8,6 +5,9 @@ import * as path from "path";
 import * as Rx from "rxjs/Rx";
 import * as sharp from "sharp";
 import * as tildify from "tildify";
+import {provideSingleton, TYPES} from "../core/inversify.config";
+import {Config} from "./config";
+import {l} from "./logger";
 
 @provideSingleton(TYPES.ImageResizer)
 export class ImageResizer {

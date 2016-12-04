@@ -1,3 +1,7 @@
+import * as ChildProcess from "child_process";
+import {inject, interfaces} from "inversify";
+import * as minimist from "minimist";
+import * as Rx from "rxjs/Rx";
 import {Config} from "../lib/config";
 import {l} from "../lib/logger";
 import {Page} from "../lib/page";
@@ -8,10 +12,6 @@ import {Content} from "../models/content";
 import {ContentStatic} from "../models/content.static";
 import {ContentLookup} from "../models/contentLookup";
 import {provideSingleton, TYPES} from "./inversify.config";
-import * as ChildProcess from "child_process";
-import {inject, interfaces} from "inversify";
-import * as minimist from "minimist";
-import * as Rx from "rxjs/Rx";
 
 @provideSingleton(TYPES.Fil)
 export class Fil {

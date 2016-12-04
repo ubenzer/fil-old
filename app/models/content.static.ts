@@ -1,6 +1,3 @@
-import {provideSingleton, TYPES} from "../core/inversify.config";
-import {Config, IContentPermalinkCalculatorFnIn} from "../lib/config";
-import {Content} from "./content";
 import * as frontMatter from "front-matter";
 import * as fs from "fs-extra";
 import * as glob from "glob";
@@ -8,6 +5,9 @@ import {inject} from "inversify";
 import * as padleft from "pad-left";
 import * as path from "path";
 import * as slug from "slug";
+import {provideSingleton, TYPES} from "../core/inversify.config";
+import {Config, IContentPermalinkCalculatorFnIn} from "../lib/config";
+import {Content} from "./content";
 
 @provideSingleton(TYPES.ContentStatic)
 export class ContentStatic {

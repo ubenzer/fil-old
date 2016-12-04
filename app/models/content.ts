@@ -1,3 +1,8 @@
+import * as fs from "fs-extra";
+import * as glob from "glob";
+import {interfaces} from "inversify";
+import * as moment from "moment";
+import * as path from "path";
 import {lazyInject, provideConstructor, TYPES} from "../core/inversify.config";
 import {Config} from "../lib/config";
 import {ImageResizer} from "../lib/imageResizer";
@@ -7,11 +12,6 @@ import {Template} from "../lib/template";
 import {Collection, IContentBelongsTo} from "./collection";
 import {ContentAsset} from "./contentAsset";
 import {ContentLookup} from "./contentLookup";
-import * as fs from "fs-extra";
-import * as glob from "glob";
-import {interfaces} from "inversify";
-import * as moment from "moment";
-import * as path from "path";
 
 const HTML_PAGE_NAME = "index.html";
 

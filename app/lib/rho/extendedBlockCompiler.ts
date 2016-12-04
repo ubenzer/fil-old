@@ -1,6 +1,6 @@
+import * as rho from "rho";
 import {ExtendedInlineCompiler} from "./extendedInlineCompiler";
 import {Rho} from "./rho";
-import * as rho from "rho";
 
 export class ExtendedBlockCompiler extends rho.BlockCompiler {
   inline: ExtendedInlineCompiler;

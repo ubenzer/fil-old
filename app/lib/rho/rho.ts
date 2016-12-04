@@ -1,3 +1,4 @@
+import * as s from "string";
 import {lazyInject, provideConstructor, TYPES} from "../../core/inversify.config";
 import {Content} from "../../models/content";
 import {ContentLookup} from "../../models/contentLookup";
@@ -5,7 +6,6 @@ import {Config} from "../config";
 import {ImageResizer} from "../imageResizer";
 import {Template} from "../template";
 import {ExtendedBlockCompiler} from "./extendedBlockCompiler";
-import * as s from "string";
 
 enum ParserState {CONTENT_ID, ASSET_ID}
 const CLOSE_DELIMITER = "@";

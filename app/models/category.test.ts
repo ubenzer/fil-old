@@ -1,3 +1,8 @@
+import * as assert from "assert";
+import * as fs from "fs-extra";
+import {interfaces} from "inversify";
+import * as path from "path";
+import * as sinon from "sinon";
 import {kernel, TYPES} from "../../app/core/inversify.config";
 import {Helper} from "../../test/testHelpers";
 import {TestUtils} from "../../test/testUtils";
@@ -6,11 +11,6 @@ import {MockConfig} from "../lib/config.mock";
 import {ImageResizer} from "../lib/imageResizer";
 import {Template} from "../lib/template";
 import {Category} from "./category";
-import * as assert from "assert";
-import * as fs from "fs-extra";
-import {interfaces} from "inversify";
-import * as path from "path";
-import * as sinon from "sinon";
 
 TestUtils.initTestSystem();
 

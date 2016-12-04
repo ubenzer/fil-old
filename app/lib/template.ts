@@ -1,11 +1,11 @@
+import {inject} from "inversify";
+import * as path from "path";
+import * as pug from "pug";
 import {provideSingleton, TYPES} from "../core/inversify.config";
 import {Category, IPaginatedCategory} from "../models/category";
 import {Collection} from "../models/collection";
 import {Content} from "../models/content";
 import {Config, IGeneralConfig} from "./config";
-import {inject} from "inversify";
-import * as path from "path";
-import * as pug from "pug";
 
 @provideSingleton(TYPES.Template)
 export class Template {
