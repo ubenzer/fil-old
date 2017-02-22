@@ -57,7 +57,7 @@
     "shx": "^0.2.1",
     "sinon": "^1.17.6",
     "tslint": "^4.0.2",
-    "typescript": "^2.0.10",
+    "typescript": "^2.2.1",
     "typings": "^2.0.0"
   },
   "scripts": {
