@@ -1,5 +1,7 @@
 # Fil
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/ubenzer/fil.svg)](https://greenkeeper.io/)
+
 [![Gitter](https://img.shields.io/gitter/room/ubenzer/fil.svg?maxAge=2592000&style=flat-square)](https://gitter.im/ubenzer/fil)
 [![Travis](https://img.shields.io/travis/ubenzer/fil.svg?maxAge=3600&style=flat-square)](https://travis-ci.org/ubenzer/fil)
 [![David](https://img.shields.io/david/ubenzer/fil.svg?maxAge=3600&style=flat-square)](https://david-dm.org/ubenzer/fil)
